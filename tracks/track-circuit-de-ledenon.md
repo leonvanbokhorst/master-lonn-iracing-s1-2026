@@ -8,16 +8,62 @@ opened: 1973
 type: "road course"
 ---
 
-# Circuit de Lédenon
+# Circuit de Lédenon – Rollercoaster in a Bowl
 
-Circuit de Lédenon sprang from the dream of Jean-Claude and Sylvie Bondurand, who carved a hillside bowl above Nîmes into one of France’s busiest club circuits in 1973.<sup><a href="https://en.wikipedia.org/wiki/Circuit_de_Lédenon">Circuit de Lédenon — Wikipedia</a></sup> The 3.151 km ribbon runs counter-clockwise—a rarity in the country—and strings thirteen bends across constant elevation changes that locals simply call “the roller coaster.” National championships from French F4 to FFSA GT still flock here because the abrasive asphalt, blind crests, and 70 metres of vertical swing deliver spectacle that television cameras love.
+Circuit de Lédenon grew out of a slightly mad idea: Jean-Claude and Sylvie Bondurand carving a permanent circuit into the hills north-east of Nîmes in the early 1970s.<sup><a href="https://en.wikipedia.org/wiki/Circuit_de_L%C3%A9denon">Circuit de Lédenon — Wikipedia</a></sup> What they ended up with is one of France’s most undulating tracks, wrapped inside a natural bowl and run the “wrong” way round for the country: anti-clockwise, thirteen corners, and almost no moment when the car isn’t loaded up.
 
-The track’s personality is defined by how relentlessly it piles load onto the car. You plunge through the triple-apex Estérel, drop into the natural amphitheatre of the Camion curve, then climb the spine to the panoramic Ferradura, all while the camber tilts away from you.<sup><a href="https://www.iracing.com/tracks/circuit-de-ledenon/">Circuit de Lédenon — iRacing.com</a></sup> Lédenon rewards drivers who can form a single long arc out of Turns 3-6 and keep their eyes up for the downhill braking zones where the road falls out from under the tires. Because the lap lacks true straights, mistakes compound brutally—scrub a kilometre per hour exiting the Ponce hairpin and you carry that deficit for half the circuit.
+On paper, 3.151 km doesn’t sound intimidating.<sup><a href="https://www.iracing.com/tracks/circuit-de-ledenon/">Circuit de Lédenon — iRacing.com</a></sup> In the cockpit it’s something else entirely: blind crests, off-camber entries, downhill braking zones and a main “straight” that climbs so hard it feels like you’re driving up the side of the amphitheatre. Small mistakes here don’t vanish; they hang around for half a lap.
 
-In iRacing the Ray FF1600 feels simultaneously light-footed and overworked here. Start the week with the baseline 52% brake bias; as you build confidence, nudge it rearward a click to help the car rotate into the downhill Virage du Pont without spiking rear temps. Work on floating the throttle over the crest at Turn 7 so weight transfers progressively before you commit to the fast right-left at Collines. Stints of 12–15 laps in late-afternoon sessions simulate the real Lédenon glare and let you rehearse rhythm driving: breathe the throttle rather than stabbing it, and train your eyes to lock onto horizon trees instead of the guardrail. Master that flow and the circuit stops feeling claustrophobic; it becomes a French mountain road where every crest rewards a driver who trusts the car to stay settled.
+This is a track that divides drivers. The first few sessions can feel claustrophobic and chaotic. Once you learn to look *past* the next crest and trust the car over the blind rises, it turns into one of those circuits that makes you grin and swear in the same breath.
+
+---
+
+## Character Notes
+
+- **Anti-clockwise anomaly** – Long sequences of medium-speed lefts test your weaker side as a driver. Your neck, your hands and even your brake references feel subtly “wrong-handed” until your body catches up.
+- **Elevation as a weapon** – Lédenon uses height like other tracks use chicanes. Crests hide apexes; compressions spike grip; the uphill pit straight punishes anyone who exits the last complex even slightly compromised.
+- **Rhythm track, not point-and-squirt** – There are very few true straights. Many “corners” are really parts of one long, undulating arc. If you attack each bend as an isolated event, the car feels busy and nervous. If you string them into three or four big shapes, the lap suddenly calms down.
+- **Commitment in the blind** – Several key braking zones and turn-ins are over brows or into off-camber landings. If you wait to see everything before you commit, you’re late on every input. The trick is learning references you can see *before* the crest and trusting them.
+
+---
+
+## Ray FF1600 at Lédenon
+
+The Ray feels almost purpose-built for this place: light, honest, and completely at the mercy of momentum.
+
+- **Bias & braking**  
+  A conservative baseline bias in the low-50s keeps the rear settled when you first explore the downhill braking zones into the bowl. As you gain confidence, one or two clicks rearward can help the car rotate into the final complex and the downhill lefts—just remember you’re often braking while the car is unweighted over a crest, so smooth pedal pressure matters more than raw force.
+
+- **Lines through the “rollercoaster”**  
+  Think in sequences, not corners. The long left section after the first chicane and the plunge down into the Camion / Cavalet area work best when you choose one early, wide entry and then let the Ray take a single, patient arc down the hill. If you try to “correct” mid-sequence with extra steering, you bleed speed and upset the balance.
+
+- **Throttle over the crests**  
+  The Ray responds beautifully to a held, partial throttle as you crest into a blind section. A little pedal keeps weight on the rear and stops the car from feeling floaty. Only when the road “arrives” under you again do you feed in full power. Big, binary on/off stabs here are an easy way to discover the limits of iRacing’s tow system.
+
+- **Kerbs and camber**  
+  Some apex kerbs at Lédenon are tall and serrated; others are flatter and safe. In the FF1600, treat apex kerbs with suspicion in off-camber or downhill corners: touching them while the car is light can flick you off-line. Exit kerbs on the uphill sections are your friends—use them to let the car run and preserve momentum up the hill.
+
+- **Racecraft here**  
+  Without big straights, passes tend to be built over several corners. In the Ray, your best moves come from better exits onto the climbing main “straight” or from being braver—but still smooth—into the downhill braking zones. Divebombs almost always turn into shared trips to the gravel; patient pressure forces mistakes far more reliably.
+
+---
+
+## Practice Cues for the Week
+
+Use Lédenon as your “eyes up and trust the reference” lab.
+
+- **Day 1 – Map the rollercoaster**  
+  Run slow laps and literally name the features out loud: “crest, off-camber, downhill brake, compression.” The goal isn’t speed; it’s giving your brain a clear mental model of what the terrain is doing so your fear response doesn’t have to guess.
+
+- **Day 2 – One sequence at a time**  
+  Pick a section (for example, the plunge into the bowl and back out) and drive it as if it were one giant corner. Keep your hands quiet, throttle breathing, and see how early you can commit to a line without mid-corner corrections.
+
+- **Race runs – Rhythm over aggression**  
+  In races, let Lédenon teach you patience. Choose one or two corners where you’ll *never* send a move (high-risk downhill zones), and one or two where you allow yourself to attack after proper setup. If you finish a race feeling like you “surfed” the track more than you fought it, you’re doing it right.
+
+---
 
 ## References
-- [Circuit de Lédenon — Wikipedia](https://en.wikipedia.org/wiki/Circuit_de_Lédenon)
+
+- [Circuit de Lédenon — Wikipedia](https://en.wikipedia.org/wiki/Circuit_de_L%C3%A9denon)  
 - [Circuit de Lédenon — iRacing.com](https://www.iracing.com/tracks/circuit-de-ledenon/)
-
-

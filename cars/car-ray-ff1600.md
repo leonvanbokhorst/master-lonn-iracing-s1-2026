@@ -10,39 +10,55 @@ drivetrain: "Rear-wheel drive"
 
 # Ray FF1600 – Momentum Apprentice
 
-Ray Race Cars has been the quiet workhorse of Formula Ford since the late 1970s, building lightweight chassis for club racers who value car control over brute power.<sup><a href="https://en.wikipedia.org/wiki/Ray_Race_Cars">Ray Race Cars — Wikipedia</a></sup> The FF1600 lineage found new relevance when the British manufacturer released the GRS-1600 in 2012, a modern take on the classic Kent-powered formula with revised suspension geometry and a stiffer safety cell.<sup><a href="https://www.rayracecar.com/">Ray FF1600 (Formula Ford)</a></sup> iRacing’s <sup><a href="https://www.iracing.com/cars/ray-ff1600/">Ray FF1600</a></sup> mirrors that package: open cockpit, no wings, 120 hp, and more stories about who can keep momentum alive than who has the biggest wallet.
+Ray Race Cars has been the quiet workhorse of Formula Ford since the late 1970s, building lithe, no-nonsense chassis for drivers who want to **learn to drive**, not just manage downforce.<sup><a href="https://en.wikipedia.org/wiki/Ray_Race_Cars">Ray Race Cars — Wikipedia</a></sup>  
+
+The GRS-1600, launched in 2012, is a modern echo of the classic Formula Ford recipe: Kent engine up back, skinny tires, subtle aero tweaks, and a stiffer safety cell so you can lean on the thing without flinching.<sup><a href="https://www.rayracecar.com/">Ray FF1600 (Formula Ford)</a></sup> iRacing’s <sup><a href="https://www.iracing.com/cars/ray-ff1600/">Ray FF1600</a></sup> brings that same attitude: open cockpit, no wings, 120 hp, and absolutely nowhere to hide if your inputs are messy.  
+
+This is not a power car. It’s a momentum apprenticeship on four wheels.
+
+---
 
 ## Character Notes
 
-- **Momentum monarch** – With no aero to lean on, every kilometer per hour matters. The car rewards early throttle commitment and clean steering arcs; it punishes excess steering angle with instant scrub.
-- **Weight transfer whisperer** – Longitudinal shifts are exaggerated, so the brake pedal doubles as a rotation tool. Trail too deep and the rear rotates eagerly; release too abruptly and the front washes wide.
-- **Draft dependent** – On longer straights the brick-like profile needs friends; plan passes by pairing slingshot exits with shared slipstreams rather than brute straight-line pace.
+- **Momentum monarch** – With no aero to lean on, every kilometer per hour you carry into a corner is hard currency. The Ray loves early, confident throttle and one clean steering arc. Add steering angle instead of fixing entry speed and it just scrubs speed and sulks.
+- **Weight-transfer whisperer** – There’s so little mass that any brake or throttle change shows up immediately. Stay on the brakes a fraction too long and the rear rotates with enthusiasm; pop off the pedal too quickly and the front goes light and washes away.
+- **Draft-hungry** – On longer straights the car is a brick pushing air. Alone you feel slow; tucked in a tow it suddenly wakes up. Races are rarely about one hero overtake and more about living in the slipstream train without panicking.
+- **Honesty machine** – If you overdrive it, it tells you right away. No dirty-band-aid traction control, no big wings to smooth out your mistakes. That can feel brutal at first, but it also means the car gives incredibly clear feedback when you get it right.
+
+---
 
 ## Working With the Ray
 
-1. **Baseline bias**  
-   Default brake bias around 53% keeps the rear calm while your hands learn the dance. As confidence grows, experiment with nudging bias rearward one or two clicks for rotation in tighter complexes—especially at tracks like Lédenon or Okayama where downhill braking demands a pointy nose.
+1. **Brake bias as personality dial**  
+   A conservative baseline bias around the low-50s keeps the rear calm while your hands and feet learn the choreography. As confidence grows you can nudge the bias rearward in small steps to help the car rotate into tighter corners. Think of bias not as “set and forget” but as a gentle personality slider between “stable” and “playful”.
 
-2. **Steering discipline**  
-   The steering rack is extremely direct. Aim for small inputs early, then lock your hands and let the chassis follow through the corner. “Scrub equals slow” is the mantra; if you need more angle, revisit entry speed rather than adding steering.
+2. **Steering discipline over hero hands**  
+   The rack is quick; you don’t need big movements. Aim to turn the wheel once, smoothly, then hold. If you find yourself sawing at the wheel mid-corner, the problem is almost always entry speed or line choice, not “not enough steering”. In this car, extra angle equals extra lap time.
 
-3. **Mid-corner throttle**  
-   Use partial throttle to balance the car instead of abrupt on/off stabs. 20–30% throttle mid-corner keeps load on the rear tires and prevents snap oversteer when you roll back to full power.
+3. **Feeding the rear with throttle**  
+   The easiest way to spin is to go from zero to full throttle in a single jab once you see the exit. Instead, let throttle be your balance tool: a little pedal mid-corner plants the rear tires and keeps the car “on its toes” without snapping. Full throttle should feel like a continuation of that, not a separate event.
 
-4. **Ride the kerbs wisely**  
-   The Ray tolerates gentle kerbs but hates saw-tooth monsters. Approach kerbs square-on whenever possible; clipping them diagonally upsets the car and costs the momentum you fought to preserve.
+4. **Kerb diplomacy**  
+   The Ray will happily kiss flat kerbs; it hates sharp, high ones taken at weird angles. Whenever you approach a more aggressive kerb, think: “square it up or skip it.” Losing 1 km/h to go around is cheaper than bouncing the car and killing all your momentum.
 
-5. **Racecraft mindset**  
-   Expect drafting packs and constant position swaps. Plan two corners ahead, leave space on exits so you can get a better run, and resist the urge to defend heavily unless it’s the final lap—maintaining rhythm is faster than mirror-gazing.
+5. **Racecraft mindset: play the long game**  
+   In rookie splits the temptation is to send every gap. The Ray rewards the opposite: lifting early to keep your exit clean, thinking two corners ahead, and using draft to make low-risk passes. Defend when it matters, but most of the time it’s faster to breathe, let someone by if they’re desperate, and repass them with a calmer exit a lap later.
+
+---
 
 ## Practice Ritual
 
-- **Reset the body** – Two easy laps at the start of every run, focusing on breathing and pedal smoothness.
-- **Telemetry snapshot** – After each stint, review min-speed deltas corner by corner. Anything over 2–3 km/h is a signal to revisit entry technique.
-- **Clutch survival** – In official races, pre-stage the clutch bite point before the lights come on. Launch at ~3,800 RPM and feed the clutch out smoothly; a chirp is fine, wheelspin isn’t.
+- **Body check-in**  
+  Start every session with two deliberately slow laps. Focus on breathing, seat position, and how lightly you can touch pedals and wheel while still being precise. Only when your hands and feet feel quiet, start pushing.
+- **Corner-by-corner curiosity**  
+  Instead of chasing lap time, pick one corner each stint and treat it as your lab. Try a slightly later apex, a different lift point, or a gentler brake release and notice what it does to minimum speed and exit feel.
+- **Mini-reviews, often**  
+  After a run, grab one replay moment: a clean lap, a near-save, a messy overtake. Watch it once from cockpit, once from TV cam, and name out loud what you did well before you critique what went wrong. The Ray will happily be your teacher if you let it.
+
+---
 
 ## References
 
-- [Ray Race Cars — Wikipedia](https://en.wikipedia.org/wiki/Ray_Race_Cars)
-- [Ray GRS-1600 – Ray Race Cars](https://www.rayracecar.co.uk/grs1600)
+- [Ray Race Cars — Wikipedia](https://en.wikipedia.org/wiki/Ray_Race_Cars)  
+- [Ray GRS-1600 – Ray Race Cars](https://www.rayracecar.co.uk/grs1600)  
 - [Ray FF1600 — iRacing.com](https://www.iracing.com/cars/ray-ff1600/)

@@ -8,17 +8,64 @@ opened: 1996
 type: "road course"
 ---
 
-# Summit Point Jefferson Circuit
+# Summit Point Jefferson Circuit – Confidence Gym
 
-Jefferson Circuit is Summit Point’s purpose-built training ribbon, carved into the West Virginia hills in 1996 by owner Bill Scott to give government agencies and club racers a playground for car control drills.<sup><a href="https://en.wikipedia.org/wiki/Summit_Point_Motorsports_Park">Summit Point Motorsports Park</a></sup> Rather than chasing headline speeds, the nine-turn, 1.1-mile layout strings together constant-radius bends and blind crests that keep weight transfer alive from pit-out to pit-in. In the real world it has hosted everything from emergency-services courses to regional HPDE weekends, so it naturally doubles as a confidence gym for anyone stepping into open-wheel machinery.
+Jefferson Circuit is Summit Point’s purpose-built training ribbon, tucked into the West Virginia hills and opened in 1996 as a handling course for government agencies, security outfits and club drivers.<sup><a href="https://en.wikipedia.org/wiki/Summit_Point_Motorsports_Park">Summit Point Motorsports Park — Wikipedia</a></sup>  
 
-What gives Jefferson its personality is how little rest it affords. The lap starts with an off-camber left-right that begs for patience before diving into the downhill Esses; from there the track squeezes drivers through a never-ending carousel that rewards rhythm over aggression. Elevation swings of roughly 30 feet and tree-lined sightlines keep the apexes hidden until you commit, which is why instructors call it a “hands busy, eyes far” venue. There’s just enough curb to dance across, but misjudge one brake release and the paved runoff ends quickly.
+Where the Main Circuit chases speed and spectacle, Jefferson is all about teaching. The 1.1-mile loop strings together nine corners with barely a straight between them: constant-radius bends, linked transitions and a few sneaky crests that keep the car loaded almost the entire lap. It’s the kind of place instructors love for car-control days and HPDE weekends because it exposes sloppy hands and greedy feet in about three corners flat.
 
-In iRacing the Ray FF1600 feels right at home because the car’s momentum-focused balance mirrors Jefferson’s real intent. The slowest corners hover in second gear, yet the lap is made or lost by how cleanly you rotate off-brake and how early you feed throttle without scrubbing. Expect the default 51–52% brake bias to feel safe; as grip builds, creeping rearward helps the car pivot into the tight left at Turn 6. Tire temps stay low thanks to short straights, so focus on keeping slip angles tidy rather than hunting outright heat.
+On paper it looks like a glorified kart track. In the car, it’s a **“no hiding, no resting”** test of rhythm. There’s just enough runoff to keep things sane, but not enough to let you be lazy.
 
-Dialing in the track comes down to microsessions. A productive routine is ten laps in baseline trim concentrating solely on linking Turns 3-6 without a lift, followed by telemetry review on minimum speed deltas. Once consistent, add structured race stints of 12–15 laps to practice battling through Jefferson’s single clear passing zone—the short chute into Turn 1. Because the circuit punishes impatience, save the final runs for simulated qualifying attempts where you squeeze every inch of curb yet keep overlap minimal; that discipline pays off the moment a real race squeezes you three-wide at start time.
+---
+
+## Character Notes
+
+- **Handling course, not horsepower stage** – There’s nowhere to really stretch the engine. You’re almost always in second or third, working at the limit of grip rather than the limit of speed.
+- **Constant weight transfer** – The opening off-camber left-right, the downhill esses and the carousel-style back section keep the chassis moving. You don’t plant the car and wait; you ride the weight shift.
+- **Short lap, long exposure** – At only 1.1 miles, mistakes come back around quickly. Miss a reference, and you get to stare at it again 60 seconds later.
+- **“Hands busy, eyes far”** – With trees, barriers and earth banks close to the edge, apexes often appear late. The track rewards drivers who can keep their hands doing small, precise things while their vision stays two corners ahead.
+
+---
+
+## Ray FF1600 at Jefferson
+
+In the Ray FF1600, Jefferson is basically a **live-fire practice range** for everything the car does best: momentum, rotation off-brake, and smooth feet.
+
+- **Opening complex (T1–T3)**  
+  The first left-right asks for patience. In the Ray, brake a touch earlier than instincts scream, nibble at the entry curb and focus on placing the car so you can roll through T2 and T3 with minimal steering. Any jabby correction here costs you all the way into the esses.
+
+- **Downhill esses**  
+  The esses are where you learn to *breathe* the throttle. Treat them like one long, snaking corner: a small lift to set the nose, then gentle reapplication of power as the Ray flows from one side to the other. If you find yourself making big steering changes mid-esse, you turned in too late or carried too much entry speed.
+
+- **T6 pinch point**  
+  The tight left in the back half is the lap’s main “I went in optimistic” corner. In the FF1600, use it as your braking-discipline classroom: straight-line brake, ease into the turn while bleeding off pressure, and get the car rotated early so you can pick up throttle sooner than feels natural. A slightly more rearward bias later in the week can help the nose bite here—if your brake release is smooth.
+
+- **Carousel feel of the back section**  
+  From the mid-lap on, Jefferson feels like a stretched carousel. The Ray loves being allowed to take one long arc through these corners. Focus on constant steering rate and steering *release*; if you’re un-winding the wheel gradually, your exit speeds will start to creep up without drama.
+
+- **Brake bias & tyre temps**  
+  Short straights mean tyres never get roasted, but also never fully rest. A safe baseline bias in the low-50s keeps the rear predictable while you learn the flow. As you get comfortable, a half-click rearward can help the car pivot into T6 and the tighter kinks—just remember that with low speeds, any rear lockup will be obvious and embarrassing.
+
+---
+
+## Practice Cues for the Week
+
+Let Jefferson be your **“mechanics before heroics”** track in the Ray.
+
+- **Micro-stints for link-up**  
+  Start the week with short, focused runs of 8–10 laps where your only goal is to make T3–T6 feel like one connected piece of driving. Don’t chase time; chase laps where your steering inputs are small and you’re not stabbing at the throttle.
+
+- **No-brake laps (within reason)**  
+  Once you know the layout, try a slow session where you use as little brake as possible, relying on lifting and early turn-in to control speed. This exaggerates the Ray’s momentum nature and teaches you how much corner speed the car will actually carry when you’re not over-slowing everything.
+
+- **Racecraft rehearsals**  
+  There aren’t many true passing zones here, so practice using the short chute into T1 as your main overtaking classroom. Work on getting better exits from the final corners, then making *clear, early* moves under braking—no late, hopeful lunges. In the FF1600, a clean drive off the last turn will beat a divebomb nine times out of ten.
+
+Jefferson isn’t about glory laps; it’s about quietly sharpening the fundamentals. If you can be smooth, accurate and patient here, the Ray will feel easier everywhere else.
+
+---
 
 ## References
-- [Summit Point Motorsports Park — Wikipedia](https://en.wikipedia.org/wiki/Summit_Point_Motorsports_Park)
-- [Summit Point Motorsports Park — iRacing.com](https://www.iracing.com/tracks/summit-point-raceway/)
 
+- [Summit Point Motorsports Park — Wikipedia](https://en.wikipedia.org/wiki/Summit_Point_Motorsports_Park)  
+- [Summit Point Raceway — iRacing.com](https://www.iracing.com/tracks/summit-point-raceway/)
