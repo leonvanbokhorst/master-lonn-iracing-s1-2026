@@ -1,0 +1,182 @@
+weeks:
+  - week: 1
+    start_date: 2025-12-16
+    track: "Summit Point Raceway"
+    layout: "Jefferson Circuit"
+    race_length_minutes: 12
+    special_event:
+      datetime: "2026-03-01 12:00"
+      multiplier: "1x"
+    conditions:
+      temperature_f: 66
+      temperature_c: 19
+      rain_chance: "none"
+      start_type: "standing"
+      cautions: "local enforced"
+      qualifying_scrutiny: "permissive"
+  - week: 2
+    start_date: 2025-12-23
+    track: "Rudskogen Motorsenter"
+    layout: ""
+    race_length_minutes: 12
+    special_event:
+      datetime: "2026-05-01 12:00"
+      multiplier: "1x"
+    conditions:
+      temperature_f: 66
+      temperature_c: 19
+      rain_chance: "none"
+      start_type: "standing"
+      cautions: "local enforced"
+      qualifying_scrutiny: "permissive"
+  - week: 3
+    start_date: 2025-12-30
+    track: "Winton Motor Raceway"
+    layout: "National Circuit"
+    race_length_minutes: 12
+    special_event:
+      datetime: "2026-01-03 15:35"
+      multiplier: "1x"
+    conditions:
+      temperature_f: 75
+      temperature_c: 24
+      rain_chance: "none"
+      start_type: "standing"
+      cautions: "local enforced"
+      qualifying_scrutiny: "permissive"
+  - week: 4
+    start_date: 2026-01-06
+    track: "Lime Rock Park"
+    layout: "Grand Prix"
+    race_length_minutes: 12
+    special_event:
+      datetime: "2026-04-01 13:15"
+      multiplier: "1x"
+    conditions:
+      temperature_f: 65
+      temperature_c: 18
+      rain_chance: "none"
+      start_type: "standing"
+      cautions: "local enforced"
+      qualifying_scrutiny: "permissive"
+  - week: 5
+    start_date: 2026-01-13
+    track: "Motorsport Arena Oschersleben"
+    layout: "Grand Prix"
+    race_length_minutes: 12
+    special_event:
+      datetime: "2026-03-15 12:00"
+      multiplier: "1x"
+    conditions:
+      temperature_f: 68
+      temperature_c: 20
+      rain_chance: "none"
+      start_type: "standing"
+      cautions: "local enforced"
+      qualifying_scrutiny: "permissive"
+  - week: 6
+    start_date: 2026-01-20
+    track: "Oran Park Raceway"
+    layout: "Grand Prix"
+    race_length_minutes: 12
+    special_event:
+      datetime: "2026-01-24 12:00"
+      multiplier: "1x"
+    conditions:
+      temperature_f: 80
+      temperature_c: 27
+      rain_chance: "none"
+      start_type: "standing"
+      cautions: "local enforced"
+      qualifying_scrutiny: "permissive"
+  - week: 7
+    start_date: 2026-01-27
+    track: "Summit Point Raceway"
+    layout: "Summit Point Raceway"
+    race_length_minutes: 12
+    special_event:
+      datetime: "2026-03-01 13:00"
+      multiplier: "1x"
+    conditions:
+      temperature_f: 66
+      temperature_c: 19
+      rain_chance: "none"
+      start_type: "standing"
+      cautions: "local enforced"
+      qualifying_scrutiny: "permissive"
+  - week: 8
+    start_date: 2026-02-03
+    track: "Virginia International Raceway"
+    layout: "North Course"
+    race_length_minutes: 12
+    special_event:
+      datetime: "2026-02-15 13:00"
+      multiplier: "1x"
+    conditions:
+      temperature_f: 66
+      temperature_c: 19
+      rain_chance: "none"
+      start_type: "standing"
+      cautions: "local enforced"
+      qualifying_scrutiny: "permissive"
+  - week: 9
+    start_date: 2026-02-10
+    track: "Circuit de Lédenon"
+    layout: ""
+    race_length_minutes: 12
+    special_event:
+      datetime: "2026-03-01 12:00"
+      multiplier: "1x"
+    conditions:
+      temperature_f: 66
+      temperature_c: 19
+      rain_chance: "none"
+      start_type: "standing"
+      cautions: "local enforced"
+      qualifying_scrutiny: "permissive"
+  - week: 10
+    start_date: 2026-02-17
+    track: "Oulton Park Circuit"
+    layout: "International"
+    race_length_minutes: 12
+    special_event:
+      datetime: "2026-03-01 12:00"
+      multiplier: "1x"
+    conditions:
+      temperature_f: 66
+      temperature_c: 19
+      rain_chance: "none"
+      start_type: "standing"
+      cautions: "local enforced"
+      qualifying_scrutiny: "permissive"
+  - week: 11
+    start_date: 2026-02-24
+    track: "Okayama International Circuit"
+    layout: "Full Course"
+    race_length_minutes: 12
+    special_event:
+      datetime: "2026-02-28 12:55"
+      multiplier: "1x"
+    conditions:
+      temperature_f: 65
+      temperature_c: 19
+      rain_chance: "none"
+      start_type: "standing"
+      cautions: "local enforced"
+      qualifying_scrutiny: "permissive"
+  - week: 12
+    start_date: 2026-03-03
+    track: "Circuito de Navarra"
+    layout: "Speed Circuit – Medium"
+    race_length_minutes: 12
+    special_event:
+      datetime: "2026-03-07 12:00"
+      multiplier: "1x"
+    conditions:
+      temperature_f: 66
+      temperature_c: 19
+      rain_chance: "none"
+      start_type: "standing"
+      cautions: "local enforced"
+      qualifying_scrutiny: "permissive"
+
