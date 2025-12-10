@@ -1,18 +1,44 @@
 # iRacing 2026 Season 1 – Ray FF1600 Rookie Fixed
 
-Welcome to the training-dojo journal for Master Lonn’s Ray FF1600 Rookie Fixed campaign. This repo is the external memory for the season: weekly logs, ritual notes, and deep-dive lore on every track in the schedule.
+This repo is the training-dojo journal for Lonn’s Ray FF1600 Rookie Fixed campaign.  
+It’s the external memory for the season: weekly logs, soft-commitment rituals, and deep-dive lore on every track in the schedule.
+
+The goal isn’t farming iRating; it’s running the full season with intention:
+
+- show up every week  
+- stay out of avoidable chaos  
+- grow racecraft (mirrors, defending, patience, exits)  
+- let momentum driving slowly sink into muscle memory  
+
+Everything here exists to support that.
+
+---
 
 ## Repository Shape
 
-- `season-notes.md` – season-long reflections and themes.
-- `weeks/` – one markdown log per official iRacing week (intent → prep → races → reflection).
-- `tracks/` – narrative dossiers for each circuit, with history, driving notes, and references.
-- `cars/` – car-focused narratives and handling rituals (`car-ray-ff1600.md`).
-- `tools/` – automation helpers (week generator, schedule YAML, future scripts).
+- `season-notes.md`  
+  Season-long reflections and themes. Meta-level stuff: patterns, confidence shifts, “what this season is teaching me”.
+
+- `weeks/`  
+  One markdown log per official iRacing week.  
+  Each follows the same arc: **intent → prep → races → reflection**.
+
+- `tracks/`  
+  Narrative dossiers for each circuit: a bit of history, driving character, Ray FF1600 notes, and references.
+
+- `cars/`  
+  Car-focused narratives and handling rituals.  
+  Currently: `car-ray-ff1600.md`.
+
+- `tools/`  
+  Automation helpers (week generators, schedule YAML, future stats/exports).  
+  The internals can evolve; the promise is: keep the logs simple to maintain.
+
+---
 
 ## Track Lore Index
 
-Need to jump straight into context before a session? Each week links to its track profile and log below.
+Need track context before a session? Start by skimming the track profile, then jump into that week’s log.
 
 | Week | Dates (UTC)             | Track & Layout                               | Track Profile                                                                                                          | Weekly Log                                                                                         |
 | ---- | ----------------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
@@ -29,14 +55,23 @@ Need to jump straight into context before a session? Each week links to its trac
 | 11   | 2026-02-24 → 2026-03-02 | Okayama International Circuit – Full         | [`tracks/track-okayama-international-circuit-full.md`](tracks/track-okayama-international-circuit-full.md)             | [`weeks/week11-okayama-international-circuit.md`](weeks/week11-okayama-international-circuit.md)   |
 | 12   | 2026-03-03 → 2026-03-09 | Circuito de Navarra – Speed Circuit (Medium) | [`tracks/track-circuito-de-navarra-medium.md`](tracks/track-circuito-de-navarra-medium.md)                             | [`weeks/week12-circuito-de-navarra.md`](weeks/week12-circuito-de-navarra.md)                       |
 
+---
+
 ## Car Lore
 
-- [`cars/car-ray-ff1600.md`](cars/car-ray-ff1600.md) – history, handling cues, and racecraft drills for the Ray FF1600.
+- [`cars/car-ray-ff1600.md`](cars/car-ray-ff1600.md)  
+  History, character, handling cues, and racecraft drills for the Ray FF1600 – the “momentum apprentice” at the centre of this whole thing.
 
-## Workflow Reminders
+---
 
-- Generate week shells with `uv run tools/create_week.py --week <n>`.
-- Capture fresh race data immediately after each session to keep reflections honest.
-- Drop new track lore or setup experiments straight into the matching `tracks/` file while it’s fresh.
+## Workflow Reminders (for Future Lonn)
 
-Now cue up the pre-session ritual, young Padawan, and let’s keep the season notes sharp.
+Light, repeatable, no drama:
+
+- Use `uv run tools/create_week.py --week <n>` to scaffold a new week file from the template.  
+- After each session (practice / race), log at least one line in that week’s file while the memory is fresh.  
+- Add any new track insights, brake-bias experiments or racecraft notes straight into the matching `tracks/` file—don’t trust your brain to “remember it later”.  
+- At the end of each week, write a short reflection in `weeks/weekXX-*.md` **and** optionally one meta-note in `season-notes.md`.
+
+The only hard rule: keep showing up.  
+Everything else—pace, racecraft, confidence—gets to be a side effect of that habit.
