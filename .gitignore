@@ -12,13 +12,4 @@
 .pytest_cache
 .ruff_cache
 .mypy_cache
-tmp_ledenon.html
-tmp_limerock.html
-tmp_navarra.html
-tmp_okayama.html
-tmp_oranpark.html
-tmp_oschersleben.html
-tmp_oulton.html
-tmp_rudskogen.html
-tmp_vir.html
-tmp_winton.html
+tmp_tracks/
