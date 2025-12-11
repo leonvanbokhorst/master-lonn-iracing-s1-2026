@@ -16,6 +16,8 @@ The country-club vibe didn’t stop big-time racing from showing up. The Pacific
 
 On paper the full course is simple: two medium-length straights with linked complexes in between.<sup><a href="https://www.iracing.com/tracks/okayama-international-circuit/">Okayama International Circuit — iRacing.com</a></sup> In the car, the subtleties start piling up: downhill braking into deceptively open entries, crests right where you’re picking up throttle, and exits that fall away just enough to punish greed. It’s a track that asks, quietly but insistently: _can you do the same thing well, every time?_
 
+- [Okayama International Circuit – MidfieldRacing219 Full Race in Rookie Fixed](https://www.youtube.com/watch?v=3eFntIe1i1Q)
+
 ---
 
 ## Character Notes
