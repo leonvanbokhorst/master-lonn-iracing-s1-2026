@@ -82,7 +82,11 @@ _Log each practice or test session as a single line._
 
 ![20251211-session-evening](../images/week01/20251211-session-evening.png)
 
-Big picture: your red dotted trace is now basically shadowing the blue instead of wandering off and doing its own thing. The lap shape is a sibling, not a random cousin anymore. A 2.0-ish gap with traces this close means you’re no longer “lost”, you’re just leaving little bits of time on the table in predictable ways.
+- [VRS Analysis](https://virtualracingschool.appspot.com/#/DrivingAnalyzer/282780004/1750118400000/700079669256/1757459772/997/vs/5082689687781376/1757980800000/700079669256/1765469827/2453/FullTrack/map)
+
+**Big picture:**
+
+Your red dotted trace is now basically shadowing the blue instead of wandering off and doing its own thing. The lap shape is a sibling, not a random cousin anymore. A 2.0-ish gap with traces this close means you’re no longer “lost”, you’re just leaving little bits of time on the table in predictable ways.
 
 **What I’m seeing:**
 
