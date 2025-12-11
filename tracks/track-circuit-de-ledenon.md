@@ -14,7 +14,7 @@ Circuit de Lédenon grew out of a slightly mad idea: Jean-Claude and Sylvie Bond
 
 On paper, 3.151 km doesn’t sound intimidating.<sup><a href="https://www.iracing.com/tracks/circuit-de-ledenon/">Circuit de Lédenon — iRacing.com</a></sup> In the cockpit it’s something else entirely: blind crests, off-camber entries, downhill braking zones and a main “straight” that climbs so hard it feels like you’re driving up the side of the amphitheatre. Small mistakes here don’t vanish; they hang around for half a lap.
 
-This is a track that divides drivers. The first few sessions can feel claustrophobic and chaotic. Once you learn to look *past* the next crest and trust the car over the blind rises, it turns into one of those circuits that makes you grin and swear in the same breath.
+This is a track that divides drivers. The first few sessions can feel claustrophobic and chaotic. Once you learn to look _past_ the next crest and trust the car over the blind rises, it turns into one of those circuits that makes you grin and swear in the same breath.
 
 ---
 
@@ -23,7 +23,7 @@ This is a track that divides drivers. The first few sessions can feel claustroph
 - **Anti-clockwise anomaly** – Long sequences of medium-speed lefts test your weaker side as a driver. Your neck, your hands and even your brake references feel subtly “wrong-handed” until your body catches up.
 - **Elevation as a weapon** – Lédenon uses height like other tracks use chicanes. Crests hide apexes; compressions spike grip; the uphill pit straight punishes anyone who exits the last complex even slightly compromised.
 - **Rhythm track, not point-and-squirt** – There are very few true straights. Many “corners” are really parts of one long, undulating arc. If you attack each bend as an isolated event, the car feels busy and nervous. If you string them into three or four big shapes, the lap suddenly calms down.
-- **Commitment in the blind** – Several key braking zones and turn-ins are over brows or into off-camber landings. If you wait to see everything before you commit, you’re late on every input. The trick is learning references you can see *before* the crest and trusting them.
+- **Commitment in the blind** – Several key braking zones and turn-ins are over brows or into off-camber landings. If you wait to see everything before you commit, you’re late on every input. The trick is learning references you can see _before_ the crest and trusting them.
 
 ---
 
@@ -59,11 +59,11 @@ Use Lédenon as your “eyes up and trust the reference” lab.
   Pick a section (for example, the plunge into the bowl and back out) and drive it as if it were one giant corner. Keep your hands quiet, throttle breathing, and see how early you can commit to a line without mid-corner corrections.
 
 - **Race runs – Rhythm over aggression**  
-  In races, let Lédenon teach you patience. Choose one or two corners where you’ll *never* send a move (high-risk downhill zones), and one or two where you allow yourself to attack after proper setup. If you finish a race feeling like you “surfed” the track more than you fought it, you’re doing it right.
+  In races, let Lédenon teach you patience. Choose one or two corners where you’ll _never_ send a move (high-risk downhill zones), and one or two where you allow yourself to attack after proper setup. If you finish a race feeling like you “surfed” the track more than you fought it, you’re doing it right.
 
 ---
 
 ## References
 
-- [Circuit de Lédenon — Wikipedia](https://en.wikipedia.org/wiki/Circuit_de_L%C3%A9denon)  
+- [Circuit de Lédenon — Wikipedia](https://en.wikipedia.org/wiki/Circuit_de_L%C3%A9denon)
 - [Circuit de Lédenon — iRacing.com](https://www.iracing.com/tracks/circuit-de-ledenon/)

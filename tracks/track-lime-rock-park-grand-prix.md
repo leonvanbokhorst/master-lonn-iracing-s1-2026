@@ -10,9 +10,9 @@ type: "road course"
 
 # Lime Rock Park – Small Track, Big Demands
 
-Lime Rock Park started as Jim Vaill’s slightly stubborn idea: carve a permanent road course into a quiet valley in the Berkshires and see if anyone shows up.<sup><a href="https://en.wikipedia.org/wiki/Lime_Rock_Park">Lime Rock Park — Wikipedia</a></sup> With help from engineer John Fitch and aerodynamic input from Cornell, the 1.5-mile natural-terrain circuit opened in 1957 and quickly became the “Road Racing Center of the East.”  
+Lime Rock Park started as Jim Vaill’s slightly stubborn idea: carve a permanent road course into a quiet valley in the Berkshires and see if anyone shows up.<sup><a href="https://en.wikipedia.org/wiki/Lime_Rock_Park">Lime Rock Park — Wikipedia</a></sup> With help from engineer John Fitch and aerodynamic input from Cornell, the 1.5-mile natural-terrain circuit opened in 1957 and quickly became the “Road Racing Center of the East.”
 
-It’s one of those places where names stack up quickly: Rodger Ward beating sleek sports cars in an Offy midget, Roger Penske and Mark Donohue doing homework, Paul Newman turning it into a second home. A 1959 court injunction still bans Sunday racing but protects unmuffled running on certain days, so even the *sound* of Lime Rock has its own legal backstory.
+It’s one of those places where names stack up quickly: Rodger Ward beating sleek sports cars in an Offy midget, Roger Penske and Mark Donohue doing homework, Paul Newman turning it into a second home. A 1959 court injunction still bans Sunday racing but protects unmuffled running on certain days, so even the _sound_ of Lime Rock has its own legal backstory.
 
 The Grand Prix layout looks simple at a glance: seven corners, no chicanes, no hairpins. On track, it’s a continuous, looping sentence with no comma where you expect it. Big Bend just keeps going, the Uphill feels like a launch ramp, the Esses arrive faster every lap, West Bend hides the exit behind the guardrail, and the Downhill compresses car and driver right at the point where lifting feels both smart and expensive.<sup><a href="https://www.iracing.com/tracks/lime-rock-park/">Lime Rock Park — iRacing.com</a></sup>
 
@@ -35,7 +35,7 @@ The Ray FF1600 feels tailor-made for this place: light, talkative and completely
   This is your lap. Treat it as one long, evolving corner rather than “turn in, coast, then turn again.” In the Ray, a short, early brake, trail into the first apex and then a long, gentle release while you let the car drift out and rotate back works best. Any panic stab on the brakes mid-corner kills your run all the way to the Uphill.
 
 - **The Uphill (T5)**  
-  In the FF1600 the Uphill is more about *stability* than bravery. Aim to be settled and already feeding throttle before the crest. Short-shifting up a gear slightly earlier than feels heroic keeps the rear planted and lets the car float over the brow without spinning the inside rear into the grass.
+  In the FF1600 the Uphill is more about _stability_ than bravery. Aim to be settled and already feeding throttle before the crest. Short-shifting up a gear slightly earlier than feels heroic keeps the rear planted and lets the car float over the brow without spinning the inside rear into the grass.
 
 - **Esses + West Bend (T6–T7)**  
   This is where impatient hands lose the lap. You want one clean input into the Esses and then minimal correction. Turn a heartbeat earlier than your fear suggests, let the car breathe across the track, and trust that West Bend’s apex is there even when you can’t see it yet. Any sawing at the wheel shows up as scrubbed speed at the Downhill.
@@ -59,10 +59,10 @@ Use Lime Rock as your **flow and minimum-speed dojo**.
   Pick one stint where your only focus is: “look where I’m going to be, not where I am.” Force your eyes up the road—through Big Bend to the Uphill, through the Uphill to the Esses, through West Bend to the Downhill braking marker. The Ray tells you instantly when your eyes drop; your hands will start correcting, and the car will feel “busy.”
 
 - **Race runs with discipline rules**  
-  In longer runs, give yourself two rules:  
-  1) No desperate moves into Big Bend.  
-  2) Use the run out of the Downhill as your primary passing tool.  
-  That pushes you to drive the whole lap in service of exits and rhythm, not single-corner glory dives.
+  In longer runs, give yourself two rules:
+  1. No desperate moves into Big Bend.
+  2. Use the run out of the Downhill as your primary passing tool.  
+     That pushes you to drive the whole lap in service of exits and rhythm, not single-corner glory dives.
 
 When Lime Rock “clicks” in the Ray, the lap stops feeling like seven corners and starts feeling like one breath. That’s when the times start falling in satisfying little chunks, without you ever feeling like you’re forcing it.
 
@@ -70,5 +70,5 @@ When Lime Rock “clicks” in the Ray, the lap stops feeling like seven corners
 
 ## References
 
-- [Lime Rock Park — Wikipedia](https://en.wikipedia.org/wiki/Lime_Rock_Park)  
+- [Lime Rock Park — Wikipedia](https://en.wikipedia.org/wiki/Lime_Rock_Park)
 - [Lime Rock Park — iRacing.com](https://www.iracing.com/tracks/lime-rock-park/)

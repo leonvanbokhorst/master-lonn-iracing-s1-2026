@@ -10,7 +10,7 @@ type: "road course"
 
 # VIR North Course – Greatest Hits Loop
 
-When VIR was resurrected in 2000, it didn’t just bring back the legendary Full Course; it came back as a modular playground. The 2.25-mile North Course is basically a “best of VIR” mixtape, stitching together the Horseshoe, the Snake, the Climbing Esses, Oak Tree and the Roller Coaster into one condensed lap.<sup><a href="https://en.wikipedia.org/wiki/Virginia_International_Raceway">Virginia International Raceway — Wikipedia</a></sup>  
+When VIR was resurrected in 2000, it didn’t just bring back the legendary Full Course; it came back as a modular playground. The 2.25-mile North Course is basically a “best of VIR” mixtape, stitching together the Horseshoe, the Snake, the Climbing Esses, Oak Tree and the Roller Coaster into one condensed lap.<sup><a href="https://en.wikipedia.org/wiki/Virginia_International_Raceway">Virginia International Raceway — Wikipedia</a></sup>
 
 It shares the same front straight and back section as the Full Course, then dives off onto a connector after Oak Tree to loop you back to pit lane. Bikes, club racers and test days love it because you get all the character without the extra real estate.
 
@@ -70,5 +70,5 @@ When VIR North finally “clicks” in the FF1600, the lap stops feeling like a 
 
 ## References
 
-- [Virginia International Raceway — Wikipedia](https://en.wikipedia.org/wiki/Virginia_International_Raceway)  
+- [Virginia International Raceway — Wikipedia](https://en.wikipedia.org/wiki/Virginia_International_Raceway)
 - [Virginia International Raceway — iRacing.com](https://www.iracing.com/tracks/virginia-international-raceway/)

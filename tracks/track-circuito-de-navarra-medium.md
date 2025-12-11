@@ -10,7 +10,7 @@ type: "road course"
 
 # Circuito de Navarra – Wind on the Plateau
 
-Circuito de Navarra sits out on the plains near Los Arcos, dropped between vineyards and wind farms like someone decided a GT circuit and a bike track belonged in the middle of big sky country.<sup><a href="https://en.wikipedia.org/wiki/Circuito_de_Navarra">Circuito de Navarra — Wikipedia</a></sup> Opened in 2010 as Spain’s newest FIA Grade 2 venue, it’s since been adopted by everything from Spanish superbikes to Ferrari Challenge and long-distance GT fields.  
+Circuito de Navarra sits out on the plains near Los Arcos, dropped between vineyards and wind farms like someone decided a GT circuit and a bike track belonged in the middle of big sky country.<sup><a href="https://en.wikipedia.org/wiki/Circuito_de_Navarra">Circuito de Navarra — Wikipedia</a></sup> Opened in 2010 as Spain’s newest FIA Grade 2 venue, it’s since been adopted by everything from Spanish superbikes to Ferrari Challenge and long-distance GT fields.
 
 When MotorSport Vision took over the circuit they resurfaced it, reprofiled Turn 6 and, in 2024, completed the extension and layout tweaks that gave us the current 2.693 km “Speed Circuit – Medium” configuration.<sup><a href="https://www.circuitodenavarra.com/about/circuit-layouts">Circuit Layouts — Circuito de Navarra</a></sup> It trims off the long back stretch of the full course and compresses the action into a compact eight-corner loop: fast opening sweepers, an uphill dive into a corkscrew, then a tight, technical stadium that spits you back onto the start/finish.
 
@@ -66,6 +66,6 @@ Treat Navarra as your “sector discipline” track: how cleanly can you connect
 
 ## References
 
-- [Circuito de Navarra — Wikipedia](https://en.wikipedia.org/wiki/Circuito_de_Navarra)  
-- [Circuit Layouts — Circuito de Navarra](https://www.circuitodenavarra.com/about/circuit-layouts)  
+- [Circuito de Navarra — Wikipedia](https://en.wikipedia.org/wiki/Circuito_de_Navarra)
+- [Circuit Layouts — Circuito de Navarra](https://www.circuitodenavarra.com/about/circuit-layouts)
 - [Circuito de Navarra — iRacing.com](https://www.iracing.com/tracks/circuito-de-navarra/)

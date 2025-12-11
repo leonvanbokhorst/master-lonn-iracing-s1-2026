@@ -21,6 +21,8 @@ conditions_qualifying_scrutiny: "permissive"
 
 # Week 06 – Oran Park Raceway – Grand Prix
 
+> Track dossier: [Oran Park Raceway Grand Prix](../tracks/track-oran-park-raceway-grand-prix.md)
+
 > Intent: _Write a one-liner focus for this week (e.g., “calm exits and assertive mirrors”)._
 
 <!-- Auto-filled quick stats live in the YAML above – keep front matter tidy for scripts. -->
@@ -30,8 +32,8 @@ conditions_qualifying_scrutiny: "permissive"
 _Log each practice or test session as a single line._
 
 | date | session | focus | notes |
-| --- | --- | --- | --- |
-| | | | |
+| ---- | ------- | ----- | ----- |
+|      |         |       |       |
 
 > Session types: `solo`, `ai`, `open-practice`, `tt`, etc. Keep notes to short observations or links to telemetry/video.
 
@@ -40,8 +42,8 @@ _Log each practice or test session as a single line._
 _Append each race as one table row in the format below._
 
 | date | split | grid | finish | sof | inc | focus | lesson | links |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| | | | | | | | | |
+| ---- | ----- | ---- | ------ | --- | --- | ----- | ------ | ----- |
+|      |       |      |        |     |     |       |        |       |
 
 - `split`: optional identifier (e.g., `SOF1`, `SOF3`, or leave blank).
 - `links`: optional comma-separated references (replay, telemetry, clip).
@@ -59,8 +61,8 @@ _Append each race as one table row in the format below._
 
 ---
 
-> Tips for automation later  
-> - Tables stay machine-friendly if you keep the header intact and avoid extra Markdown inside cells.  
-> - When you don't know a value, leave it blank rather than inventing placeholders.  
+> Tips for automation later
+>
+> - Tables stay machine-friendly if you keep the header intact and avoid extra Markdown inside cells.
+> - When you don't know a value, leave it blank rather than inventing placeholders.
 > - Keep dates ISO-style (`YYYY-MM-DD`) to make parsing easy.
-

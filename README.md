@@ -5,10 +5,10 @@ It’s the external memory for the season: weekly logs, soft-commitment rituals,
 
 The goal isn’t farming iRating; it’s running the full season with intention:
 
-- show up every week  
-- stay out of avoidable chaos  
-- grow racecraft (mirrors, defending, patience, exits)  
-- let momentum driving slowly sink into muscle memory  
+- show up every week
+- stay out of avoidable chaos
+- grow racecraft (mirrors, defending, patience, exits)
+- let momentum driving slowly sink into muscle memory
 
 Everything here exists to support that.
 
@@ -68,9 +68,9 @@ Need track context before a session? Start by skimming the track profile, then j
 
 Light, repeatable, no drama:
 
-- Use `uv run tools/create_week.py --week <n>` to scaffold a new week file from the template.  
-- After each session (practice / race), log at least one line in that week’s file while the memory is fresh.  
-- Add any new track insights, brake-bias experiments or racecraft notes straight into the matching `tracks/` file—don’t trust your brain to “remember it later”.  
+- Use `uv run tools/create_week.py --week <n>` to scaffold a new week file from the template.
+- After each session (practice / race), log at least one line in that week’s file while the memory is fresh.
+- Add any new track insights, brake-bias experiments or racecraft notes straight into the matching `tracks/` file—don’t trust your brain to “remember it later”.
 - At the end of each week, write a short reflection in `weeks/weekXX-*.md` **and** optionally one meta-note in `season-notes.md`.
 
 The only hard rule: keep showing up.  

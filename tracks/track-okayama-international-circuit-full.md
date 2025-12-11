@@ -10,11 +10,11 @@ type: "road course"
 
 # Okayama International Circuit – Country Club of Consequences
 
-Okayama was born out of Japan’s bubble-era excess: entrepreneur Hajime Tanaka wanted a motorsport playground in the hills where he could run Ferraris between rounds of golf, so in 1990 “TI Circuit Aida” appeared among the tea fields and pines of Okayama prefecture.<sup><a href="https://en.wikipedia.org/wiki/Okayama_International_Circuit">Okayama International Circuit — Wikipedia</a></sup>  
+Okayama was born out of Japan’s bubble-era excess: entrepreneur Hajime Tanaka wanted a motorsport playground in the hills where he could run Ferraris between rounds of golf, so in 1990 “TI Circuit Aida” appeared among the tea fields and pines of Okayama prefecture.<sup><a href="https://en.wikipedia.org/wiki/Okayama_International_Circuit">Okayama International Circuit — Wikipedia</a></sup>
 
 The country-club vibe didn’t stop big-time racing from showing up. The Pacific Grands Prix of 1994 and 1995 put the track on the F1 map—both wins went to Michael Schumacher—and since then Super GT, Super Formula Lights and GT World Challenge Asia have used its 13 turns as a proving ground. It’s one of those circuits that looks modest on TV but looms large in driver lore.
 
-On paper the full course is simple: two medium-length straights with linked complexes in between.<sup><a href="https://www.iracing.com/tracks/okayama-international-circuit/">Okayama International Circuit — iRacing.com</a></sup> In the car, the subtleties start piling up: downhill braking into deceptively open entries, crests right where you’re picking up throttle, and exits that fall away just enough to punish greed. It’s a track that asks, quietly but insistently: *can you do the same thing well, every time?*
+On paper the full course is simple: two medium-length straights with linked complexes in between.<sup><a href="https://www.iracing.com/tracks/okayama-international-circuit/">Okayama International Circuit — iRacing.com</a></sup> In the car, the subtleties start piling up: downhill braking into deceptively open entries, crests right where you’re picking up throttle, and exits that fall away just enough to punish greed. It’s a track that asks, quietly but insistently: _can you do the same thing well, every time?_
 
 ---
 
@@ -59,7 +59,7 @@ Let Okayama be your **“same lap twice” dojo**.
   Dedicate a stint purely to Atwood and the exit onto the back straight. Drive in at 80–85%, experimenting with slightly different brake release points and throttle pick-up, and notice which combo gives you the calmest, strongest pull all the way down the straight. Lock that feeling in; it’s free lap time.
 
 - **End-of-lap rhythm**  
-  Finish practice days with a short run where your only goal is to make the final sector feel *boringly* repeatable. If your steering inputs and brake releases look nearly identical across laps—on replay or just by feel—you’re in the zone Okayama is trying to teach you.
+  Finish practice days with a short run where your only goal is to make the final sector feel _boringly_ repeatable. If your steering inputs and brake releases look nearly identical across laps—on replay or just by feel—you’re in the zone Okayama is trying to teach you.
 
 Once Okayama clicks in the Ray, the track stops feeling like a polite country club and starts feeling like a relentless, fair teacher: every smooth, disciplined lap is rewarded, and every rushed one is quietly, firmly charged interest on the next straight.
 
@@ -67,5 +67,5 @@ Once Okayama clicks in the Ray, the track stops feeling like a polite country cl
 
 ## References
 
-- [Okayama International Circuit — Wikipedia](https://en.wikipedia.org/wiki/Okayama_International_Circuit)  
+- [Okayama International Circuit — Wikipedia](https://en.wikipedia.org/wiki/Okayama_International_Circuit)
 - [Okayama International Circuit — iRacing.com](https://www.iracing.com/tracks/okayama-international-circuit/)

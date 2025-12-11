@@ -10,7 +10,7 @@ type: "road course"
 
 # Summit Point Raceway – Main Circuit, Main Character
 
-Summit Point’s Main Circuit is the original heartbeat of the complex. Pat Goodman cut the 2.0-mile layout out of farmland in 1969 as a home for SCCA club racing and federal driver training, back when there was no Jefferson, no Shenandoah—just one fast, simple loop through the trees.<sup><a href="https://en.wikipedia.org/wiki/Summit_Point_Motorsports_Park">Summit Point Motorsports Park — Wikipedia</a></sup>  
+Summit Point’s Main Circuit is the original heartbeat of the complex. Pat Goodman cut the 2.0-mile layout out of farmland in 1969 as a home for SCCA club racing and federal driver training, back when there was no Jefferson, no Shenandoah—just one fast, simple loop through the trees.<sup><a href="https://en.wikipedia.org/wiki/Summit_Point_Motorsports_Park">Summit Point Motorsports Park — Wikipedia</a></sup>
 
 In the early ’70s the Carousel complex was grafted on, turning the original eight-turn layout into the flowing 10-corner lap we know now. IMSA GT, Can-Am and Trans-Am all thundered around here; these days the Jefferson 500 and other vintage events keep that old-school club-racing vibe alive, with cars threading the same guardrail-lined ribbons that their predecessors did decades ago.
 
@@ -20,7 +20,7 @@ Main looks modest on the map. In the car, it’s more serious: downhill braking 
 
 ## Character Notes
 
-- **Old-school club racer** – Trees, guardrails, modest runoff. No endless tarmac lakes here—if you miss your mark, you *feel* it.
+- **Old-school club racer** – Trees, guardrails, modest runoff. No endless tarmac lakes here—if you miss your mark, you _feel_ it.
 - **Deceptively quick** – The corners are mostly medium-speed and the straights aren’t huge, but the way T1, T2, and the Esses link together means your average lap speed is higher than you expect.
 - **Carousel as gatekeeper** – The double-apex left is the lap’s personality test. Attack it like two separate corners and it’ll feel awkward; treat it as one long shape and the whole middle sector unlocks.
 - **“Locals lap” energy** – Main has that grassroots atmosphere: it feels like a place where people learn to race, crash, rebuild and come back, not just a backdrop for TV.
@@ -70,5 +70,5 @@ Get Summit Main right in the Ray, and it feels like you’ve been allowed into a
 
 ## References
 
-- [Summit Point Motorsports Park — Wikipedia](https://en.wikipedia.org/wiki/Summit_Point_Motorsports_Park)  
+- [Summit Point Motorsports Park — Wikipedia](https://en.wikipedia.org/wiki/Summit_Point_Motorsports_Park)
 - [Summit Point Raceway — iRacing.com](https://www.iracing.com/tracks/summit-point-raceway/)

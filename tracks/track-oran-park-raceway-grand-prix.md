@@ -10,7 +10,7 @@ type: "road course (historic)"
 
 # Oran Park Raceway – Suburban Fever Dream
 
-Oran Park was Sydney’s suburban coliseum: carved out of Dan Cleary’s farmland in 1962, slowly expanded with extra loops, and crowned in the 1970s with that wonderfully odd figure-eight bridge.<sup><a href="https://en.wikipedia.org/wiki/Oran_Park_Raceway">Oran Park Raceway — Wikipedia</a></sup> By the time the bulldozers came for housing in 2010, it had seen Tasman Series heroes, thundering Formula 5000s, two Australian Grands Prix, endless touring-car wars and the final fireworks of the V8 Supercars Championship.  
+Oran Park was Sydney’s suburban coliseum: carved out of Dan Cleary’s farmland in 1962, slowly expanded with extra loops, and crowned in the 1970s with that wonderfully odd figure-eight bridge.<sup><a href="https://en.wikipedia.org/wiki/Oran_Park_Raceway">Oran Park Raceway — Wikipedia</a></sup> By the time the bulldozers came for housing in 2010, it had seen Tasman Series heroes, thundering Formula 5000s, two Australian Grands Prix, endless touring-car wars and the final fireworks of the V8 Supercars Championship.
 
 Fans loved it because you could see almost everything from one grassy bank: cars diving off the front straight into Pits Bend, threading back under and over the bridge, and arcing through Suttons while cockatoos complained overhead. It felt more backyard festival than corporate motorsport.
 
@@ -23,7 +23,7 @@ The Grand Prix loop was a kind of low-rise rollercoaster: not much raw elevation
 - **Figure-eight weirdness** – There aren’t many circuits where you literally drive over your own approach line. That bridge makes Oran Park feel like a grown-up kart track that someone dropped into suburbia.
 - **Bumps with stories** – Decades of patching left little quirks in braking zones and corner entries. Local knowledge was a competitive advantage: “avoid the shiny tar at X, commit hard at Y.”
 - **No real straights, just chances to breathe** – With only short chutes between corners, there’s nowhere to hide bad exits. Every missed apex shows up in the next two sectors.
-- **Crowd energy baked in** – The compact layout meant the crowd was always close. In your head, every off at Castrol or Suttons happens in front of *everyone*.
+- **Crowd energy baked in** – The compact layout meant the crowd was always close. In your head, every off at Castrol or Suttons happens in front of _everyone_.
 
 ---
 
@@ -70,5 +70,5 @@ Drive it right in the Ray, and Oran Park feels like a slightly chaotic backyard 
 
 ## References
 
-- [Oran Park Raceway — Wikipedia](https://en.wikipedia.org/wiki/Oran_Park_Raceway)  
+- [Oran Park Raceway — Wikipedia](https://en.wikipedia.org/wiki/Oran_Park_Raceway)
 - [Oran Park Raceway — iRacing.com](https://www.iracing.com/tracks/oran-park-raceway/)

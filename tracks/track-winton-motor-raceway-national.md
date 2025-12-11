@@ -10,7 +10,7 @@ type: "road course"
 
 # Winton Motor Raceway (National) – Clothesline Grand Prix
 
-Winton grew out of a very Australian kind of stubbornness. The Benalla Auto Club wanted a permanent home, so volunteers went out into dairy country, staked out a rough loop and laid bitumen through the paddocks. On 26 November 1961, Victoria’s newest circuit opened to around 10,000 spectators, cows probably unimpressed in the background.<sup><a href="https://en.wikipedia.org/wiki/Winton_Motor_Raceway">Winton Motor Raceway — Wikipedia</a></sup>  
+Winton grew out of a very Australian kind of stubbornness. The Benalla Auto Club wanted a permanent home, so volunteers went out into dairy country, staked out a rough loop and laid bitumen through the paddocks. On 26 November 1961, Victoria’s newest circuit opened to around 10,000 spectators, cows probably unimpressed in the background.<sup><a href="https://en.wikipedia.org/wiki/Winton_Motor_Raceway">Winton Motor Raceway — Wikipedia</a></sup>
 
 In 1997 the original “club” layout was stretched into today’s 3.0 km National Circuit, with the old loop still tucked inside like a matryoshka doll. Touring cars, Formula Ford, the Australian Drivers’ Championship and Supercars’ Winton SuperSprint have all hammered around this place. It didn’t pick the nickname “Australia’s Action Track” by accident: tight sightlines, constant direction changes and short straights mean cars are never far apart for long.
 
@@ -73,5 +73,5 @@ Once Winton clicks in the FF1600, it stops feeling like an endless chore around 
 
 ## References
 
-- [Winton Motor Raceway — Wikipedia](https://en.wikipedia.org/wiki/Winton_Motor_Raceway)  
+- [Winton Motor Raceway — Wikipedia](https://en.wikipedia.org/wiki/Winton_Motor_Raceway)
 - [Winton Motor Raceway — iRacing.com](https://www.iracing.com/tracks/winton-motor-raceway/)

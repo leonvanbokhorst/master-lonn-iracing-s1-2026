@@ -10,7 +10,7 @@ type: "road course"
 
 # Oulton Park (International) – Country Estate on the Edge
 
-Oulton Park snakes through what was once the Oulton Estate, a slice of Cheshire countryside that the Mid-Cheshire Car Club turned into a race circuit in the early 1950s.<sup><a href="https://en.wikipedia.org/wiki/Oulton_Park">Oulton Park — Wikipedia</a></sup> Instead of bulldozing the land flat, they simply draped tarmac over the existing contours: woodland, lakeside, farm tracks and all.  
+Oulton Park snakes through what was once the Oulton Estate, a slice of Cheshire countryside that the Mid-Cheshire Car Club turned into a race circuit in the early 1950s.<sup><a href="https://en.wikipedia.org/wiki/Oulton_Park">Oulton Park — Wikipedia</a></sup> Instead of bulldozing the land flat, they simply draped tarmac over the existing contours: woodland, lakeside, farm tracks and all.
 
 The result is one of the UK’s purest “driver’s circuits”: narrow, undulating, and alive with cambers. Over the decades it’s hosted everything from the Gold Cup (with Moss, Clark and Stewart on the entry lists) to BTCC and British Superbikes, all under the trees and deer fencing of a country park. Modern owners MotorSport Vision have updated the facilities but left the soul intact: Oulton still feels like fast cars trespassing on someone’s estate.
 
@@ -70,6 +70,6 @@ When it clicks in the Ray, Oulton stops feeling like a haunted forest and starts
 
 ## References
 
-- [Oulton Park — Wikipedia](https://en.wikipedia.org/wiki/Oulton_Park)  
-- [Oulton Park Circuit Layouts — MSV](https://www.oultonpark.co.uk/about/circuit-layouts)  
+- [Oulton Park — Wikipedia](https://en.wikipedia.org/wiki/Oulton_Park)
+- [Oulton Park Circuit Layouts — MSV](https://www.oultonpark.co.uk/about/circuit-layouts)
 - [Oulton Park — iRacing.com](https://www.iracing.com/tracks/oulton-park-circuit/)

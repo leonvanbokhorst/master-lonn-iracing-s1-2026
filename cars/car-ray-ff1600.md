@@ -10,9 +10,9 @@ drivetrain: "Rear-wheel drive"
 
 # Ray FF1600 – Momentum Apprentice
 
-Ray Race Cars has been the quiet workhorse of Formula Ford since the late 1970s, building lithe, no-nonsense chassis for drivers who want to **learn to drive**, not just manage downforce.<sup><a href="https://en.wikipedia.org/wiki/Ray_Race_Cars">Ray Race Cars — Wikipedia</a></sup>  
+Ray Race Cars has been the quiet workhorse of Formula Ford since the late 1970s, building lithe, no-nonsense chassis for drivers who want to **learn to drive**, not just manage downforce.<sup><a href="https://en.wikipedia.org/wiki/Ray_Race_Cars">Ray Race Cars — Wikipedia</a></sup>
 
-The GRS-1600, launched in 2012, is a modern echo of the classic Formula Ford recipe: Kent engine up back, skinny tires, subtle aero tweaks, and a stiffer safety cell so you can lean on the thing without flinching.<sup><a href="https://www.rayracecar.com/">Ray FF1600 (Formula Ford)</a></sup> iRacing’s <sup><a href="https://www.iracing.com/cars/ray-ff1600/">Ray FF1600</a></sup> brings that same attitude: open cockpit, no wings, 120 hp, and absolutely nowhere to hide if your inputs are messy.  
+The GRS-1600, launched in 2012, is a modern echo of the classic Formula Ford recipe: Kent engine up back, skinny tires, subtle aero tweaks, and a stiffer safety cell so you can lean on the thing without flinching.<sup><a href="https://www.rayracecar.com/">Ray FF1600 (Formula Ford)</a></sup> iRacing’s <sup><a href="https://www.iracing.com/cars/ray-ff1600/">Ray FF1600</a></sup> brings that same attitude: open cockpit, no wings, 120 hp, and absolutely nowhere to hide if your inputs are messy.
 
 This is not a power car. It’s a momentum apprenticeship on four wheels.
 
@@ -57,8 +57,17 @@ This is not a power car. It’s a momentum apprenticeship on four wheels.
 
 ---
 
+## Season Link Index
+
+- **Track dossiers**  
+  [Summit Point Jefferson Circuit](../tracks/track-summit-point-jefferson-circuit.md) · [Rudskogen Motorsenter](../tracks/track-rudskogen-motorsenter.md) · [Winton Motor Raceway National](../tracks/track-winton-motor-raceway-national.md) · [Lime Rock Park Grand Prix](../tracks/track-lime-rock-park-grand-prix.md) · [Motorsport Arena Oschersleben Grand Prix](../tracks/track-motorsport-arena-oschersleben-grand-prix.md) · [Oran Park Raceway Grand Prix](../tracks/track-oran-park-raceway-grand-prix.md) · [Summit Point Main Circuit](../tracks/track-summit-point-main-circuit.md) · [Virginia International Raceway North](../tracks/track-virginia-international-raceway-north.md) · [Circuit de Lédenon](../tracks/track-circuit-de-ledenon.md) · [Oulton Park International](../tracks/track-oulton-park-international.md) · [Okayama International Circuit Full](../tracks/track-okayama-international-circuit-full.md) · [Circuito de Navarra Medium](../tracks/track-circuito-de-navarra-medium.md)
+- **Weekly logs**  
+  [Week 01 – Summit Point Raceway – Jefferson Circuit](../weeks/week01-summit-point-raceway.md) · [Week 02 – Rudskogen Motorsenter](../weeks/week02-rudskogen-motorsenter.md) · [Week 03 – Winton Motor Raceway – National Circuit](../weeks/week03-winton-motor-raceway.md) · [Week 04 – Lime Rock Park – Grand Prix](../weeks/week04-lime-rock-park.md) · [Week 05 – Motorsport Arena Oschersleben – Grand Prix](../weeks/week05-motorsport-arena-oschersleben.md) · [Week 06 – Oran Park Raceway – Grand Prix](../weeks/week06-oran-park-raceway.md) · [Week 07 – Summit Point Raceway – Summit Point Raceway](../weeks/week07-summit-point-raceway.md) · [Week 08 – Virginia International Raceway – North Course](../weeks/week08-virginia-international-raceway.md) · [Week 09 – Circuit de Lédenon](../weeks/week09-circuit-de-ledenon.md) · [Week 10 – Oulton Park Circuit – International](../weeks/week10-oulton-park-circuit.md) · [Week 11 – Okayama International Circuit – Full Course](../weeks/week11-okayama-international-circuit.md) · [Week 12 – Circuito de Navarra – Speed Circuit – Medium](../weeks/week12-circuito-de-navarra.md)
+
+---
+
 ## References
 
-- [Ray Race Cars — Wikipedia](https://en.wikipedia.org/wiki/Ray_Race_Cars)  
-- [Ray GRS-1600 – Ray Race Cars](https://www.rayracecar.co.uk/grs1600)  
+- [Ray Race Cars — Wikipedia](https://en.wikipedia.org/wiki/Ray_Race_Cars)
+- [Ray GRS-1600 – Ray Race Cars](https://www.rayracecar.co.uk/grs1600)
 - [Ray FF1600 — iRacing.com](https://www.iracing.com/cars/ray-ff1600/)

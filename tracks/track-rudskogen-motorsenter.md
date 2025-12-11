@@ -10,11 +10,11 @@ type: "road course"
 
 # Rudskogen Motorsenter – Forest Rollercoaster
 
-Rudskogen opened in 1990 as Norway’s first permanent asphalt circuit, cut into the rocky pine forest south-east of Oslo.<sup><a href="https://en.wikipedia.org/wiki/Rudskogen">Rudskogen — Wikipedia</a></sup> In 2006 it became the country’s official national motorsport facility, and Hermann Tilke was brought in to stretch and sculpt it into the modern 3.254 km layout: 14 corners, a 640-metre straight and about 42 metres of elevation change packed into a tight forest bowl.<sup><a href="https://www.racingcircuits.info/europe/norway/rudskogen.html">Rudskogen — RacingCircuits.info</a></sup>  
+Rudskogen opened in 1990 as Norway’s first permanent asphalt circuit, cut into the rocky pine forest south-east of Oslo.<sup><a href="https://en.wikipedia.org/wiki/Rudskogen">Rudskogen — Wikipedia</a></sup> In 2006 it became the country’s official national motorsport facility, and Hermann Tilke was brought in to stretch and sculpt it into the modern 3.254 km layout: 14 corners, a 640-metre straight and about 42 metres of elevation change packed into a tight forest bowl.<sup><a href="https://www.racingcircuits.info/europe/norway/rudskogen.html">Rudskogen — RacingCircuits.info</a></sup>
 
 Today the same strip of tarmac hosts STCC and GT weekends, superkarts, drift events and police driver training. It’s very Scandinavian: one part high-speed theatre, one part very serious classroom.
 
-The Grand Prix lap feels like a rally stage that decided to become a circuit. Fast, loaded arcs that climb and plunge through the trees, awkwardly late apexes that only make sense once you’ve overshot them a few times, and braking zones that tilt *just* enough to keep your ABS foot honest. The forest walls close in, turning the whole thing into a tunnel of rock, bark and Armco.
+The Grand Prix lap feels like a rally stage that decided to become a circuit. Fast, loaded arcs that climb and plunge through the trees, awkwardly late apexes that only make sense once you’ve overshot them a few times, and braking zones that tilt _just_ enough to keep your ABS foot honest. The forest walls close in, turning the whole thing into a tunnel of rock, bark and Armco.
 
 ---
 
@@ -23,7 +23,7 @@ The Grand Prix lap feels like a rally stage that decided to become a circuit. Fa
 - **Forest canyon** – Trees, rock faces and guardrails sit close, so your peripheral vision is always busy. It feels more like a hillclimb built on a loop than a wide-open GP circuit.
 - **Elevation with attitude** – The climb through T3–T4 and the plunge into T6 define the lap. You’re braking and turning while the car is either still climbing or already falling, so weight transfer is never neutral.
 - **Long arcs, late secrets** – Several corners are really long, bending sequences with late apexes hiding around the bend. If you turn in “where it looks right”, you arrive early and pay for it all the way down the next hill.
-- **Scandi dual-purpose** – Some days it’s GTs and Porsches hanging it out at the edge; other days it’s police-training fleets and trackday heroes practising safe lines. The layout has to be fun *and* educational—and it is.
+- **Scandi dual-purpose** – Some days it’s GTs and Porsches hanging it out at the edge; other days it’s police-training fleets and trackday heroes practising safe lines. The layout has to be fun _and_ educational—and it is.
 
 ---
 
@@ -32,7 +32,7 @@ The Grand Prix lap feels like a rally stage that decided to become a circuit. Fa
 In the Ray FF1600, Rudskogen becomes a **momentum and bravery calibration tool**. You rarely sit still on the wheel; you’re either loading, releasing or catching the car.
 
 - **T1–T3: opening the flow**  
-  The first complex sets the tone. Turn 1 and the following kinks want calm, early inputs: brake a little sooner than you think, get the Ray pointed, and then let it *roll* into the uphill right of T3. If you try to bully T3 with late braking and extra steering, you just bleed speed for the long climb that follows.
+  The first complex sets the tone. Turn 1 and the following kinks want calm, early inputs: brake a little sooner than you think, get the Ray pointed, and then let it _roll_ into the uphill right of T3. If you try to bully T3 with late braking and extra steering, you just bleed speed for the long climb that follows.
 
 - **The uphill sweeper (T3/T4)**  
   This is one of the “hero corners”. In the Ray, you’re in the classic momentum dilemma: lift and lose time, or commit and trust the car. Start with a small, early lift and let the car take a wide, climbing line; as confidence grows, move that lift closer to turn-in and reduce its size. The car will take more mid-corner speed than your eyes initially believe—if your hands are quiet.
@@ -70,6 +70,6 @@ Once it clicks, Rudskogen stops feeling like an intimidating forest stage and st
 
 ## References
 
-- [Rudskogen — Wikipedia](https://en.wikipedia.org/wiki/Rudskogen)  
-- [Rudskogen — RacingCircuits.info](https://www.racingcircuits.info/europe/norway/rudskogen.html)  
+- [Rudskogen — Wikipedia](https://en.wikipedia.org/wiki/Rudskogen)
+- [Rudskogen — RacingCircuits.info](https://www.racingcircuits.info/europe/norway/rudskogen.html)
 - [Rudskogen Motorsenter — Official Site](https://www.rudskogen.no)

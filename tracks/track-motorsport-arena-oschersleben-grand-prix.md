@@ -10,7 +10,7 @@ type: "road course"
 
 # Motorsport Arena Oschersleben – Precision on the Plain
 
-When Motorsport Arena Oschersleben opened in 1997, it was Germany’s first purpose-built permanent circuit since the Nürburgring/Hockenheim era, planted out on the flat Magdeburg plain with big grandstands and short walks between fan zones.<sup><a href="https://en.wikipedia.org/wiki/Motorsport_Arena_Oschersleben">Motorsport Arena Oschersleben — Wikipedia</a></sup> DTM, FIA GT and WTCC all moved in quickly, and the place developed a reputation: if there was going to be a touring car pile-up, chances were good it was happening at Turn 1.  
+When Motorsport Arena Oschersleben opened in 1997, it was Germany’s first purpose-built permanent circuit since the Nürburgring/Hockenheim era, planted out on the flat Magdeburg plain with big grandstands and short walks between fan zones.<sup><a href="https://en.wikipedia.org/wiki/Motorsport_Arena_Oschersleben">Motorsport Arena Oschersleben — Wikipedia</a></sup> DTM, FIA GT and WTCC all moved in quickly, and the place developed a reputation: if there was going to be a touring car pile-up, chances were good it was happening at Turn 1.
 
 The layout looks straightforward: no wild elevation changes, no Spa-style compressions. But the devil here is in the way slow 1st/2nd-gear corners bookend long, loaded sequences, and in the infamous McDonald’s chicane—short, sharp and edged with curbs that have ended more race weekends than any single German sausage. It’s a track where John Cleland’s famous “who designed this in a dark room?” rant about Turn 1 still feels painfully accurate to anyone who’s been tagged under braking.<sup><a href="https://en.wikipedia.org/wiki/Motorsport_Arena_Oschersleben#The_circuit">Motorsport Arena Oschersleben — The circuit</a></sup>
 
@@ -19,7 +19,7 @@ The layout looks straightforward: no wild elevation changes, no Spa-style compre
 ## Character Notes
 
 - **Flat but never simple** – With almost no elevation change, you don’t get the usual “gravity hints”. Every brake point, every rotation is about markers, curbs and memory, not feeling the car fall into a valley.
-- **Hairpins + flows** – Hotel and the final corner are classic touring-car hairpins. Everything in between is surprisingly fluid: fast kinks, double-apex sweepers, and that chicane that forces you to think about how you *arrive* and how you *leave*, not just how much curb you dare.
+- **Hairpins + flows** – Hotel and the final corner are classic touring-car hairpins. Everything in between is surprisingly fluid: fast kinks, double-apex sweepers, and that chicane that forces you to think about how you _arrive_ and how you _leave_, not just how much curb you dare.
 - **Turn 1 court case** – The opening right-hander is a magnet for chaos. Slightly kinked approach, heavy braking, cold tyres, and a pack all aiming for the same apex. Good Oschersleben drivers are the ones who make Turn 1 boring on purpose.
 - **Reference-point circuit** – No trees on crests or dramatic skyline changes here. Your landmarks are brake boards, marshal posts, fencing and the way the painted curb begins or ends. It’s a circuit that rewards people who like the feeling of “I hit my mark” more than “I sent it”.
 
@@ -39,7 +39,7 @@ In the Ray FF1600, Oschersleben turns into a **discipline exam**. You don’t ha
   The mid-lap sweepers (Shell-Kurve and the flowing right/lefts) are where momentum cars live or die. You want gentle steering arcs, one decisive brake release, and tiny throttle breaths rather than full lifts. The Ray will gladly carry more minimum speed than you initially believe; the trick is to commit to the line and not “fix” it halfway through.
 
 - **McDonald’s chicane**  
-  The signature feature. In the FF1600 you can be surprisingly aggressive on the entry curb, but only if the car is straight. Aim to brake in a line, pop it over the first curb with minimal steering, then *square* the car before you attack the right-hand exit. If you’re still turning hard as you hit the second curb, the rear steps and you’re skating onto the astro and dust. Fast laps here feel boringly tidy rather than spectacular.
+  The signature feature. In the FF1600 you can be surprisingly aggressive on the entry curb, but only if the car is straight. Aim to brake in a line, pop it over the first curb with minimal steering, then _square_ the car before you attack the right-hand exit. If you’re still turning hard as you hit the second curb, the rear steps and you’re skating onto the astro and dust. Fast laps here feel boringly tidy rather than spectacular.
 
 - **Final triple left / stadium run home**  
   The last lefts reward drivers who think of them as one big corner. Stay patient on entry, keep your hands quiet, and let third gear do the work. One small lift, one long rotation, and then a clean launch onto the main straight. In a race, this is where you either set up a Turn 1 defence or line up a slipstream move.
@@ -65,5 +65,5 @@ If you can make Oschersleben feel clinically precise rather than stressful, the 
 
 ## References
 
-- [Motorsport Arena Oschersleben — Wikipedia](https://en.wikipedia.org/wiki/Motorsport_Arena_Oschersleben)  
+- [Motorsport Arena Oschersleben — Wikipedia](https://en.wikipedia.org/wiki/Motorsport_Arena_Oschersleben)
 - [Motorsport Arena Oschersleben — iRacing.com](https://www.iracing.com/tracks/motorsport-arena-oschersleben/)
