@@ -16,11 +16,9 @@ Where the Main Circuit chases speed and spectacle, Jefferson is all about teachi
 
 On paper it looks like a glorified kart track. In the car, it’s a **“no hiding, no resting”** test of rhythm. There’s just enough runoff to keep things sane, but not enough to let you be lazy.
 
----
 
-## Track Guide
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/gMIiUYakCFA?si=ClioxxRPPNoZu3Br" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+- [Summit Point Jefferson Circuit – YouTube](https://youtu.be/gMIiUYakCFA?si=QzczDdshiz--UbIe)
+- [MidfieldRacing219 Full Race in Rookie Fixed](https://www.youtube.com/watch?v=iMaqbIWLRxw)
 
 ## Character Notes
 
