@@ -1,9 +1,24 @@
 # iRacing 2026 Season 1 – Ray FF1600 Rookie Fixed
 
-This repo is the training-dojo journal for Lonn’s Ray FF1600 Rookie Fixed campaign.  
-It’s the external memory for the season: weekly logs, soft-commitment rituals, and deep-dive lore on every track in the schedule.
+> 🏎️ **Current Week: 01 – Summit Point Jefferson Circuit** (pre-season prep)  
+> 📅 Official race week: 2025-12-16 → 2025-12-22  
+> 🎯 Status: **Practice phase** – building consistency before race week
 
-The goal isn’t farming iRating; it’s running the full season with intention:
+| Metric         | Current   | Target  | Notes                        |
+| -------------- | --------- | ------- | ---------------------------- |
+| Best lap       | 51.29s    | sub-50s | 0.7s gained in one day       |
+| Gap to VRS ref | ~2.0s     | <1.5s   | was 2.8s, improving steadily |
+| Clean lap band | 51.7–52.5 | ±0.5s   | laps becoming "siblings"     |
+| Practice laps  | 53        | –       | 2 sessions logged            |
+
+➡️ [**Week 01 Log**](weeks/week01-summit-point-raceway.md) | [**Track Dossier**](tracks/track-summit-point-jefferson-circuit.md)
+
+---
+
+This repo is the training-dojo journal for Lonn's Ray FF1600 Rookie Fixed campaign.  
+It's the external memory for the season: weekly logs, soft-commitment rituals, and deep-dive lore on every track in the schedule.
+
+The goal isn't farming iRating; it's running the full season with intention:
 
 - show up every week
 - stay out of avoidable chaos
@@ -17,7 +32,7 @@ Everything here exists to support that.
 ## Repository Shape
 
 - `season-notes.md`  
-  Season-long reflections and themes. Meta-level stuff: patterns, confidence shifts, “what this season is teaching me”.
+  Season-long reflections and themes. Meta-level stuff: patterns, confidence shifts, "what this season is teaching me".
 
 - `weeks/`  
   One markdown log per official iRacing week.  
@@ -38,7 +53,7 @@ Everything here exists to support that.
 
 ## Track Lore Index
 
-Need track context before a session? Start by skimming the track profile, then jump into that week’s log.
+Need track context before a session? Start by skimming the track profile, then jump into that week's log.
 
 | Week | Dates (UTC)             | Track & Layout                               | Track Profile                                                                                                          | Weekly Log                                                                                         |
 | ---- | ----------------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
@@ -60,7 +75,7 @@ Need track context before a session? Start by skimming the track profile, then j
 ## Car Lore
 
 - [`cars/car-ray-ff1600.md`](cars/car-ray-ff1600.md)  
-  History, character, handling cues, and racecraft drills for the Ray FF1600 – the “momentum apprentice” at the centre of this whole thing.
+  History, character, handling cues, and racecraft drills for the Ray FF1600 – the "momentum apprentice" at the centre of this whole thing.
 
 ---
 
@@ -69,8 +84,8 @@ Need track context before a session? Start by skimming the track profile, then j
 Light, repeatable, no drama:
 
 - Use `uv run tools/create_week.py --week <n>` to scaffold a new week file from the template.
-- After each session (practice / race), log at least one line in that week’s file while the memory is fresh.
-- Add any new track insights, brake-bias experiments or racecraft notes straight into the matching `tracks/` file—don’t trust your brain to “remember it later”.
+- After each session (practice / race), log at least one line in that week's file while the memory is fresh.
+- Add any new track insights, brake-bias experiments or racecraft notes straight into the matching `tracks/` file—don't trust your brain to "remember it later".
 - At the end of each week, write a short reflection in `weeks/weekXX-*.md` **and** optionally one meta-note in `season-notes.md`.
 
 The only hard rule: keep showing up.  
