@@ -31,9 +31,9 @@ conditions_qualifying_scrutiny: "permissive"
 
 _Log each practice or test session as a single line._
 
-| date       | session | focus                | notes                                                                                              |
-| ---------- | ------- | -------------------- | -------------------------------------------------------------------------------------------------- |
-| 2025-12-11 | solo    | baseline exploration | 24 laps, best 51.99, avg stint1 ~55.1, stint2 ~54.7, several clean 52.x, 2.8s off data-pack (49.2) |
+| date     | session | focus                | notes                                                                                              |
+| -------- | ------- | -------------------- | -------------------------------------------------------------------------------------------------- |
+| 20251211 | solo    | baseline exploration | 24 laps, best 51.99, avg stint1 ~55.1, stint2 ~54.7, several clean 52.x, 2.8s off data-pack (49.2) |
 
 > Session types: `solo`, `ai`, `open-practice`, `tt`, etc. Keep notes to short observations or links to telemetry/video.
 
@@ -41,6 +41,7 @@ _Log each practice or test session as a single line._
 
 **The Facts:**
 
+- Brake bias: **55.0** (from default 56.0) - 54 too pointy
 - 24 laps total across two stints
 - Best lap: **51.992** (several clean 52.x laps)
 - Stint 1: avg ~55.1s, lots of exploring, many dirty laps
@@ -53,12 +54,13 @@ _Log each practice or test session as a single line._
 - Cautious on entries, searching for reference points
 - Flashes of "oh, that felt hooked up" in the mid-52s
 
-**Telemetry Story (blue=you, red=ref):**
+**Telemetry Story:**
 
-- Lifting earlier, braking earlier, coasting longer between brake and throttle
-- "Rounding off" entries → never recovering lost speed on exit
-- Big flat throttle trace sections = neither pedal in charge
-- Slightly more steering mid-corner than ref = line compromises adding drag
+- Speed graph: you almost always a little under ref – lift/brake a touch earlier, never quite clawing speed back on exit
+- Throttle/brake: you come off throttle earlier, brake sooner/harder, fatter "no man's land" before proper throttle pick-up
+- Ref does "brake → turn → go" in one smooth move; you have dead air in between
+- Steering: your trace more jagged = still finding the line, making mid-corner corrections where ref draws one clean arc
+- **Translation:** the 2.7s gap is almost entirely "sequence and confidence", not missing alien tricks – slightly under-committing and over-correcting, not wildly overdriving
 
 **Focus for Next Session:**
 
