@@ -71,3 +71,4 @@ Jefferson isn’t about glory laps; it’s about quietly sharpening the fundamen
 
 - [Summit Point Motorsports Park — Wikipedia](https://en.wikipedia.org/wiki/Summit_Point_Motorsports_Park)
 - [Summit Point Raceway — iRacing.com](https://www.iracing.com/tracks/summit-point-raceway/)
+- [Summit Point Jefferson Circuit — Summit Point Motorsports Park](https://summitpointmp.com/jefferson-circuit/)

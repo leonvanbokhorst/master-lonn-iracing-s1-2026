@@ -72,3 +72,4 @@ Get Summit Main right in the Ray, and it feels like you’ve been allowed into a
 
 - [Summit Point Motorsports Park — Wikipedia](https://en.wikipedia.org/wiki/Summit_Point_Motorsports_Park)
 - [Summit Point Raceway — iRacing.com](https://www.iracing.com/tracks/summit-point-raceway/)
+- [Summit Point Circuit — Main Circuit](https://summitpointmp.com/summit-point-circuit/)
