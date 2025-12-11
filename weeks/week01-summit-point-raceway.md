@@ -23,7 +23,7 @@ conditions_qualifying_scrutiny: "permissive"
 
 > Track dossier: [Summit Point Jefferson Circuit](../tracks/track-summit-point-jefferson-circuit.md)
 
-> Intent: _Write a one-liner focus for this week (e.g., “calm exits and assertive mirrors”)._
+> Intent: _Build a "family" of consistent laps – tighten the brake→turn→throttle sequence with less coasting in between._
 
 <!-- Auto-filled quick stats live in the YAML above – keep front matter tidy for scripts. -->
 
@@ -31,11 +31,47 @@ conditions_qualifying_scrutiny: "permissive"
 
 _Log each practice or test session as a single line._
 
-| date | session | focus | notes |
-| ---- | ------- | ----- | ----- |
-|      |         |       |       |
+| date       | session | focus                | notes                                                                                              |
+| ---------- | ------- | -------------------- | -------------------------------------------------------------------------------------------------- |
+| 2025-12-11 | solo    | baseline exploration | 24 laps, best 51.99, avg stint1 ~55.1, stint2 ~54.7, several clean 52.x, 2.8s off data-pack (49.2) |
 
 > Session types: `solo`, `ai`, `open-practice`, `tt`, etc. Keep notes to short observations or links to telemetry/video.
+
+### Session Debrief: 2025-12-11
+
+**The Facts:**
+
+- 24 laps total across two stints
+- Best lap: **51.992** (several clean 52.x laps)
+- Stint 1: avg ~55.1s, lots of exploring, many dirty laps
+- Stint 2: avg ~54.7s, calmer, laps clustering 52.1–52.5
+- Gap to data-pack reference (49.226): **~2.8s**
+
+**The Feelings:**
+
+- Still in "what the hell is this corner" discovery phase
+- Cautious on entries, searching for reference points
+- Flashes of "oh, that felt hooked up" in the mid-52s
+
+**Telemetry Story (blue=you, red=ref):**
+
+- Lifting earlier, braking earlier, coasting longer between brake and throttle
+- "Rounding off" entries → never recovering lost speed on exit
+- Big flat throttle trace sections = neither pedal in charge
+- Slightly more steering mid-corner than ref = line compromises adding drag
+
+**Focus for Next Session:**
+
+1. NOT going faster – aim for 10 clean laps in 52.5–54.0 window
+2. Pick two corners (T1 and downhill esses) where delta is biggest
+3. Challenge: move lift/brake 1–2 car lengths later without panicking
+4. Goal: tighten brake → turn-in → throttle sequence, less "nothing" in between
+
+**Self-Check Question:**
+
+> "Do my clean laps look like a 'family' (same shape, same times), or is every lap a different improvisation?"
+
+✅ Getting laps to be "siblings, not strangers" = perfect week-1 win, regardless of stopwatch.
 
 ## Official Races
 
