@@ -16,6 +16,8 @@ On paper, 3.151 km doesn’t sound intimidating.<sup><a href="https://www.iracin
 
 This is a track that divides drivers. The first few sessions can feel claustrophobic and chaotic. Once you learn to look _past_ the next crest and trust the car over the blind rises, it turns into one of those circuits that makes you grin and swear in the same breath.
 
+- [MidfieldRacing219 Full Race in Rookie Fixed](https://www.youtube.com/watch?v=TvLrSrno-3k)
+
 ---
 
 ## Character Notes
