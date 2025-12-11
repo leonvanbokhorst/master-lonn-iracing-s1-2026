@@ -16,3 +16,12 @@ This is the long-view journal. Drop in season-spanning insights, themes that rec
 
 - _Empty for now._ Celebrate the commitment experiment milestones here.
 
+## Season 1 contract
+
+Dit seizoen is geslaagd als:
+
+- ik op meerdere banen een voorspelbare band ontwikkel (minstens 0.5–1.0s breed)
+- ik het grootste deel van mijn races uitrijd, ook als het rommelig is
+- ik aan het eind duidelijk kan beschrijven hoe mijn rij-gevoel is veranderd (minder stress, meer voorspelbaarheid)
+
+iRating mag doen wat het wil. Het is decor, geen scorebord.
