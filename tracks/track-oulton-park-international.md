@@ -16,6 +16,8 @@ The result is one of the UK’s purest “driver’s circuits”: narrow, undula
 
 The International layout is the full-fat version. It uses the long run past Island Bend, the Shell Oils hairpin, Britten’s chicane and the charge over Clay Hill to Druids and Lodge.<sup><a href="https://www.oultonpark.co.uk/about/circuit-layouts">Oulton Park Circuit Layouts</a></sup> It’s a lap built from rapidly changing gradients, blind crests and corners that only make sense once you’ve committed.
 
+- [MidfieldRacing219 Full Race in Rookie Fixed](https://www.youtube.com/watch?v=MKIgsQJU5kc)
+
 ---
 
 ## Character Notes
