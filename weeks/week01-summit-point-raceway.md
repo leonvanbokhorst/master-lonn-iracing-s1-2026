@@ -106,6 +106,7 @@ Because honestly, the lap looks like someone who’s starting to trust Jefferson
 
 **The Facts:**
 
+- Brake bias: **57.0** 🚀 (from 55.0) way more stable, less jittery while trailing
 - 6 stints, 29 laps total, 25:34 driven
 - Best lap: **51.293s** (lap 20) – improved **0.7s** from morning session!
 - Stint 2: avg 52.0s – bam-bam-bam 51.7/51.7/53.0
