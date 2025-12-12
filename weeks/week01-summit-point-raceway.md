@@ -35,6 +35,7 @@ _Log each practice or test session as a single line._
 | -------- | ------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 20251211 | solo    | baseline exploration | 24 laps, best 51.99, avg stint1 ~55.1, stint2 ~54.7, several clean 52.x, 2.8s off data-pack (49.2)                                                                                           |
 | 20251211 | solo    | consistency building | 29 laps, best **51.29** (+0.7s!), clean laps 51.7–52.5, gap to ref now ~2.0s, [VRS](https://virtualracingschool.appspot.com/#/Driver/5082689687781376/1757980800000/700079669256/1765469827) |
+| 20251212 | solo    | band consolidation   | ~50 laps, best **50.984**, optimal 50.700, band shifted from 51.7–52.7 → **51.0–51.9**, stint 7 poetry: ten consecutive laps 51.0–51.8                                                       |
 
 > Session types: `solo`, `ai`, `open-practice`, `tt`, etc. Keep notes to short observations or links to telemetry/video.
 
@@ -102,7 +103,9 @@ From a “week intent” perspective, this totally fits: you’ve clearly built 
 
 > “In this best lap, what did I not do that I was doing before? Where did I feel surprisingly calm?”
 
-Because honestly, the lap looks like someone who’s starting to trust Jefferson rather than survive it.
+Because honestly, the lap looks like someone who's starting to trust Jefferson rather than survive it.
+
+---
 
 **The Facts:**
 
@@ -144,6 +147,55 @@ Because honestly, the lap looks like someone who’s starting to trust Jefferson
 2. Target: 5 consecutive laps between 52.0 and 52.7, no drama
 3. If a lap drops outside the band, don't punish it – just start a new 5-lap streak
 4. **Gamify the discipline instead of the hero lap**
+
+---
+
+### Session Debrief: 2025-12-12 (morning)
+
+**The Band Has Shifted – And Tightened** 😏
+
+**Big Picture:**
+
+Looking at the shape of ~50 laps, the story is clear: the performance band has moved up _and_ narrowed. What felt "heroic" a few days ago (51-low) is now just… home.
+
+- Brake bias: **56.0** 🚀 (from 57.0)
+- Best lap: **50.984s** (lap 40)
+- Optimal: 50.700s (theoretical best combining all sectors)
+- Gap between fastest and optimal: less than 0.3s – sectors are well-aligned, no "one magic sector, rest chaos" syndrome
+- Overall average: 51.83s (including all outlaps, inlaps, and weird 57s/1:0x laps)
+- Real push laps: consistently living in **51.0–51.9** with occasional dips into 52.x
+
+**Stint 7 – The Tire Poem:**
+
+> 52.1 → 51.9 → 54.0 (outlier) → 51.8 → 51.4 → 51.6 → 51.1 → 51.0 → 51.1 → 51.1
+
+That's not luck. That's **repeatable pace**. Ten laps, eight of them within 0.8s of each other, most clustering around 51.1–51.6.
+
+**Progress Check:**
+
+| Metric            | Day 1 (Dec 11) | Morning (Dec 12) | Delta             |
+| ----------------- | -------------- | ---------------- | ----------------- |
+| Best lap          | 51.29          | 50.98            | **+0.31s**        |
+| Clean lap band    | 51.7–52.7      | 51.0–51.9        | shifted & tighter |
+| Repeatable rhythm | building       | **confirmed**    | ✅                |
+
+**The Key Insight:**
+
+This wasn't achieved by one "all or nothing" push. It came from riding 50 laps, letting the car settle into a rhythm. That's literally how aliens build their predictability – not magic, just miles and patience.
+
+**The Challenge Now (a bit mean):**
+
+Can you let this new band be "home" without immediately chasing 50.3?
+
+Next session: not "can I go scary-fast fifty?", but "can I live in 51.0–51.8 for five to ten laps in complete calm?"
+
+**Self-Check Question:**
+
+> "When I was driving in that new band, what felt different in my body compared to when 51-lows were still exceptions?"
+
+That's the internalization you asked for: once you can point to it physically, the band becomes truly yours.
+
+---
 
 ## Official Races
 
