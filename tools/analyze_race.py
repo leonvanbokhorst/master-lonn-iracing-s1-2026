@@ -76,6 +76,24 @@ def ms_to_delta(tenths_ms: int, prefix: str = "+") -> str:
     return f"{prefix}{tenths_ms / 10000:.3f}s"
 
 
+def normalize_time_value(raw_time) -> int:
+    """Normalize raw time (seconds/ms/tenths of ms) into tenths of milliseconds."""
+    if raw_time is None:
+        return -1
+    try:
+        value = float(raw_time)
+    except (TypeError, ValueError):
+        return -1
+    if value <= 0:
+        return -1
+    if value >= 100000:  # already in 1e-4s units
+        return int(round(value))
+    if value >= 1000:  # milliseconds
+        return int(round(value * 10))
+    # seconds
+    return int(round(value * 10000))
+
+
 def load_event_result(json_path: Path) -> dict:
     """Load and parse iRacing event result JSON."""
     with open(json_path) as f:
@@ -83,10 +101,17 @@ def load_event_result(json_path: Path) -> dict:
 
 
 def extract_race_session(data: dict) -> Optional[dict]:
-    """Find the RACE session from session_results."""
+    """Find the race session from session_results (handles multiple schemas)."""
     event_data = data.get("data", data)
     for session in event_data.get("session_results", []):
-        if session.get("simsession_name") == "RACE":
+        name = session.get("simsession_name", "")
+        type_name = session.get("simsession_type_name", "")
+        type_id = session.get("simsession_type")
+        if (
+            (name and name.upper() == "RACE")
+            or (type_name and type_name.lower() == "race")
+            or type_id == 6
+        ):
             return session
     return None
 
@@ -99,13 +124,22 @@ def parse_driver_results(race_session: dict) -> list[DriverResult]:
         old_ir = r.get("oldi_rating", -1)
         new_ir = r.get("newi_rating", -1)
         
+        finish_pos = r.get("finish_position", r.get("position", r.get("finish_position_in_class", -1)))
+        best_lap = normalize_time_value(r.get("best_lap_time"))
+        avg_lap_raw = (
+            r.get("average_lap")
+            or r.get("averageLap")
+            or r.get("average_lap_time")
+            or r.get("averageLapTime")
+        )
+        avg_lap = normalize_time_value(avg_lap_raw)
         drivers.append(DriverResult(
             cust_id=r["cust_id"],
             name=r["display_name"],
             start_pos=r.get("starting_position", -1) + 1,  # 0-indexed to 1-indexed
-            finish_pos=r.get("finish_position", -1) + 1,
-            best_lap_ms=r.get("best_lap_time", -1),
-            avg_lap_ms=r.get("average_lap", 0),
+            finish_pos=finish_pos + 1,
+            best_lap_ms=best_lap,
+            avg_lap_ms=avg_lap,
             incidents=r.get("incidents", 0),
             laps_complete=r.get("laps_complete", 0),
             laps_lead=r.get("laps_lead", 0),
@@ -463,7 +497,7 @@ def main():
     
     # Calculate metrics
     event_data = data.get("data", data)
-    event_best = event_data.get("event_best_lap_time", 0)
+    event_best = normalize_time_value(event_data.get("event_best_lap_time"))
     metrics = calculate_metrics(target, all_drivers, event_best)
     
     # Generate report
