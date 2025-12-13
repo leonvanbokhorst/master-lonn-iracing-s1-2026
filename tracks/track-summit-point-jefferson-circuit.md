@@ -107,12 +107,12 @@ Jefferson isn’t about glory laps; it’s about quietly sharpening the fundamen
 ### Overtaking
 
 - **T1 inside:** Primary passing zone – need strong carousel exit for draft
-- **T6 inside:** Secondary option – *if* you have better carousel exit, inside opens up
+- **T6 inside:** Secondary option – _if_ you have better carousel exit, inside opens up
 - **Setup required:** Both passes come from the same place: carousel exit quality
 - **Patience is mandatory:** Follow for 2 laps, learn their weakness, strike clean
-- **The trap:** Forcing passes breaks rhythm. σ 3.55s (impatient) → σ 0.38s (patient) proved this
+- **The trap:** Forcing passes breaks rhythm. σ 3.44s (impatient) → σ 0.23s (patient) proved this
 
-> *"I'm faster. I can wait."*
+> _"I'm faster. I can wait."_
 
 ---
 
