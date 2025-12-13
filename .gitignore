@@ -1,15 +1,19 @@
+# Environment & IDE
 .env
 .DS_Store
 .venv
 .vscode
 .idea
-.pytest_cache
-.ruff_cache
-.mypy_cache
-.pytest_cache
-.ruff_cache
-.mypy_cache
-.pytest_cache
-.ruff_cache
-.mypy_cache
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Testing & Linting
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Temp
 tmp_tracks/
