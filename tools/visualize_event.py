@@ -337,7 +337,8 @@ def create_event_visualization(
         ax6.set_xlabel('', fontsize=11)
         ax6.set_ylabel('Gap to Best (s)', fontsize=11)
         ax6.set_title("Where's the Time? (Main Phase)", fontsize=12, fontweight='bold')
-        ax6.set_ylim(0, max(gaps) * 1.4)
+        max_gap = max(gaps)
+        ax6.set_ylim(0, max_gap * 1.4 if max_gap > 0 else 0.5)
         
         # Add total gap annotation
         total_gap = sum(gaps)
@@ -388,6 +389,7 @@ def main():
     parser.add_argument("csv_file", type=Path, help="Path to Garage 61 CSV export")
     parser.add_argument("--output", "-o", type=Path, help="Output directory or file path")
     parser.add_argument("--title", "-t", type=str, help="Custom title for the visualization")
+    parser.add_argument("--show", "-s", action="store_true", help="Show interactive plot window")
     
     args = parser.parse_args()
     
@@ -438,6 +440,10 @@ def main():
     
     # Create visualization
     create_event_visualization(df, title=title, output_path=output_path)
+    
+    # Show interactive window if requested
+    if args.show:
+        plt.show()
     
     return 0
 
