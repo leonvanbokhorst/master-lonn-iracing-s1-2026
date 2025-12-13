@@ -53,7 +53,7 @@ schedule:
 ## Reflection
 
 - **Track craft:** Jefferson rewards smooth transitions. The time comes from filling the gaps between brake and throttle, not from braking later.
-- **Brake bias:** 55.0% worked well. 54% was too pointy.
+- **Brake bias:** 56.0% worked well. 54% was too pointy.
 - **Mindset:** "Don't chase the time, let it come" worked. Best lap came when not trying.
 
 ### Next Week Intent
