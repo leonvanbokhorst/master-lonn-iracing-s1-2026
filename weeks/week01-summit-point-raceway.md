@@ -36,6 +36,7 @@ _Log each practice or test session as a single line._
 | 20251211 | solo    | baseline exploration | 24 laps, best 51.99, avg stint1 ~55.1, stint2 ~54.7, several clean 52.x, 2.8s off data-pack (49.2)                                                                                           |
 | 20251211 | solo    | consistency building | 29 laps, best **51.29** (+0.7s!), clean laps 51.7–52.5, gap to ref now ~2.0s, [VRS](https://virtualracingschool.appspot.com/#/Driver/5082689687781376/1757980800000/700079669256/1765469827) |
 | 20251212 | solo    | band consolidation   | ~50 laps, best **50.984**, optimal 50.700, band shifted from 51.7–52.7 → **51.0–51.9**, stint 7 poetry: ten consecutive laps 51.0–51.8                                                       |
+| 20251212 | ai      | first race (20 min)  | P12→P2, 29 laps, best **51.148**, race band ~51.3–51.9 once settled, 14x inc (mix of racing & lazy off-tracks), rhythm survived the chaos                                                    |
 
 > Session types: `solo`, `ai`, `open-practice`, `tt`, etc. Keep notes to short observations or links to telemetry/video.
 
@@ -194,6 +195,74 @@ Next session: not "can I go scary-fast fifty?", but "can I live in 51.0–51.8 f
 > "When I was driving in that new band, what felt different in my body compared to when 51-lows were still exceptions?"
 
 That's the internalization you asked for: once you can point to it physically, the band becomes truly yours.
+
+---
+
+### Race Debrief: 2025-12-12 (evening) – First AI Race 😈
+
+![20251212-ai-race-laptimes](../images/week01/20251212-ai-race-laptimes.png)
+
+**20-minute AI Race – Jefferson Circuit**
+
+**The Facts:**
+
+- Started: **P12**
+- Finished: **P2** 🏆
+- Laps: 29 complete
+- Best lap: **51.148s** (lap 20)
+- Incidents: **14x** (ouch, but let's talk about it)
+- Gap to leader: ~4 seconds
+
+**The Three Phases:**
+
+| Phase  | Laps  | Band          | What's Happening                                    |
+| ------ | ----- | ------------- | --------------------------------------------------- |
+| Early  | 2–8   | 53.0–54.9     | Sorting traffic, warm-up, brain in "don't die" mode |
+| Middle | 9–15  | 51.3–52.2     | Body goes "ah, right, this place again"             |
+| Main   | 16–29 | **51.3–51.9** | Metronome mode – tight band for 20 minutes          |
+
+**Lap-by-Lap Breakdown:**
+
+> 1:03 (outlap) → 54.4 → 54.9 → 53.6 → 53.6 → 53.0 → 53.7 → 53.1 → **52.2** → **51.7** → 52.1 → **51.3** → 51.5 → 51.8 → 52.2 (off-track) → **51.4** → 51.4 → 51.5 → 51.5 → **51.148** → 51.2 → 51.4 → 51.3 → 51.9 → 51.5 → 51.6 → 51.7 → 51.4 → 51.3
+
+Once settled (laps 16–29): average ~**51.5s** with only a few tenths of spread. That's a _race-length_ metronome, not a pampered 5-lap practice stint.
+
+**The Band Story:**
+
+Your "owned" band from practice (51.7–52.7) has clearly shifted to **51.3–51.9 in race trim** – and it stayed there for 20 minutes. That's the stability you were missing when everything felt stressful and unpredictable.
+
+**About Those 14x:**
+
+The incidents don't line up with your pace band exploding. Lap times don't suddenly jump to 55s and 58s. Your core rhythm survives. That suggests most of the 14x were probably:
+
+- Small off-tracks
+- Side-by-side squeezes
+- Curb abuse
+- Maybe a few taps
+
+**Not** repeated huge spins.
+
+**The Learning:**
+
+1. **Separate "good" and "bad" incidents:**
+
+   - Good: came from actually racing – defending, attacking, figuring out overlap
+   - Bad: self-inflicted sloppy off-track when you didn't need to overdrive
+   - Watch replay and tag each one "racecraft" vs "sloppy"
+
+2. **Notice what did NOT change:** your band. Even with all that chaos, once settled you kept dropping laps in that narrow 51-mid window.
+
+**Focus for Next AI Race:**
+
+Not "fewer incidents at any cost" but "**keep this band, and see if I can trade one or two of the sloppy incidents for smarter positioning**"
+
+**Self-Check Question:**
+
+> "Did the race itself feel as stressful as my old 'edge I can't feel' driving, or did it actually feel more predictable even though the incident number is high?"
+
+**Main Win:**
+
+> "First 20-min AI race: pace band in traffic ~51.3–51.9, best 51.148. 14x inc – mix of real racing and a few lazy off-tracks. **My rhythm survived the chaos.**"
 
 ---
 
