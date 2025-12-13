@@ -106,12 +106,13 @@ Jefferson isn’t about glory laps; it’s about quietly sharpening the fundamen
 
 ### Overtaking
 
-- **T1 inside:** Only reliable passing zone on this track
-- **Setup required:** Need strong carousel exit to get the draft down the short straight
-- **Patience is mandatory:** One real chance per lap – if you're not in position at carousel exit, there's no pass that lap, and that's FINE
-- **The trap:** Urge to force passes elsewhere leads to erratic driving and broken rhythm. Better to follow for 2 laps, learn their weakness, strike clean at T1
+- **T1 inside:** Primary passing zone – need strong carousel exit for draft
+- **T6 inside:** Secondary option – _if_ you have better carousel exit, inside opens up
+- **Setup required:** Both passes come from the same place: carousel exit quality
+- **Patience is mandatory:** Follow for 2 laps, learn their weakness, strike clean
+- **The trap:** Forcing passes breaks rhythm. σ 3.44s (impatient) → σ 0.23s (patient) proved this
 
-> *"I'm faster. I can wait."*
+> _"I'm faster. I can wait."_
 
 ---
 

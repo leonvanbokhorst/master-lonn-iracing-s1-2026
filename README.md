@@ -9,17 +9,19 @@ iRacing 2026 Season 1 runs **December 16, 2025 → March 9, 2026** (12 weeks). B
 - **Week:** Currently in prep for [the first week](weeks/week01/)
 - **Car:** [Ray FF1600](cars/car-ray-ff1600.md)
 - **Track:** [Summit Point Jefferson Circuit](tracks/track-summit-point-jefferson-circuit.md)
-- **Official race schedule:** Tuesday 2025-12-16 → 2025-12-22  
-- **Status:** Practice in progress – 4 events, 166 laps, getting ready for race week!
+- **Official race schedule:** Tuesday 2025-12-16 → 2025-12-22
+- **Status:** Practice complete – 6 events, 188 flying laps, ready for race week! 🏁
 
 ## Week 01 Summary
 
-| Metric              | Start   | Current | Δ           |
-| ------------------- | ------- | ------- | ----------- |
-| **Best lap**        | 51.438s | 50.985s | **−0.453s** |
-| **Consistency (σ)** | 5.22s   | 0.26s   | **−4.96s**  |
-| **Coasting %**      | 12.2%   | 1.7%    | **−10.5%**  |
-| **Gap to optimal**  | 2.8s    | 0.19s   | **−2.6s**   |
+| Metric              | Start (Event #1) | Best Achieved    | Latest (Event #6) |
+| ------------------- | ---------------- | ---------------- | ----------------- |
+| **Best lap**        | 51.438s          | **50.985s** (#3) | 51.290s           |
+| **Consistency (σ)** | 5.31s            | **0.23s** (#6)   | 0.23s             |
+| **Coasting %**      | 12.2%            | **1.7%** (#4)    | 11.4%             |
+| **Gap to optimal**  | 2.8s             | **0.20s**        | 0.20s             |
+
+**Key learning:** Patience in traffic validated. σ 3.44s (impatient) → 0.23s (patient) in back-to-back races.
 
 ---
 

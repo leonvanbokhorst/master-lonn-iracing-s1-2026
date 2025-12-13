@@ -6,6 +6,7 @@ Analyzes all events in a week directory and shows longitudinal progress.
 Usage:
     uv run python tools/visualize_week.py results/week01/
     uv run python tools/visualize_week.py results/week01/ --output images/week01/week-progress.png
+    uv run python tools/visualize_week.py results/week01/ --include-first-lap  # for rolling starts
 """
 
 import argparse
@@ -16,6 +17,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+
+from data_loader import load_event_csv_with_metadata
 
 # Configure seaborn style - thinner lines for readability
 sns.set_theme(style="whitegrid", palette="husl", font_scale=1.0)
@@ -38,34 +41,6 @@ COLORS = {
 EVENT_COLORS = ['#E94F37', '#F6AE2D', '#33A1FD', '#1B998B', '#A23B72', '#2E86AB']
 
 
-def load_event_csv(csv_path: Path, min_lap_time: float = 48.0, max_lap_time: float = 90.0) -> pd.DataFrame:
-    """Load and clean a Garage 61 CSV export.
-    
-    Args:
-        csv_path: Path to CSV file
-        min_lap_time: Minimum valid lap time (filters incomplete laps)
-        max_lap_time: Maximum valid lap time (filters pit/reset laps)
-    """
-    df = pd.read_csv(csv_path)
-    df.columns = df.columns.str.strip()
-    
-    # Filter out incomplete laps and obvious outliers
-    df = df[df['Lap'] > 0].copy()
-    df = df[(df['Lap time'] >= min_lap_time) & (df['Lap time'] <= max_lap_time)].copy()
-    
-    # Parse timestamp
-    if 'Started at' in df.columns:
-        df['timestamp'] = pd.to_datetime(df['Started at'])
-    
-    # Get session start time
-    df['event_start'] = df['timestamp'].min()
-    
-    # Add source file
-    df['source_file'] = csv_path.name
-    
-    return df
-
-
 def is_telemetry_file(filename: str) -> bool:
     """Check if a CSV is single-lap telemetry (not event data)."""
     # Telemetry files have lap time pattern: 00.XX.XXX or 01.XX.XXX
@@ -73,8 +48,13 @@ def is_telemetry_file(filename: str) -> bool:
     return bool(re.search(r' - 0[01]\.\d+\.\d+ - ', filename))
 
 
-def load_week_events(week_dir: Path) -> list[tuple[pd.DataFrame, dict]]:
-    """Load all event CSV files in a week directory, sorted by time."""
+def load_week_events(week_dir: Path, exclude_first_lap: bool = True) -> list[tuple[pd.DataFrame, dict]]:
+    """Load all event CSV files in a week directory, sorted by time.
+    
+    Args:
+        week_dir: Directory containing event CSV files
+        exclude_first_lap: Exclude lap 1 (standing start). Set False for rolling starts.
+    """
     sessions = []
     
     # Filter out telemetry files (single-lap exports)
@@ -82,7 +62,7 @@ def load_week_events(week_dir: Path) -> list[tuple[pd.DataFrame, dict]]:
                  if not is_telemetry_file(f.name)]
     
     for csv_file in csv_files:
-        df = load_event_csv(csv_file)
+        df = load_event_csv_with_metadata(csv_file, exclude_first_lap=exclude_first_lap)
         
         if len(df) == 0:
             continue
@@ -417,7 +397,9 @@ def create_week_visualization(
                    facecolor='#FAFAFA', edgecolor='none')
         print(f"✅ Saved to: {output_path}")
     
-    plt.show()
+    # Show interactive window if requested
+    if args.show:
+        plt.show()
     
     # Print summary
     print("\n" + "="*70)
@@ -456,6 +438,8 @@ def main():
     parser.add_argument("week_dir", type=Path, help="Path to week directory with CSV files")
     parser.add_argument("--output", "-o", type=Path, help="Output file path")
     parser.add_argument("--title", "-t", type=str, help="Custom title")
+    parser.add_argument("--include-first-lap", action="store_true",
+                       help="Include lap 1 in analysis (use for rolling starts)")
     
     args = parser.parse_args()
     
@@ -463,10 +447,11 @@ def main():
         print(f"❌ Directory not found: {args.week_dir}")
         return 1
     
-    # Load all sessions
+    # Load all sessions (exclude first lap by default for standing starts)
+    exclude_first = not args.include_first_lap
     print(f"Loading events from {args.week_dir}...")
-    events = load_week_events(args.week_dir)
-    print(f"Found {len(events)} events")
+    events = load_week_events(args.week_dir, exclude_first_lap=exclude_first)
+    print(f"Found {len(events)} events" + (" (excluding lap 1)" if exclude_first else ""))
     
     if len(events) == 0:
         print("❌ No valid CSV files found!")

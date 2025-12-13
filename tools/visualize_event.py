@@ -6,6 +6,7 @@ Reads Garage 61 CSV exports and creates meaningful visualizations.
 Usage:
     uv run python tools/visualize_event.py results/your-event.csv
     uv run python tools/visualize_event.py results/your-event.csv --output images/week01/
+    uv run python tools/visualize_event.py results/your-event.csv --include-first-lap  # for rolling starts
 """
 
 import argparse
@@ -17,6 +18,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+
+from data_loader import load_event_csv
 
 # Configure seaborn style - light and fancy
 sns.set_theme(style="whitegrid", palette="husl", font_scale=1.1)
@@ -37,35 +40,6 @@ COLORS = {
     's2': '#F18F01',
     's3': '#1B998B',
 }
-
-
-def load_event_csv(csv_path: Path, min_lap_time: float = 48.0, max_lap_time: float = 90.0) -> pd.DataFrame:
-    """Load and clean a Garage 61 CSV export.
-    
-    Args:
-        csv_path: Path to CSV file
-        min_lap_time: Minimum valid lap time (filters incomplete laps)
-        max_lap_time: Maximum valid lap time (filters pit/reset laps)
-    """
-    df = pd.read_csv(csv_path)
-    
-    # Clean column names (strip whitespace)
-    df.columns = df.columns.str.strip()
-    
-    # Filter out incomplete laps and obvious outliers
-    df = df[df['Lap'] > 0].copy()
-    df = df[(df['Lap time'] >= min_lap_time) & (df['Lap time'] <= max_lap_time)].copy()
-    
-    # Parse timestamp
-    if 'Started at' in df.columns:
-        df['timestamp'] = pd.to_datetime(df['Started at'])
-    
-    # Convert sector times to float, handling any issues
-    for sector in ['Sector 1', 'Sector 2', 'Sector 3']:
-        if sector in df.columns:
-            df[sector] = pd.to_numeric(df[sector], errors='coerce')
-    
-    return df
 
 
 def detect_phases(lap_times: np.ndarray, threshold_pct: float = 0.03) -> tuple[int, int]:
@@ -390,6 +364,8 @@ def main():
     parser.add_argument("--output", "-o", type=Path, help="Output directory or file path")
     parser.add_argument("--title", "-t", type=str, help="Custom title for the visualization")
     parser.add_argument("--show", "-s", action="store_true", help="Show interactive plot window")
+    parser.add_argument("--include-first-lap", action="store_true", 
+                       help="Include lap 1 in analysis (use for rolling starts)")
     
     args = parser.parse_args()
     
@@ -397,10 +373,11 @@ def main():
         print(f"❌ File not found: {args.csv_file}")
         return 1
     
-    # Load data
+    # Load data (exclude first lap by default for standing starts)
+    exclude_first = not args.include_first_lap
     print(f"Loading {args.csv_file}...")
-    df = load_event_csv(args.csv_file)
-    print(f"Found {len(df)} valid laps")
+    df = load_event_csv(args.csv_file, exclude_first_lap=exclude_first)
+    print(f"Found {len(df)} valid laps" + (" (excluding lap 1)" if exclude_first else ""))
     
     # Determine output path
     if args.output:
