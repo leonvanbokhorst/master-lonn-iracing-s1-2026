@@ -25,15 +25,15 @@ conditions_qualifying_scrutiny: ""
 
 <!-- Auto-filled quick stats live in the YAML above – keep front matter tidy for scripts. -->
 
-## Preparation Sessions
+## Preparation Events
 
-_Log each practice or test session as a single line._
+_Log each practice or test event as a single line._
 
-| date | session | focus | notes |
+| date | event | focus | notes |
 | --- | --- | --- | --- |
 | | | | |
 
-> Session types: `solo`, `ai`, `open-practice`, `tt`, etc. Keep notes to short observations or links to telemetry/video.
+> Event types: `solo`, `ai`, `open-practice`, `tt`, etc. Keep notes to short observations or links to telemetry/video.
 
 ## Official Races
 

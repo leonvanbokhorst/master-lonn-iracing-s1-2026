@@ -21,20 +21,20 @@ import numpy as np
 import pandas as pd
 
 # Import from our other tools
-from visualize_week import load_week_sessions, create_week_visualization
+from visualize_week import load_week_events, create_week_visualization
 
 
-def format_session_row(session_num: int, df: pd.DataFrame, info: dict) -> str:
-    """Format a single session as a markdown table row."""
+def format_event_row(event_num: int, df: pd.DataFrame, info: dict) -> str:
+    """Format a single event as a markdown table row."""
     date_str = info['start_time'].strftime('%Y%m%d')
-    session_type = 'ai' if info['type'] == 'Race' else 'solo'
+    event_type = 'ai' if info['type'] == 'Race' else 'solo'
     
-    # Determine focus based on session characteristics
+    # Determine focus based on event characteristics
     if info['settled_std'] < 0.5:
         focus = "race consistency"
     elif info['settled_std'] < 1.5:
         focus = "band consolidation"
-    elif session_num == 1:
+    elif event_num == 1:
         focus = "baseline exploration"
     else:
         focus = "consistency building"
@@ -56,26 +56,26 @@ def format_session_row(session_num: int, df: pd.DataFrame, info: dict) -> str:
     
     notes = ", ".join(notes_parts)
     
-    return f"| {date_str} | {session_type} | {focus} | {notes} |"
+    return f"| {date_str} | {event_type} | {focus} | {notes} |"
 
 
-def generate_sessions_table(sessions: list[tuple[pd.DataFrame, dict]]) -> str:
-    """Generate the full preparation sessions markdown table."""
+def generate_events_table(events: list[tuple[pd.DataFrame, dict]]) -> str:
+    """Generate the full preparation events markdown table."""
     lines = [
-        "| date     | session | focus                | notes |",
+        "| date     | event   | focus                | notes |",
         "| -------- | ------- | -------------------- | ----- |",
     ]
     
-    for i, (df, info) in enumerate(sessions):
-        lines.append(format_session_row(i + 1, df, info))
+    for i, (df, info) in enumerate(events):
+        lines.append(format_event_row(i + 1, df, info))
     
     return "\n".join(lines)
 
 
-def generate_progress_summary(sessions: list[tuple[pd.DataFrame, dict]]) -> str:
+def generate_progress_summary(events: list[tuple[pd.DataFrame, dict]]) -> str:
     """Generate the longitudinal progress summary markdown section."""
     
-    if len(sessions) < 2:
+    if len(events) < 2:
         return ""
     
     lines = [
@@ -87,7 +87,7 @@ def generate_progress_summary(sessions: list[tuple[pd.DataFrame, dict]]) -> str:
         "| --- | ----------- | -------- | ---- | ------- | ------- | ----- |",
     ]
     
-    for i, (df, info) in enumerate(sessions):
+    for i, (df, info) in enumerate(events):
         date_str = info['start_time'].strftime('%m/%d %H:%M')
         type_str = "AI" if info['type'] == 'Race' else "Practice"
         lines.append(
@@ -96,8 +96,8 @@ def generate_progress_summary(sessions: list[tuple[pd.DataFrame, dict]]) -> str:
         )
     
     # Add improvement summary
-    first = sessions[0][1]
-    last = sessions[-1][1]
+    first = events[0][1]
+    last = events[-1][1]
     
     best_improvement = first['best'] - last['best']
     std_improvement = first['settled_std'] - last['settled_std']
@@ -128,13 +128,13 @@ def update_week_file(
 ) -> None:
     """Update the week markdown file with session data."""
     
-    # Load sessions
-    print(f"Loading sessions from {week_dir}...")
-    sessions = load_week_sessions(week_dir)
-    print(f"Found {len(sessions)} sessions")
+    # Load events
+    print(f"Loading events from {week_dir}...")
+    events = load_week_events(week_dir)
+    print(f"Found {len(events)} events")
     
-    if len(sessions) == 0:
-        print("❌ No valid sessions found!")
+    if len(events) == 0:
+        print("❌ No valid events found!")
         return
     
     # Generate visualization
@@ -143,13 +143,13 @@ def update_week_file(
     images_dir.mkdir(parents=True, exist_ok=True)
     output_image = images_dir / "week-progress.png"
     
-    n_sessions = len(sessions)
-    first_date = sessions[0][1]['start_time'].strftime('%Y-%m-%d')
-    last_date = sessions[-1][1]['start_time'].strftime('%Y-%m-%d')
-    title = f"{week_name.upper()} Progress – {n_sessions} Sessions\n{first_date} → {last_date}"
+    n_events = len(events)
+    first_date = events[0][1]['start_time'].strftime('%Y-%m-%d')
+    last_date = events[-1][1]['start_time'].strftime('%Y-%m-%d')
+    title = f"{week_name.upper()} Progress – {n_events} Events\n{first_date} → {last_date}"
     
     print(f"Generating visualization...")
-    create_week_visualization(sessions, title=title, output_path=output_image)
+    create_week_visualization(events, title=title, output_path=output_image)
     
     # Read existing week file
     if not week_file.exists():
@@ -159,8 +159,8 @@ def update_week_file(
     content = week_file.read_text()
     
     # Generate new sections
-    sessions_table = generate_sessions_table(sessions)
-    progress_summary = generate_progress_summary(sessions)
+    events_table = generate_events_table(events)
+    progress_summary = generate_progress_summary(events)
     
     # NOTE: We do NOT auto-update the Preparation Sessions table!
     # That table is human-curated with narrative notes, VRS links, etc.
@@ -194,9 +194,9 @@ def update_week_file(
     print("\n" + "="*60)
     print("WEEK UPDATE COMPLETE")
     print("="*60)
-    print(f"Sessions: {len(sessions)}")
-    print(f"Best lap: {min(info['best'] for _, info in sessions):.3f}s")
-    print(f"Latest σ: {sessions[-1][1]['settled_std']:.2f}s")
+    print(f"Events: {len(events)}")
+    print(f"Best lap: {min(info['best'] for _, info in events):.3f}s")
+    print(f"Latest σ: {events[-1][1]['settled_std']:.2f}s")
 
 
 def main():

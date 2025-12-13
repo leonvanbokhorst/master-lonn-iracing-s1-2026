@@ -30,9 +30,9 @@ Generated files land in `weeks/` using the pattern `weekXX-track-slug.md`. Edit 
 
 ## Logging Reminders
 
-- **Prep sessions**: one row per session using the table under “Preparation Sessions”.
-- **Races**: append a row under “Official Races” with all columns filled where possible. Leave cells blank rather than guessing.
-- **Reflection**: three short bullets (track craft, brake bias, mindset) plus a “Next Week Intent” bridge sentence.
+- **Prep events**: one row per event using the table under "Preparation Events".
+- **Races**: append a row under "Official Races" with all columns filled where possible. Leave cells blank rather than guessing.
+- **Reflection**: three short bullets (track craft, brake bias, mindset) plus a "Next Week Intent" bridge sentence.
 
 ## Extensibility Hooks
 

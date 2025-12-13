@@ -27,20 +27,20 @@ conditions_qualifying_scrutiny: "permissive"
 
 <!-- Auto-filled quick stats live in the YAML above – keep front matter tidy for scripts. -->
 
-## Preparation Sessions
+## Preparation Events
 
-_Log each practice or test session as a single line._
+_Log each practice or test event as a single line._
 
-| date     | session | focus                | notes                                                                                                                                                                                        |
-| -------- | ------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 20251211 | solo    | baseline exploration | 24 laps, best 51.99, avg stint1 ~55.1, stint2 ~54.7, several clean 52.x, 2.8s off data-pack (49.2)                                                                                           |
-| 20251211 | solo    | consistency building | 29 laps, best **51.29** (+0.7s!), clean laps 51.7–52.5, gap to ref now ~2.0s, [VRS](https://virtualracingschool.appspot.com/#/Driver/5082689687781376/1757980800000/700079669256/1765469827) |
-| 20251212 | solo    | band consolidation   | ~50 laps, best **50.984**, optimal 50.700, band shifted from 51.7–52.7 → **51.0–51.9**, stint 7 poetry: ten consecutive laps 51.0–51.8                                                       |
-| 20251212 | ai      | first race (20 min)  | P12→P2, 29 laps, best **51.148**, race band ~51.3–51.9 once settled, 14x inc (mix of racing & lazy off-tracks), rhythm survived the chaos                                                    |
+| date     | event | focus                | notes                                                                                                                                                                                        |
+| -------- | ----- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 20251211 | solo  | baseline exploration | 24 laps, best 51.99, avg stint1 ~55.1, stint2 ~54.7, several clean 52.x, 2.8s off data-pack (49.2)                                                                                           |
+| 20251211 | solo  | consistency building | 29 laps, best **51.29** (+0.7s!), clean laps 51.7–52.5, gap to ref now ~2.0s, [VRS](https://virtualracingschool.appspot.com/#/Driver/5082689687781376/1757980800000/700079669256/1765469827) |
+| 20251212 | solo  | band consolidation   | ~50 laps, best **50.984**, optimal 50.700, band shifted from 51.7–52.7 → **51.0–51.9**, stint 7 poetry: ten consecutive laps 51.0–51.8                                                       |
+| 20251212 | ai    | first race (20 min)  | P12→P2, 29 laps, best **51.148**, race band ~51.3–51.9 once settled, 14x inc (mix of racing & lazy off-tracks), rhythm survived the chaos                                                    |
 
-> Session types: `solo`, `ai`, `open-practice`, `tt`, etc. Keep notes to short observations or links to telemetry/video.
+> Event types: `solo`, `ai`, `open-practice`, `tt`, etc. Keep notes to short observations or links to telemetry/video.
 
-### Session Debrief: 2025-12-11
+### Event Debrief: 2025-12-11
 
 **The Facts:**
 
@@ -65,7 +65,7 @@ _Log each practice or test session as a single line._
 - Steering: your trace more jagged = still finding the line, making mid-corner corrections where ref draws one clean arc
 - **Translation:** the 2.7s gap is almost entirely "sequence and confidence", not missing alien tricks – slightly under-committing and over-correcting, not wildly overdriving
 
-**Focus for Next Session:**
+**Focus for Next Event:**
 
 1. NOT going faster – aim for 10 clean laps in 52.5–54.0 window
 2. Pick two corners (T1 and downhill esses) where delta is biggest
@@ -80,7 +80,7 @@ _Log each practice or test session as a single line._
 
 ---
 
-### Session Debrief: 2025-12-11 (evening)
+### Event Debrief: 2025-12-11 (evening)
 
 ![20251211-session-evening](../images/week01/20251211-session-evening.png)
 
@@ -142,7 +142,7 @@ Because honestly, the lap looks like someone who's starting to trust Jefferson r
 | Gap to ref     | ~2.8s     | ~2.0s     | **+0.8s**  |
 | Clean lap band | 52.1–54.0 | 51.7–52.5 | tighter!   |
 
-**Focus for Next Session:**
+**Focus for Next Event:**
 
 1. Reframe: don't think "go slower", think "**pick a band and stay inside it**"
 2. Target: 5 consecutive laps between 52.0 and 52.7, no drama
@@ -151,7 +151,7 @@ Because honestly, the lap looks like someone who's starting to trust Jefferson r
 
 ---
 
-### Session Debrief: 2025-12-12 (morning)
+### Event Debrief: 2025-12-12 (morning)
 
 **The Band Has Shifted – And Tightened** 😏
 

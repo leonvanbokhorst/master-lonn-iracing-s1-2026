@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Session Visualization Tool
+Event Visualization Tool
 Reads Garage 61 CSV exports and creates meaningful visualizations.
 
 Usage:
-    uv run python tools/visualize_session.py results/your-session.csv
-    uv run python tools/visualize_session.py results/your-session.csv --output images/week01/
+    uv run python tools/visualize_event.py results/your-event.csv
+    uv run python tools/visualize_event.py results/your-event.csv --output images/week01/
 """
 
 import argparse
@@ -39,7 +39,7 @@ COLORS = {
 }
 
 
-def load_session_csv(csv_path: Path, min_lap_time: float = 48.0, max_lap_time: float = 90.0) -> pd.DataFrame:
+def load_event_csv(csv_path: Path, min_lap_time: float = 48.0, max_lap_time: float = 90.0) -> pd.DataFrame:
     """Load and clean a Garage 61 CSV export.
     
     Args:
@@ -108,9 +108,9 @@ def detect_phases(lap_times: np.ndarray, threshold_pct: float = 0.03) -> tuple[i
     return (early_end, middle_end)
 
 
-def create_session_visualization(
+def create_event_visualization(
     df: pd.DataFrame,
-    title: str = "Session Analysis",
+    title: str = "Event Analysis",
     output_path: Path | None = None,
     phase_boundaries: tuple[int, int] | None = None,
 ):
@@ -350,7 +350,7 @@ def create_session_visualization(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Visualize Garage 61 session CSV")
+    parser = argparse.ArgumentParser(description="Visualize Garage 61 event CSV")
     parser.add_argument("csv_file", type=Path, help="Path to Garage 61 CSV export")
     parser.add_argument("--output", "-o", type=Path, help="Output directory or file path")
     parser.add_argument("--title", "-t", type=str, help="Custom title for the visualization")
@@ -363,7 +363,7 @@ def main():
     
     # Load data
     print(f"Loading {args.csv_file}...")
-    df = load_session_csv(args.csv_file)
+    df = load_event_csv(args.csv_file)
     print(f"Found {len(df)} valid laps")
     
     # Determine output path
@@ -388,13 +388,13 @@ def main():
         date_str = date_match.group(1) if date_match else ""
         
         if 'Race' in filename:
-            session_type = "Race"
+            event_type = "Race"
         elif 'Practice' in filename or 'Qualify' in filename:
-            session_type = "Practice"
+            event_type = "Practice"
         else:
-            session_type = "Session"
+            event_type = "Event"
         
-        title = f"{session_type} Analysis"
+        title = f"{event_type} Analysis"
         if date_str:
             title += f" – {date_str}"
         
@@ -403,7 +403,7 @@ def main():
         title += f"\nBest: {best:.3f}s | Laps: {len(df)}"
     
     # Create visualization
-    create_session_visualization(df, title=title, output_path=output_path)
+    create_event_visualization(df, title=title, output_path=output_path)
     
     return 0
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Week Progress Visualization Tool
-Analyzes all sessions in a week directory and shows longitudinal progress.
+Analyzes all events in a week directory and shows longitudinal progress.
 
 Usage:
     uv run python tools/visualize_week.py results/week01/
@@ -34,11 +34,11 @@ COLORS = {
     's3': '#1B998B',
 }
 
-# Session colors for progression
-SESSION_COLORS = ['#E94F37', '#F6AE2D', '#33A1FD', '#1B998B', '#A23B72', '#2E86AB']
+# Event colors for progression
+EVENT_COLORS = ['#E94F37', '#F6AE2D', '#33A1FD', '#1B998B', '#A23B72', '#2E86AB']
 
 
-def load_session_csv(csv_path: Path, min_lap_time: float = 48.0, max_lap_time: float = 90.0) -> pd.DataFrame:
+def load_event_csv(csv_path: Path, min_lap_time: float = 48.0, max_lap_time: float = 90.0) -> pd.DataFrame:
     """Load and clean a Garage 61 CSV export.
     
     Args:
@@ -58,7 +58,7 @@ def load_session_csv(csv_path: Path, min_lap_time: float = 48.0, max_lap_time: f
         df['timestamp'] = pd.to_datetime(df['Started at'])
     
     # Get session start time
-    df['session_start'] = df['timestamp'].min()
+    df['event_start'] = df['timestamp'].min()
     
     # Add source file
     df['source_file'] = csv_path.name
@@ -66,24 +66,24 @@ def load_session_csv(csv_path: Path, min_lap_time: float = 48.0, max_lap_time: f
     return df
 
 
-def load_week_sessions(week_dir: Path) -> list[tuple[pd.DataFrame, dict]]:
+def load_week_events(week_dir: Path) -> list[tuple[pd.DataFrame, dict]]:
     """Load all CSV files in a week directory, sorted by time."""
     sessions = []
     
     for csv_file in sorted(week_dir.glob("*.csv")):
-        df = load_session_csv(csv_file)
+        df = load_event_csv(csv_file)
         
         if len(df) == 0:
             continue
         
         # Extract session info
-        session_start = df['timestamp'].min()
-        session_type = "Race" if "Race" in csv_file.name else "Practice"
+        event_start = df['timestamp'].min()
+        event_type = "Race" if "Race" in csv_file.name else "Practice"
         
         info = {
             'file': csv_file.name,
-            'start_time': session_start,
-            'type': session_type,
+            'start_time': event_start,
+            'type': event_type,
             'laps': len(df),
             'best': df['Lap time'].min(),
             'mean': df['Lap time'].mean(),
@@ -118,45 +118,45 @@ def create_week_visualization(
 ):
     """Create comprehensive week progress visualization."""
     
-    n_sessions = len(sessions)
-    if n_sessions == 0:
-        print("❌ No sessions found!")
+    n_events = len(sessions)
+    if n_events == 0:
+        print("❌ No events found!")
         return None
     
     # Create figure - dynamic width based on session count
     base_width = 14
-    extra_width_per_session = 1.5 if n_sessions > 6 else 0
-    fig_width = base_width + max(0, (n_sessions - 6)) * extra_width_per_session
+    extra_width_per_session = 1.5 if n_events > 6 else 0
+    fig_width = base_width + max(0, (n_events - 6)) * extra_width_per_session
     fig_width = min(fig_width, 24)  # Cap at reasonable max
     
     fig = plt.figure(figsize=(fig_width, 12))
     fig.patch.set_facecolor('#FAFAFA')
     
     # Rotation for x-labels when many sessions
-    label_rotation = 45 if n_sessions > 6 else 0
-    label_ha = 'right' if n_sessions > 6 else 'center'
+    label_rotation = 45 if n_events > 6 else 0
+    label_ha = 'right' if n_events > 6 else 'center'
     fig.suptitle(title, fontsize=18, fontweight='bold', color='#2C3E50', y=0.98)
     
     gs = fig.add_gridspec(3, 2, hspace=0.35, wspace=0.25)
     
     # Prepare session labels (use # to avoid collision with S1/S2/S3 sectors)
     # Use shorter format for many sessions
-    session_labels = []
-    session_labels_short = []  # For cramped plots
+    event_labels = []
+    event_labels_short = []  # For cramped plots
     for i, (df, info) in enumerate(sessions):
         type_char = "AI" if info['type'] == 'Race' else "P"
         
-        if n_sessions <= 6:
+        if n_events <= 6:
             # Full format for few sessions
             date_str = info['start_time'].strftime('%m/%d %H:%M')
-            session_labels.append(f"#{i+1}\n{date_str}\n[{type_char}]")
+            event_labels.append(f"#{i+1}\n{date_str}\n[{type_char}]")
         else:
             # Compact format for many sessions
             date_str = info['start_time'].strftime('%d/%H:%M')
-            session_labels.append(f"#{i+1}\n{date_str}")
+            event_labels.append(f"#{i+1}\n{date_str}")
         
         # Always have a short version available
-        session_labels_short.append(f"#{i+1}")
+        event_labels_short.append(f"#{i+1}")
     
     # ═══════════════════════════════════════════════════════════════════════════
     # PLOT 1: Best Lap Progress
@@ -165,20 +165,20 @@ def create_week_visualization(
     ax1.set_facecolor('#FFFFFF')
     
     bests = [info['best'] for _, info in sessions]
-    x_pos = range(n_sessions)
+    x_pos = range(n_events)
     
-    bars = ax1.bar(x_pos, bests, color=[SESSION_COLORS[i % len(SESSION_COLORS)] for i in range(n_sessions)],
+    bars = ax1.bar(x_pos, bests, color=[EVENT_COLORS[i % len(EVENT_COLORS)] for i in range(n_events)],
                    alpha=0.8, edgecolor='white', linewidth=1.5)
     
     # Add value labels
     for i, (bar, best) in enumerate(zip(bars, bests)):
         # Best lap time on top of bar
-        fontsize = 9 if n_sessions <= 8 else 7
+        fontsize = 9 if n_events <= 8 else 7
         ax1.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.05,
                 f'{best:.3f}s', ha='center', va='bottom', fontsize=fontsize, fontweight='bold')
         
         # Delta from previous session (skip if too many sessions)
-        if i > 0 and n_sessions <= 10:
+        if i > 0 and n_events <= 10:
             delta = bests[i] - bests[i-1]
             y_pos = min(bests) - 0.15
             color = COLORS['fastest'] if delta < 0 else COLORS['dirty']
@@ -187,7 +187,7 @@ def create_week_visualization(
                     fontweight='bold', color=color)
     
     ax1.set_xticks(x_pos)
-    ax1.set_xticklabels(session_labels, fontsize=8, rotation=label_rotation, ha=label_ha)
+    ax1.set_xticklabels(event_labels, fontsize=8, rotation=label_rotation, ha=label_ha)
     ax1.set_ylabel('Best Lap (s)', fontsize=11)
     ax1.set_title('Best Lap Progress', fontsize=12, fontweight='bold')
     ax1.set_ylim(min(bests) - 0.6, max(bests) + 0.5)
@@ -216,7 +216,7 @@ def create_week_visualization(
                     color=COLORS['secondary'])
     
     ax2.set_xticks(x_pos)
-    ax2.set_xticklabels(session_labels, fontsize=8, rotation=label_rotation, ha=label_ha)
+    ax2.set_xticklabels(event_labels, fontsize=8, rotation=label_rotation, ha=label_ha)
     ax2.set_ylabel('Settled Pace (s)', fontsize=11)
     ax2.set_title('Band Evolution (Mean ± Std)', fontsize=12, fontweight='bold')
     
@@ -252,8 +252,8 @@ def create_week_visualization(
         })
     
     # Create horizontal bar chart showing settling
-    y_positions = range(n_sessions)
-    colors = [SESSION_COLORS[i % len(SESSION_COLORS)] for i in range(n_sessions)]
+    y_positions = range(n_events)
+    colors = [EVENT_COLORS[i % len(EVENT_COLORS)] for i in range(n_events)]
     
     # Bar for "laps to settle" 
     laps_to_settle = [d['laps_to_settle'] for d in settling_data]
@@ -272,7 +272,7 @@ def create_week_visualization(
     ax3.set_yticks(y_positions)
     ax3.set_yticklabels([f'#{d["session"]} [{type_labels[i]}]' for i, d in enumerate(settling_data)], fontsize=9)
     ax3.set_xlabel('Laps to Settle', fontsize=11)
-    ax3.set_title('Rhythm Discovery (How fast do I find my pace?)', fontsize=12, fontweight='bold')
+    ax3.set_title('Rhythm Discovery (Laps to settle)', fontsize=12, fontweight='bold')
     ax3.set_xlim(0, max(laps_to_settle) * 2.5)  # Room for annotations
     ax3.invert_yaxis()  # First session at top
     
@@ -285,16 +285,16 @@ def create_week_visualization(
     # Combine all data with session labels
     all_data = []
     for i, (df, info) in enumerate(sessions):
-        session_df = df[['Lap time']].copy()
-        session_df['Session'] = f'#{i+1}'
-        all_data.append(session_df)
+        event_df = df[['Lap time']].copy()
+        event_df['Event'] = f'#{i+1}'
+        all_data.append(event_df)
     
     combined = pd.concat(all_data, ignore_index=True)
     
-    sns.violinplot(data=combined, x='Session', y='Lap time', hue='Session',
-                   palette=SESSION_COLORS[:n_sessions], alpha=0.6, 
+    sns.violinplot(data=combined, x='Event', y='Lap time', hue='Event',
+                   palette=EVENT_COLORS[:n_events], alpha=0.6, 
                    inner=None, legend=False, ax=ax4)
-    sns.stripplot(data=combined, x='Session', y='Lap time', color='#2C3E50',
+    sns.stripplot(data=combined, x='Event', y='Lap time', color='#2C3E50',
                   alpha=0.5, size=3, jitter=0.2, legend=False, ax=ax4)
     
     ax4.set_xlabel('', fontsize=11)
@@ -341,7 +341,7 @@ def create_week_visualization(
                     label, ha='center', va='bottom', fontsize=8)
         
         ax5.set_ylabel('Sector Consistency (σ in seconds)', fontsize=11)
-        ax5.set_title('Sector Consistency (Latest Session)', fontsize=12, fontweight='bold')
+        ax5.set_title('Sector Consistency (Latest Event)', fontsize=12, fontweight='bold')
         ax5.set_ylim(0, max(sector_stds) * 1.5)
         
         # PLOT 6: Optimal vs Actual
@@ -363,7 +363,7 @@ def create_week_visualization(
                         bbox=dict(boxstyle='round,pad=0.2', facecolor='white', alpha=0.8))
         
         ax6.set_xticks(x_pos)
-        ax6.set_xticklabels(session_labels_short, fontsize=9)
+        ax6.set_xticklabels(event_labels_short, fontsize=9)
         ax6.set_ylabel('Lap Time (s)', fontsize=11)
         ax6.set_title('Actual vs Optimal', fontsize=12, fontweight='bold')
         ax6.legend(loc='upper right', fontsize=9, framealpha=0.95)
@@ -384,10 +384,10 @@ def create_week_visualization(
                      linewidth=1.2, markersize=7, label='Lap Count')
         
         ax5.set_xticks(x_pos)
-        ax5.set_xticklabels(session_labels, fontsize=8, rotation=label_rotation, ha=label_ha)
+        ax5.set_xticklabels(event_labels, fontsize=8, rotation=label_rotation, ha=label_ha)
         ax5.set_ylabel('Clean Lap %', fontsize=11, color=COLORS['fastest'])
         ax5_twin.set_ylabel('Lap Count', fontsize=11, color=COLORS['secondary'])
-        ax5.set_title('Session Quality Metrics', fontsize=12, fontweight='bold')
+        ax5.set_title('Event Quality Metrics', fontsize=12, fontweight='bold')
     
     # ═══════════════════════════════════════════════════════════════════════════
     # Finalize
@@ -406,7 +406,7 @@ def create_week_visualization(
     print("WEEK PROGRESS SUMMARY")
     print("="*70)
     
-    print(f"\n{'Session':<10} {'Date/Time':<18} {'Type':<10} {'Laps':<6} {'Best':<10} {'Settled':<12} {'σ':<8}")
+    print(f"\n{'Event':<10} {'Date/Time':<18} {'Type':<10} {'Laps':<6} {'Best':<10} {'Settled':<12} {'σ':<8}")
     print("-"*70)
     
     for i, (df, info) in enumerate(sessions):
@@ -446,11 +446,11 @@ def main():
         return 1
     
     # Load all sessions
-    print(f"Loading sessions from {args.week_dir}...")
-    sessions = load_week_sessions(args.week_dir)
-    print(f"Found {len(sessions)} sessions")
+    print(f"Loading events from {args.week_dir}...")
+    events = load_week_events(args.week_dir)
+    print(f"Found {len(events)} events")
     
-    if len(sessions) == 0:
+    if len(events) == 0:
         print("❌ No valid CSV files found!")
         return 1
     
@@ -467,13 +467,13 @@ def main():
         title = args.title
     else:
         week_name = args.week_dir.name
-        n_sessions = len(sessions)
-        first_date = sessions[0][1]['start_time'].strftime('%Y-%m-%d')
-        last_date = sessions[-1][1]['start_time'].strftime('%Y-%m-%d')
-        title = f"{week_name.upper()} Progress – {n_sessions} Sessions\n{first_date} → {last_date}"
+        n_events = len(events)
+        first_date = events[0][1]['start_time'].strftime('%Y-%m-%d')
+        last_date = events[-1][1]['start_time'].strftime('%Y-%m-%d')
+        title = f"{week_name.upper()} Progress – {n_events} Events\n{first_date} → {last_date}"
     
     # Create visualization
-    create_week_visualization(sessions, title=title, output_path=output_path)
+    create_week_visualization(events, title=title, output_path=output_path)
     
     return 0
 
