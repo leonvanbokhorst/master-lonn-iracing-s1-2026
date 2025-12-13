@@ -11,9 +11,12 @@ schedule:
 
 # Week {{week}} – {{track}} – {{layout}}
 
-> Track dossier: [{{track}}](../../tracks/{{track_file}})
-
-> **Intent:** _{{intent}}_
+- **Season:** {{season}}
+- **Series:** {{series}}
+- **Schedule:** {{schedule}}
+- **Car dossier:** {{car_dossier}}
+- **Track dossier:** [{{track}}](../../tracks/{{track_file}})
+- **Intent:** _{{intent}}_
 
 ## Events
 

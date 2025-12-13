@@ -11,9 +11,12 @@ schedule:
 
 # Week 01 – Summit Point Raceway – Jefferson Circuit
 
-> [Track Dossier](../../tracks/track-summit-point-jefferson-circuit.md)
-
-> **Intent:** _Build a "family" of consistent laps – tighten the brake→turn→throttle sequence with less coasting in between._
+- **Season:** 2026 Season 1
+- **Series:** Ray FF1600 Rookie Fixed
+- **Schedule:** 2025-12-16 → 2025-12-22
+- **Car dossier:** **[Ray FF1600](../../cars/car-ray-ff1600.md)**
+- **Track dossier:** **[Summit Point Jefferson Circuit](../../tracks/track-summit-point-jefferson-circuit.md)**
+- **Intent:** _Build a "family" of consistent laps – tighten the brake→turn→throttle sequence with less coasting in between._
 
 ## Events
 

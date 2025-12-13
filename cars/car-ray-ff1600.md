@@ -12,6 +12,8 @@ drivetrain: "Rear-wheel drive"
 
 Ray Race Cars has been the quiet workhorse of Formula Ford since the late 1970s, building lithe, no-nonsense chassis for drivers who want to **learn to drive**, not just manage downforce.<sup><a href="https://en.wikipedia.org/wiki/Ray_Race_Cars">Ray Race Cars — Wikipedia</a></sup>
 
+![Ray FF1600](images/ff1600.jpg)
+
 The GRS-1600, launched in 2012, is a modern echo of the classic Formula Ford recipe: Kent engine up back, skinny tires, subtle aero tweaks, and a stiffer safety cell so you can lean on the thing without flinching.<sup><a href="https://www.rayracecar.com/">Ray FF1600 (Formula Ford)</a></sup> iRacing's <sup><a href="https://www.iracing.com/cars/ray-ff1600/">Ray FF1600</a></sup> brings that same attitude: open cockpit, no wings, 116 hp, and absolutely nowhere to hide if your inputs are messy.
 
 This is not a power car. It's a momentum apprenticeship on four wheels.
