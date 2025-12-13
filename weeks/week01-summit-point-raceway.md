@@ -266,6 +266,23 @@ Not "fewer incidents at any cost" but "**keep this band, and see if I can trade 
 
 ---
 
+### Week Progress Summary
+
+![Week Progress](../images/week01/week-progress.png)
+
+| #   | Date        | Type     | Laps | Best    | Settled | σ     |
+| --- | ----------- | -------- | ---- | ------- | ------- | ----- |
+| 1   | 12/11 13:21 | Practice | 34   | 51.438s | 54.926s | 5.22s |
+| 2   | 12/11 16:19 | Practice | 63   | 51.101s | 52.146s | 1.10s |
+| 3   | 12/12 09:42 | Practice | 40   | 50.985s | 52.657s | 2.35s |
+| 4   | 12/12 17:02 | AI       | 29   | 51.148s | 51.548s | 0.26s |
+
+**Progress:**
+
+- Best lap: 51.438s → 51.148s (+0.290s)
+- Consistency: σ 5.22s → σ 0.26s (+4.96s tighter)
+- Gap to optimal: 0.190s
+
 ## Official Races
 
 _Append each race as one table row in the format below._

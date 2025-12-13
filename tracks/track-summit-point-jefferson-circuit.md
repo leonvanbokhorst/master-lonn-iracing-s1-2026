@@ -20,6 +20,18 @@ On paper it looks like a glorified kart track. In the car, it’s a **“no hidi
 - [Summit Point Jefferson Circuit – YouTube](https://youtu.be/gMIiUYakCFA?si=QzczDdshiz--UbIe)
 - [MidfieldRacing219 Full Race in Rookie Fixed](https://www.youtube.com/watch?v=iMaqbIWLRxw)
 
+## Sector Definitions (iRacing)
+
+| Sector | Approx Time | Corners | Key Challenge |
+|--------|-------------|---------|---------------|
+| **S1** | ~28s (55%) | T1-T3 complex → Downhill esses | Patience, smooth transitions, rhythm building |
+| **S2** | ~11s (22%) | T6 pinch point → tight left | Brake discipline, rotation, early throttle |
+| **S3** | ~11s (22%) | Carousel back section → Finish | Constant steering rate, momentum preservation |
+
+> **Note:** S1 is the longest sector and contains the most technical sequence. If your S1 variance (σ) is high, focus on the T1-T3 link-up and esses flow.
+
+---
+
 ## Character Notes
 
 - **Handling course, not horsepower stage** – There’s nowhere to really stretch the engine. You’re almost always in second or third, working at the limit of grip rather than the limit of speed.
