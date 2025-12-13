@@ -38,19 +38,21 @@ COLORS = {
 EVENT_COLORS = ['#E94F37', '#F6AE2D', '#33A1FD', '#1B998B', '#A23B72', '#2E86AB']
 
 
-def load_event_csv(csv_path: Path, min_lap_time: float = 48.0, max_lap_time: float = 90.0) -> pd.DataFrame:
+def load_event_csv(csv_path: Path, min_lap_time: float = 48.0, max_lap_time: float = 90.0, exclude_first_lap: bool = True) -> pd.DataFrame:
     """Load and clean a Garage 61 CSV export.
     
     Args:
         csv_path: Path to CSV file
         min_lap_time: Minimum valid lap time (filters incomplete laps)
         max_lap_time: Maximum valid lap time (filters pit/reset laps)
+        exclude_first_lap: Exclude lap 1 (standing start, always slow)
     """
     df = pd.read_csv(csv_path)
     df.columns = df.columns.str.strip()
     
-    # Filter out incomplete laps and obvious outliers
-    df = df[df['Lap'] > 0].copy()
+    # Filter out incomplete laps, outliers, and optionally first lap (standing start)
+    min_lap = 1 if exclude_first_lap else 0
+    df = df[df['Lap'] > min_lap].copy()
     df = df[(df['Lap time'] >= min_lap_time) & (df['Lap time'] <= max_lap_time)].copy()
     
     # Parse timestamp
