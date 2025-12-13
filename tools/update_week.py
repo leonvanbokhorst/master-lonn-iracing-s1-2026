@@ -137,9 +137,10 @@ def update_week_file(
         print("❌ No valid events found!")
         return
     
-    # Generate visualization
-    week_name = week_dir.name
-    images_dir = week_dir.parent.parent / "images" / week_name
+    # Generate visualization - images are in week_dir/../images/
+    # week_dir is e.g., weeks/week01/data/ so parent.name gives "week01"
+    week_name = week_dir.parent.name
+    images_dir = week_dir.parent / "images"
     images_dir.mkdir(parents=True, exist_ok=True)
     output_image = images_dir / "week-progress.png"
     

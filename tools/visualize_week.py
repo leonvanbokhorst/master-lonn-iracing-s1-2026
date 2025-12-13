@@ -66,11 +66,22 @@ def load_event_csv(csv_path: Path, min_lap_time: float = 48.0, max_lap_time: flo
     return df
 
 
+def is_telemetry_file(filename: str) -> bool:
+    """Check if a CSV is single-lap telemetry (not event data)."""
+    # Telemetry files have lap time pattern: 00.XX.XXX or 01.XX.XXX
+    import re
+    return bool(re.search(r' - 0[01]\.\d+\.\d+ - ', filename))
+
+
 def load_week_events(week_dir: Path) -> list[tuple[pd.DataFrame, dict]]:
-    """Load all CSV files in a week directory, sorted by time."""
+    """Load all event CSV files in a week directory, sorted by time."""
     sessions = []
     
-    for csv_file in sorted(week_dir.glob("*.csv")):
+    # Filter out telemetry files (single-lap exports)
+    csv_files = [f for f in sorted(week_dir.glob("*.csv")) 
+                 if not is_telemetry_file(f.name)]
+    
+    for csv_file in csv_files:
         df = load_event_csv(csv_file)
         
         if len(df) == 0:
@@ -465,7 +476,8 @@ def main():
     if args.output:
         output_path = args.output
     else:
-        output_path = args.week_dir.parent.parent / "images" / args.week_dir.name / "week-progress.png"
+        # New structure: weeks/weekXX/data/ → weeks/weekXX/images/
+        output_path = args.week_dir.parent / "images" / "week-progress.png"
     
     output_path.parent.mkdir(parents=True, exist_ok=True)
     

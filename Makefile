@@ -2,32 +2,49 @@
 # =================================
 # Workflow shortcuts for the AI dojo 🥋
 
-.PHONY: help update-week viz-event viz-week clean
+.PHONY: help update-week add-event viz-event viz-week viz-telemetry compare-laps clean
 
 # Default target
 help:
 	@echo "🏎️  iRacing Season Logbook Commands"
 	@echo "===================================="
 	@echo ""
-	@echo "  make update-week WEEK=01     Update week file from CSVs (regenerates viz + summary)"
-	@echo "  make viz-event FILE=...     Visualize a single event CSV"
-	@echo "  make viz-week WEEK=01       Generate week progress visualization only"
+	@echo "  make add-event WEEK=01 FILE=...   Add new event (copies CSV, creates page, updates week)"
+	@echo "  make update-week WEEK=01          Regenerate week visualizations + summary"
+	@echo "  make compare-laps WEEK=01         Compare best laps (needs telemetry CSVs)"
 	@echo ""
-	@echo "Examples:"
-	@echo "  make update-week WEEK=01"
-	@echo "  make viz-event FILE=results/week01/my-event.csv"
+	@echo "  make viz-event FILE=...           Visualize a single event CSV (lap times)"
+	@echo "  make viz-week WEEK=01             Generate week progress visualization only"
+	@echo "  make viz-telemetry FILE=...       Analyze single-lap telemetry (speed, pedals, G-forces)"
+	@echo ""
+	@echo "Workflow:"
+	@echo "  1. Export CSV from Garage61"
+	@echo "  2. make add-event WEEK=01 FILE=~/Downloads/export.csv"
+	@echo "  3. Edit debrief: weeks/week01/events/XX-date-type.md"
 	@echo ""
 
-# Update week file from all CSVs in results/weekXX/
+# Add a new event to the week structure
+# Usage: make add-event WEEK=01 FILE=path/to/export.csv
+add-event:
+	@if [ -z "$(WEEK)" ]; then echo "❌ Usage: make add-event WEEK=01 FILE=path/to/export.csv"; exit 1; fi
+	@if [ -z "$(FILE)" ]; then echo "❌ Usage: make add-event WEEK=01 FILE=path/to/export.csv"; exit 1; fi
+	uv run python tools/add_event.py $(WEEK) "$(FILE)"
+
+# Compare best laps from telemetry exports
+# Usage: make compare-laps WEEK=01
+compare-laps:
+	@if [ -z "$(WEEK)" ]; then echo "❌ Usage: make compare-laps WEEK=01"; exit 1; fi
+	@echo "🔬 Comparing best laps for week$(WEEK)..."
+	uv run python tools/compare_laps.py weeks/week$(WEEK)/data/
+
+# Update week visualizations from CSVs
 # Usage: make update-week WEEK=01
 update-week:
 	@if [ -z "$(WEEK)" ]; then echo "❌ Usage: make update-week WEEK=01"; exit 1; fi
 	@echo "🔄 Updating week$(WEEK)..."
-	@WEEK_FILE=$$(ls weeks/week$(WEEK)-*.md 2>/dev/null | head -1); \
-	if [ -z "$$WEEK_FILE" ]; then echo "❌ No week file found for week $(WEEK)"; exit 1; fi; \
-	uv run python tools/update_week.py results/week$(WEEK)/ "$$WEEK_FILE"
+	uv run python tools/update_week.py weeks/week$(WEEK)/data/ weeks/week$(WEEK)/README.md
 	@echo ""
-	@echo "✅ Done! Check weeks/week$(WEEK)-*.md and images/week$(WEEK)/"
+	@echo "✅ Done! Check weeks/week$(WEEK)/"
 
 # Visualize a single event
 # Usage: make viz-event FILE=results/week01/event.csv
@@ -41,7 +58,14 @@ viz-event:
 viz-week:
 	@if [ -z "$(WEEK)" ]; then echo "❌ Usage: make viz-week WEEK=01"; exit 1; fi
 	@echo "📊 Generating week$(WEEK) visualization..."
-	uv run python tools/visualize_week.py results/week$(WEEK)/ --output images/week$(WEEK)/week-progress.png
+	uv run python tools/visualize_week.py weeks/week$(WEEK)/data/ --output weeks/week$(WEEK)/images/week-progress.png
+
+# Visualize single-lap telemetry (from Garage61 export)
+# Usage: make viz-telemetry FILE=path/to/telemetry.csv
+viz-telemetry:
+	@if [ -z "$(FILE)" ]; then echo "❌ Usage: make viz-telemetry FILE=path/to/telemetry.csv"; exit 1; fi
+	@echo "🔬 Analyzing telemetry $(FILE)..."
+	uv run python tools/visualize_telemetry.py "$(FILE)"
 
 # Clean generated images (careful!)
 clean:
