@@ -3,8 +3,8 @@ car: "Ray FF1600"
 series: "Ray FF1600 Rookie Fixed"
 chassis: "Ray GRS-1600"
 engine: "Ford Kent 1600 inline-four"
-power_hp: 120
-weight_kg: 500
+power_hp: 116
+weight_kg: 504
 drivetrain: "Rear-wheel drive"
 ---
 
@@ -12,9 +12,70 @@ drivetrain: "Rear-wheel drive"
 
 Ray Race Cars has been the quiet workhorse of Formula Ford since the late 1970s, building lithe, no-nonsense chassis for drivers who want to **learn to drive**, not just manage downforce.<sup><a href="https://en.wikipedia.org/wiki/Ray_Race_Cars">Ray Race Cars — Wikipedia</a></sup>
 
-The GRS-1600, launched in 2012, is a modern echo of the classic Formula Ford recipe: Kent engine up back, skinny tires, subtle aero tweaks, and a stiffer safety cell so you can lean on the thing without flinching.<sup><a href="https://www.rayracecar.com/">Ray FF1600 (Formula Ford)</a></sup> iRacing’s <sup><a href="https://www.iracing.com/cars/ray-ff1600/">Ray FF1600</a></sup> brings that same attitude: open cockpit, no wings, 120 hp, and absolutely nowhere to hide if your inputs are messy.
+The GRS-1600, launched in 2012, is a modern echo of the classic Formula Ford recipe: Kent engine up back, skinny tires, subtle aero tweaks, and a stiffer safety cell so you can lean on the thing without flinching.<sup><a href="https://www.rayracecar.com/">Ray FF1600 (Formula Ford)</a></sup> iRacing's <sup><a href="https://www.iracing.com/cars/ray-ff1600/">Ray FF1600</a></sup> brings that same attitude: open cockpit, no wings, 116 hp, and absolutely nowhere to hide if your inputs are messy.
 
-This is not a power car. It’s a momentum apprenticeship on four wheels.
+This is not a power car. It's a momentum apprenticeship on four wheels.
+
+---
+
+## Technical Specifications (iRacing)
+
+### Engine & Drivetrain
+
+| Spec              | Value                                      |
+| ----------------- | ------------------------------------------ |
+| **Engine**        | Ford Kent 1600 "Crossflow" inline-4        |
+| **Displacement**  | 1,599 cc (1.6L)                            |
+| **Bore × Stroke** | 81.0 mm × 77.62 mm                         |
+| **Power**         | 116 hp (85.3 kW) @ ~6,500 RPM              |
+| **Aspiration**    | Naturally aspirated (Weber 32/36 DGV carb) |
+| **Gearbox**       | Hewland LD200 4-speed H-pattern            |
+| **Differential**  | Open (no LSD)                              |
+| **Drive**         | Mid-engine, rear-wheel drive               |
+
+### Chassis & Body
+
+| Spec              | Value                             |
+| ----------------- | --------------------------------- |
+| **Chassis**       | Tubular steel space frame         |
+| **Weight**        | 504 kg (1,111 lbs) with driver    |
+| **Fuel capacity** | 21.96 L (5.8 gal / ~22 kg full)   |
+| **Cooling**       | Twin side-mounted water radiators |
+| **Aerodynamics**  | None (no wings, no ground effect) |
+| **Cockpit**       | Open                              |
+
+### Wheels & Tires
+
+| Spec           | Value                      |
+| -------------- | -------------------------- |
+| **Wheel size** | 13" × 5.5" steel           |
+| **Tires**      | Avon (treaded, not slicks) |
+| **Front**      | ~185/60R13                 |
+| **Rear**       | ~205/60R13                 |
+
+### Brakes & Suspension
+
+| Spec           | Value                        |
+| -------------- | ---------------------------- |
+| **Brakes**     | AP Racing calipers, no ABS   |
+| **Suspension** | Double wishbone (adjustable) |
+| **Driveshaft** | GKN assembly                 |
+
+### Performance (approx.)
+
+| Spec             | Value               |
+| ---------------- | ------------------- |
+| **Top speed**    | ~232 km/h (144 mph) |
+| **0–100 km/h**   | ~6.0 seconds        |
+| **Power/weight** | ~230 hp/tonne       |
+
+### iRacing Features
+
+| Feature          | Status           |
+| ---------------- | ---------------- |
+| **Rain capable** | ✅ Yes           |
+| **AI enabled**   | ✅ Yes           |
+| **Base content** | ✅ Included free |
 
 ---
 
