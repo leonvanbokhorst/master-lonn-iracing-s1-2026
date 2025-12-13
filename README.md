@@ -1,13 +1,14 @@
 # iRacing 2026 Season 1 – Ray FF1600 Rookie Fixed
 
-> **About this season:** iRacing 2026 Season 1 runs **December 16, 2025 → March 9, 2026** (12 weeks).  
-> Build 2025.12.08.03 launched December 9, 2025.
+iRacing 2026 Season 1 runs **December 16, 2025 → March 9, 2026** (12 weeks). Build 2025.12.08.03 launched December 9, 2025.
 
----
+- **Week:** Currently in prep for [the first week](weeks/week01/)
+- **Car:** [Ray FF1600](cars/car-ray-ff1600.md)
+- **Track:** [Summit Point Jefferson Circuit](tracks/track-summit-point-jefferson-circuit.md)
+- **Official race schedule:** Tuesday 2025-12-16 → 2025-12-22  
+- **Status:** Practice in progress – 4 events, 166 laps, getting ready for race week!
 
-> 🏎️ **Current Week: 01 – Summit Point Jefferson Circuit** (pre-season prep)  
-> 📅 Official race week: 2025-12-16 → 2025-12-22  
-> 🎯 Status: **Practice complete** – 4 events, 166 laps, ready for race week!
+## Week 01 Summary
 
 | Metric              | Start   | Current | Δ           |
 | ------------------- | ------- | ------- | ----------- |
@@ -16,21 +17,9 @@
 | **Coasting %**      | 12.2%   | 1.7%    | **−10.5%**  |
 | **Gap to optimal**  | 2.8s    | 0.19s   | **−2.6s**   |
 
-➡️ [**Week 01**](weeks/week01/) | [**Track Dossier**](tracks/track-summit-point-jefferson-circuit.md)
-
 ---
 
-This repo is the training-dojo journal for Lonn's Ray FF1600 Rookie Fixed campaign.  
-It's the external memory for the season: weekly logs, soft-commitment rituals, and deep-dive lore on every track in the schedule.
-
-The goal isn't farming iRating; it's running the full season with intention:
-
-- show up every week
-- stay out of avoidable chaos
-- grow racecraft (mirrors, defending, patience, exits)
-- let momentum driving slowly sink into muscle memory
-
-Everything here exists to support that.
+This is the training-dojo journal for Lonn's Ray FF1600 Rookie Fixed campaign. It's the external memory for the season: weekly logs, soft-commitment rituals, and deep-dive lore on every track in the schedule. The goal isn't farming iRating; it's running the full season with intention: show up every week, stay out of avoidable chaos, grow racecraft (mirrors, defending, patience, exits), and let momentum driving slowly sink into muscle memory. Everything here exists to support that.
 
 ---
 
@@ -79,16 +68,9 @@ Need track context before a session? Start by skimming the track profile, then j
 
 ---
 
-## Car Lore
-
-- [`cars/car-ray-ff1600.md`](cars/car-ray-ff1600.md)  
-  History, character, handling cues, and racecraft drills for the Ray FF1600 – the "momentum apprentice" at the centre of this whole thing.
-
----
-
 ## Coaching
 
-This repo includes an AI coaching setup. Not a gimmick—a genuine reflection partner.
+This repo includes an AI adaptive coaching method. Not a gimmick—a genuine reflection partner for Lonn to learn from his own data.
 
 **How it works:**
 
