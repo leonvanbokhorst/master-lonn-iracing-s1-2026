@@ -175,16 +175,16 @@ def create_week_visualization(
         # Best lap time on top of bar
         fontsize = 9 if n_events <= 8 else 7
         ax1.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.05,
-                f'{best:.3f}s', ha='center', va='bottom', fontsize=fontsize, fontweight='bold')
+                f'{best:.3f}', ha='center', va='bottom', fontsize=fontsize)
         
-        # Delta from previous session (skip if too many sessions)
+        # Delta from previous event (inside bar, white text)
         if i > 0 and n_events <= 10:
             delta = bests[i] - bests[i-1]
-            y_pos = min(bests) - 0.15
-            color = COLORS['fastest'] if delta < 0 else COLORS['dirty']
+            # Position inside the bar, near the bottom
+            y_pos = bar.get_height() - 0.15
             ax1.text(bar.get_x() + bar.get_width()/2, y_pos,
-                    f'{delta:+.3f}s', ha='center', va='top', fontsize=7, 
-                    fontweight='bold', color=color)
+                    f'{delta:+.3f}', ha='center', va='top', fontsize=8, 
+                    fontweight='bold', color='white')
     
     ax1.set_xticks(x_pos)
     ax1.set_xticklabels(event_labels, fontsize=8, rotation=label_rotation, ha=label_ha)
@@ -202,7 +202,7 @@ def create_week_visualization(
     settled_stds = [info['settled_std'] for _, info in sessions]
     
     ax2.errorbar(x_pos, settled_means, yerr=settled_stds, fmt='o-', 
-                color=COLORS['primary'], linewidth=1.2, markersize=8,
+                color=COLORS['secondary'], linewidth=1.2, markersize=8,
                 capsize=6, capthick=1.2, ecolor=COLORS['secondary'], alpha=0.8)
     
     # Fill band
@@ -210,10 +210,17 @@ def create_week_visualization(
     upper = [m + s for m, s in zip(settled_means, settled_stds)]
     ax2.fill_between(x_pos, lower, upper, alpha=0.2, color=COLORS['band_fill'])
     
-    # Add annotations
+    # Add annotations below the error bars
     for i, (m, s) in enumerate(zip(settled_means, settled_stds)):
-        ax2.annotate(f'σ={s:.2f}s', xy=(i, m - s - 0.2), ha='center', fontsize=8,
-                    color=COLORS['secondary'])
+        ax2.annotate(f'σ={s:.2f}', xy=(i, m - s - 0.8), ha='center', fontsize=8,
+                    color='#2C3E50', fontweight='medium',
+                    bbox=dict(boxstyle='round,pad=0.15', facecolor='white', 
+                             edgecolor='none', alpha=0.9))
+    
+    # Expand y-axis to make room for labels below
+    y_min = min(lower) - 1.5
+    y_max = max(upper) + 0.5
+    ax2.set_ylim(y_min, y_max)
     
     ax2.set_xticks(x_pos)
     ax2.set_xticklabels(event_labels, fontsize=8, rotation=label_rotation, ha=label_ha)

@@ -21,9 +21,8 @@ conditions_qualifying_scrutiny: "permissive"
 
 # Week 01 – Summit Point Raceway – Jefferson Circuit
 
-> Track dossier: [Summit Point Jefferson Circuit](../tracks/track-summit-point-jefferson-circuit.md)
-
-> Intent: _Build a "family" of consistent laps – tighten the brake→turn→throttle sequence with less coasting in between._
+- [Track dossier](../tracks/track-summit-point-jefferson-circuit.md)
+- Intent: _Build a "family" of consistent laps – tighten the brake→turn→throttle sequence with less coasting in between._
 
 <!-- Auto-filled quick stats live in the YAML above – keep front matter tidy for scripts. -->
 
@@ -38,9 +37,9 @@ _Log each practice or test event as a single line._
 | 20251212 | solo  | band consolidation   | ~50 laps, best **50.984**, optimal 50.700, band shifted from 51.7–52.7 → **51.0–51.9**, stint 7 poetry: ten consecutive laps 51.0–51.8                                                       |
 | 20251212 | ai    | first race (20 min)  | P12→P2, 29 laps, best **51.148**, race band ~51.3–51.9 once settled, 14x inc (mix of racing & lazy off-tracks), rhythm survived the chaos                                                    |
 
-> Event types: `solo`, `ai`, `open-practice`, `tt`, etc. Keep notes to short observations or links to telemetry/video.
+### Event Debrief: 2025-12-11 Practice 01
 
-### Event Debrief: 2025-12-11
+- [Garage 61](https://garage61.net/app/event/01KC6TY32JWT4EE4JECKK1D06Q) - Practice 01 - Morning.
 
 **The Facts:**
 
@@ -80,11 +79,9 @@ _Log each practice or test event as a single line._
 
 ---
 
-### Event Debrief: 2025-12-11 (evening)
+### Event Debrief: 2025-12-11 Practice 02
 
-![20251211-session-evening](../images/week01/20251211-session-evening.png)
-
-- [VRS Analysis](https://virtualracingschool.appspot.com/#/DrivingAnalyzer/282780004/1750118400000/700079669256/1757459772/997/vs/5082689687781376/1757980800000/700079669256/1765469827/2453/FullTrack/map)
+- [Garage 61](https://garage61.net/app/event/01KC77TQXJ1PKXE2NKDVN02S4A) - Practice 02 - Evening.
 
 **Big picture:**
 
@@ -151,9 +148,11 @@ Because honestly, the lap looks like someone who's starting to trust Jefferson r
 
 ---
 
-### Event Debrief: 2025-12-12 (morning)
+### Event Debrief: 2025-12-12 Practice 03
 
-**The Band Has Shifted – And Tightened** 😏
+- [Garage 61](https://garage61.net/app/event/01KC8Z031B2HXY214JCJPR2T0S) - Practice 03 - Morning.
+
+_The Band Has Shifted – And Tightened_ 😏
 
 **Big Picture:**
 
@@ -198,11 +197,11 @@ That's the internalization you asked for: once you can point to it physically, t
 
 ---
 
-### Race Debrief: 2025-12-12 (evening) – First AI Race 😈
+### Race Debrief: 2025-12-12 AI Race 01
 
-![20251212-ai-race-laptimes](../images/week01/20251212-ai-race-laptimes.png)
+- [Garage 61](https://garage61.net/app/event/01KC9R46GMX7DD7SFDAGP14HAV) - AI Race 01 - Evening.
 
-**20-minute AI Race – Jefferson Circuit**
+_20-minute AI Race – Jefferson Circuit_
 
 **The Facts:**
 
