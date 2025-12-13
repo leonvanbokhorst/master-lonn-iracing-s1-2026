@@ -86,7 +86,7 @@ Jefferson isn’t about glory laps; it’s about quietly sharpening the fundamen
 
 > _First impressions and learnings. Worth revisiting next time I'm here._
 
-### Week 01 – December 2025 (Pre-Season 2026S1 on iRacing)
+### [Week 01 – December 2025](../weeks/week01/) (Pre-Season 2026S1 on iRacing)
 
 **First Discovery:** Jefferson isn't a configuration of Summit Point – it's a completely separate 1.1-mile training track built on the same property in 1996. Purpose-built for car control, not racing spectacle.
 
