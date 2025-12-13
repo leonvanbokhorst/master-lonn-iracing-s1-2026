@@ -1,5 +1,10 @@
 # iRacing 2026 Season 1 – Ray FF1600 Rookie Fixed
 
+> **About this season:** iRacing 2026 Season 1 runs **December 16, 2025 → March 9, 2026** (12 weeks).  
+> Build 2025.12.08.03 launched December 9, 2025.
+
+---
+
 > 🏎️ **Current Week: 01 – Summit Point Jefferson Circuit** (pre-season prep)  
 > 📅 Official race week: 2025-12-16 → 2025-12-22  
 > 🎯 Status: **Practice complete** – 4 events, 166 laps, ready for race week!
@@ -81,7 +86,7 @@ Need track context before a session? Start by skimming the track profile, then j
 
 ---
 
-## AI Coaching
+## Coaching
 
 This repo includes an AI coaching setup. Not a gimmick—a genuine reflection partner.
 

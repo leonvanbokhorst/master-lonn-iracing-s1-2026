@@ -16,17 +16,16 @@ Where the Main Circuit chases speed and spectacle, Jefferson is all about teachi
 
 On paper it looks like a glorified kart track. In the car, it’s a **“no hiding, no resting”** test of rhythm. There’s just enough runoff to keep things sane, but not enough to let you be lazy.
 
-
 - [Summit Point Jefferson Circuit – YouTube](https://youtu.be/gMIiUYakCFA?si=QzczDdshiz--UbIe)
 - [MidfieldRacing219 Full Race in Rookie Fixed](https://www.youtube.com/watch?v=iMaqbIWLRxw)
 
 ## Sector Definitions (iRacing)
 
-| Sector | Approx Time | Corners | Key Challenge |
-|--------|-------------|---------|---------------|
-| **S1** | ~28s (55%) | T1-T3 complex → Downhill esses | Patience, smooth transitions, rhythm building |
-| **S2** | ~11s (22%) | T6 pinch point → tight left | Brake discipline, rotation, early throttle |
-| **S3** | ~11s (22%) | Carousel back section → Finish | Constant steering rate, momentum preservation |
+| Sector | Approx Time | Corners                        | Key Challenge                                 |
+| ------ | ----------- | ------------------------------ | --------------------------------------------- |
+| **S1** | ~28s (55%)  | T1-T3 complex → Downhill esses | Patience, smooth transitions, rhythm building |
+| **S2** | ~11s (22%)  | T6 pinch point → tight left    | Brake discipline, rotation, early throttle    |
+| **S3** | ~11s (22%)  | Carousel back section → Finish | Constant steering rate, momentum preservation |
 
 > **Note:** S1 is the longest sector and contains the most technical sequence. If your S1 variance (σ) is high, focus on the T1-T3 link-up and esses flow.
 
@@ -76,6 +75,30 @@ Let Jefferson be your **“mechanics before heroics”** track in the Ray.
   There aren’t many true passing zones here, so practice using the short chute into T1 as your main overtaking classroom. Work on getting better exits from the final corners, then making _clear, early_ moves under braking—no late, hopeful lunges. In the FF1600, a clean drive off the last turn will beat a divebomb nine times out of ten.
 
 Jefferson isn’t about glory laps; it’s about quietly sharpening the fundamentals. If you can be smooth, accurate and patient here, the Ray will feel easier everywhere else.
+
+---
+
+## Personal Notes
+
+> _First impressions and learnings. Worth revisiting next time I'm here._
+
+### Week 01 – December 2025 (Pre-Season 2026S1 on iRacing)
+
+**First Discovery:** Jefferson isn't a configuration of Summit Point – it's a completely separate 1.1-mile training track built on the same property in 1996. Purpose-built for car control, not racing spectacle.
+
+**The Feel:** Fast, short, very kart-like. Constant corners, no real straights to rest. You're always working.
+
+**The Reference Point Problem:** This track has almost no obvious brake markers – no boards, no grandstands, no clear curb changes. It's all trees, grass edges, and earth banks. Hard to judge when to brake, when to turn in, when to get back on throttle.
+
+**The Dotted Line Solution:** Found myself using the dotted center line as my main reference – especially for the final corner onto the main straight. This feels more like a road than a race track. Maybe that's intentional for a "training" circuit? This might actually be more transferable to real-world driving than "brake at the 100m board."
+
+**T1-Esses Sequence:** T1 is the hardest to judge. Not because of speed, but because it's not really one corner – it's a sequence that flows into T2, T3, and then the esses. If you get T1 wrong, everything downstream suffers. Still searching for a consistent turn-in reference.
+
+**Rookie Prediction:** Expecting carnage in official races. No clear brake zones means inconsistent braking across the field. Cars will be bunched constantly because of the short lap. But the runoff is forgiving – probably lots of 4x tap-outs, fewer race-ending wrecks.
+
+**Brake Bias:** Settled on **56.0%** – I tested in the range 57 - 54, where 54% was too pointy, made the rear too eager to rotate under braking.
+
+**The Breakthrough:** Time came from filling the gaps between brake and throttle (coasting dropped from 12% to 1.7%), not from braking later or carrying more corner speed. The transitions are where the time lives.
 
 ---
 
