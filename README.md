@@ -31,20 +31,25 @@ Everything here exists to support that.
 
 ## Repository Shape
 
-- `weeks/`  
-  One markdown log per official iRacing week.  
-  Each follows the same arc: **intent → prep → races → reflection**.
+```
+├── weeks/              ← Weekly logs + events + data + images
+│   └── week01/
+│       ├── README.md       Overview, progress viz, summary
+│       ├── events/         Individual event pages
+│       ├── data/           Garage61 CSVs + telemetry
+│       └── images/         Visualizations
+├── tracks/             ← Circuit dossiers
+├── cars/               ← Car lore (Ray FF1600)
+├── coaching/           ← AI coaching notes
+│   └── lonn-profile.md     Driver profile, patterns, hypotheses
+└── tools/              ← Automation scripts
+```
 
-- `tracks/`  
-  Narrative dossiers for each circuit: a bit of history, driving character, Ray FF1600 notes, and references.
-
-- `cars/`  
-  Car-focused narratives and handling rituals.  
-  Currently: `car-ray-ff1600.md`.
-
-- `tools/`  
-  Automation helpers (week generators, schedule YAML, future stats/exports).  
-  The internals can evolve; the promise is: keep the logs simple to maintain.
+- **`weeks/`** – One folder per week. Each event gets its own page with stats, telemetry, and freeform debrief.
+- **`tracks/`** – Narrative dossiers: history, character, sector breakdowns, reference lap notes.
+- **`cars/`** – Car-focused handling rituals. Currently: `car-ray-ff1600.md`.
+- **`coaching/`** – AI coaching memory. Patterns observed, hypotheses to test, what works for this driver.
+- **`tools/`** – Automation: add events, generate visualizations, compare laps.
 
 ---
 
@@ -73,6 +78,34 @@ Need track context before a session? Start by skimming the track profile, then j
 
 - [`cars/car-ray-ff1600.md`](cars/car-ray-ff1600.md)  
   History, character, handling cues, and racecraft drills for the Ray FF1600 – the "momentum apprentice" at the centre of this whole thing.
+
+---
+
+## AI Coaching
+
+This repo includes an AI coaching setup. Not a gimmick—a genuine reflection partner.
+
+**How it works:**
+
+- After events/weeks, ask an LLM to review the data and debrief
+- It reads the event pages, telemetry, and coaching profile
+- Returns: pattern observations, questions for reflection, hypotheses to test
+- Coaching notes live in [`coaching/lonn-profile.md`](coaching/lonn-profile.md)
+
+**What makes it real coaching:**
+
+- Questions, not prescriptions
+- Connects data to feeling
+- Tracks patterns across weeks
+- Remembers what works for _this_ driver
+- Honest, even when uncomfortable
+
+**Example prompts:**
+
+- _"Review my latest event"_
+- _"Coach me on week 01"_
+- _"What should I focus on at Rudskogen?"_
+- _"Compare my first and last event this week"_
 
 ---
 
