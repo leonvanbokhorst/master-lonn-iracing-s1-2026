@@ -157,16 +157,16 @@ def create_event_visualization(
     ax1.plot(laps, times, 'o-', color=COLORS['primary'], linewidth=1.2, 
              markersize=6, markerfacecolor='white', markeredgewidth=1.5, alpha=0.9)
     
-    # Highlight fastest lap
+    # Highlight fastest lap (subtle)
     ax1.scatter([fastest_lap], [times[fastest_idx]], color=COLORS['fastest'], 
-               s=200, zorder=5, marker='*', label=f'Fastest: {times[fastest_idx]:.3f}s')
+               s=80, zorder=5, marker='*', label=f'Fastest: {times[fastest_idx]:.3f}s')
     
-    # Highlight dirty laps
+    # Highlight dirty/off-track laps (subtle)
     for lap in dirty_laps:
         idx = np.where(laps == lap)[0]
         if len(idx) > 0:
-            ax1.scatter([lap], [times[idx[0]]], color=COLORS['dirty'], s=100, 
-                       zorder=4, marker='X', linewidths=2)
+            ax1.scatter([lap], [times[idx[0]]], color=COLORS['dirty'], s=35, 
+                       zorder=4, marker='x', linewidths=1.5, alpha=0.7)
     
     ax1.set_xlabel('Lap', fontsize=11)
     ax1.set_ylabel('Lap Time (s)', fontsize=11)
@@ -265,51 +265,86 @@ def create_event_visualization(
     # PLOT 5 & 6: Sector Analysis (if available)
     # ═══════════════════════════════════════════════════════════════════════════
     if has_sectors:
-        # Sector times over laps
+        # Sector delta from best - all on same scale for comparison
         ax5 = fig.add_subplot(gs[2, 0])
         ax5.set_facecolor('#FFFFFF')
         
-        ax5.plot(laps, df['Sector 1'].values, 'o-', color=COLORS['s1'], 
-                linewidth=1.2, markersize=4, label='S1', alpha=0.8)
-        ax5.plot(laps, df['Sector 2'].values, 's-', color=COLORS['s2'], 
-                linewidth=1.2, markersize=4, label='S2', alpha=0.8)
-        ax5.plot(laps, df['Sector 3'].values, '^-', color=COLORS['s3'], 
-                linewidth=1.2, markersize=4, label='S3', alpha=0.8)
+        # Calculate delta from best for each sector
+        s1_best = df['Sector 1'].min()
+        s2_best = df['Sector 2'].min()
+        s3_best = df['Sector 3'].min()
+        
+        s1_delta = df['Sector 1'].values - s1_best
+        s2_delta = df['Sector 2'].values - s2_best
+        s3_delta = df['Sector 3'].values - s3_best
+        
+        ax5.plot(laps, s1_delta, 'o-', color=COLORS['s1'], 
+                linewidth=1.2, markersize=4, label=f'S1 (best: {s1_best:.2f}s)', alpha=0.8)
+        ax5.plot(laps, s2_delta, 's-', color=COLORS['s2'], 
+                linewidth=1.2, markersize=4, label=f'S2 (best: {s2_best:.2f}s)', alpha=0.8)
+        ax5.plot(laps, s3_delta, '^-', color=COLORS['s3'], 
+                linewidth=1.2, markersize=4, label=f'S3 (best: {s3_best:.2f}s)', alpha=0.8)
+        
+        # Add zero line (= personal best)
+        ax5.axhline(0, color='#999', linestyle='--', linewidth=1, alpha=0.5)
         
         ax5.set_xlabel('Lap', fontsize=11)
-        ax5.set_ylabel('Sector Time (s)', fontsize=11)
-        ax5.set_title('Sector Times', fontsize=12, fontweight='bold')
-        ax5.legend(loc='upper right', fontsize=9, framealpha=0.95)
+        ax5.set_ylabel('Delta from Best (s)', fontsize=11)
+        ax5.set_title('Sector Time Loss', fontsize=12, fontweight='bold')
+        ax5.legend(loc='upper right', fontsize=8, framealpha=0.95)
         
-        # Sector consistency (box plots)
+        # Sector Focus Analysis - "Where's the Time?"
         ax6 = fig.add_subplot(gs[2, 1])
         ax6.set_facecolor('#FFFFFF')
         
         # Use main phase for sector analysis
         main_df = df.iloc[middle_end:].copy() if middle_end < len(df) else df.copy()
         
-        sector_data = pd.DataFrame({
-            'Time': list(main_df['Sector 1']) + list(main_df['Sector 2']) + list(main_df['Sector 3']),
-            'Sector': ['S1'] * len(main_df) + ['S2'] * len(main_df) + ['S3'] * len(main_df)
-        })
+        # Calculate metrics for each sector
+        sectors = ['S1', 'S2', 'S3']
+        sector_cols = ['Sector 1', 'Sector 2', 'Sector 3']
         
-        sns.boxplot(data=sector_data, x='Sector', y='Time', hue='Sector',
-                   palette=[COLORS['s1'], COLORS['s2'], COLORS['s3']], 
-                   legend=False, ax=ax6)
+        gaps = []  # Mean - Best (time left on table)
+        cvs = []   # Coefficient of variation (normalized consistency)
         
-        # Add best sector times
-        for i, sector in enumerate(['Sector 1', 'Sector 2', 'Sector 3']):
-            best = main_df[sector].min()
-            mean = main_df[sector].mean()
-            ax6.annotate(f'Best: {best:.2f}s\nMean: {mean:.2f}s', 
-                        xy=(i, main_df[sector].max() + 0.3),
-                        ha='center', fontsize=8, color='#2C3E50',
-                        bbox=dict(boxstyle='round,pad=0.2', facecolor='white', 
-                                 edgecolor='#DDD', alpha=0.9))
+        for col in sector_cols:
+            best = main_df[col].min()
+            mean = main_df[col].mean()
+            std = main_df[col].std()
+            gaps.append(mean - best)
+            cvs.append((std / mean) * 100 if mean > 0 else 0)
         
+        # Create bar chart for gaps
+        x = np.arange(len(sectors))
+        colors = [COLORS['s1'], COLORS['s2'], COLORS['s3']]
+        
+        bars = ax6.bar(x, gaps, width=0.6, color=colors, alpha=0.8, edgecolor='white', linewidth=2)
+        
+        # Add labels on bars
+        for i, (bar, gap, cv) in enumerate(zip(bars, gaps, cvs)):
+            # Gap label inside bar
+            ax6.text(bar.get_x() + bar.get_width()/2, bar.get_height()/2,
+                    f'+{gap:.2f}s', ha='center', va='center', 
+                    fontsize=11, fontweight='bold', color='white')
+            
+            # CV label above bar
+            ax6.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.02,
+                    f'CV: {cv:.1f}%', ha='center', va='bottom', 
+                    fontsize=9, color='#666')
+        
+        ax6.set_xticks(x)
+        ax6.set_xticklabels(sectors, fontsize=11)
         ax6.set_xlabel('', fontsize=11)
-        ax6.set_ylabel('Sector Time (s)', fontsize=11)
-        ax6.set_title('Sector Consistency (Main Phase)', fontsize=12, fontweight='bold')
+        ax6.set_ylabel('Gap to Best (s)', fontsize=11)
+        ax6.set_title("Where's the Time? (Main Phase)", fontsize=12, fontweight='bold')
+        ax6.set_ylim(0, max(gaps) * 1.4)
+        
+        # Add total gap annotation
+        total_gap = sum(gaps)
+        ax6.text(0.98, 0.95, f'Total gap: +{total_gap:.2f}s', 
+                transform=ax6.transAxes, ha='right', va='top',
+                fontsize=10, color='#666',
+                bbox=dict(boxstyle='round,pad=0.3', facecolor='white', edgecolor='#DDD'))
     
     # ═══════════════════════════════════════════════════════════════════════════
     # Finalize
@@ -321,7 +356,6 @@ def create_event_visualization(
                    facecolor='#FAFAFA', edgecolor='none')
         print(f"✅ Saved to: {output_path}")
     
-    plt.show()
     
     # Print summary stats
     print("\n" + "="*60)
