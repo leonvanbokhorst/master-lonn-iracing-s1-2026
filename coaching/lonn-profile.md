@@ -1,6 +1,6 @@
 # Coaching Notes – Lonn
 
-> For Claude's reference when coaching. Update as season progresses.
+> For reference when coaching. Update as season progresses.
 
 ---
 
