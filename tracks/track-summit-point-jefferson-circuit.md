@@ -19,6 +19,10 @@ On paper it looks like a glorified kart track. In the car, it’s a **“no hidi
 - [Summit Point Jefferson Circuit – YouTube](https://youtu.be/gMIiUYakCFA?si=QzczDdshiz--UbIe)
 - [MidfieldRacing219 Full Race in Rookie Fixed](https://www.youtube.com/watch?v=iMaqbIWLRxw)
 
+## Track Map
+
+![Jefferson Circuit Track Map](images/jefferson-circuit-map.png)
+
 ## Sector Definitions (iRacing)
 
 | Sector | Approx Time | Corners                        | Key Challenge                                 |

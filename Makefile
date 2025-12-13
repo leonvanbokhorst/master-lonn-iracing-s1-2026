@@ -67,6 +67,14 @@ viz-telemetry:
 	@echo "🔬 Analyzing telemetry $(FILE)..."
 	uv run python tools/visualize_telemetry.py "$(FILE)"
 
+# Generate track map with sectors from telemetry
+# Usage: make track-map FILE=path/to/telemetry.csv
+# Optional: make track-map FILE=... SECTORS="0.55 0.77"
+track-map:
+	@if [ -z "$(FILE)" ]; then echo "❌ Usage: make track-map FILE=path/to/telemetry.csv"; exit 1; fi
+	@echo "🗺️  Generating track map from $(FILE)..."
+	uv run python tools/generate_track_map.py "$(FILE)" $(if $(SECTORS),--sectors $(SECTORS),)
+
 # Clean generated images (careful!)
 clean:
 	@echo "🧹 This would remove generated images. Are you sure? (Ctrl+C to cancel)"
