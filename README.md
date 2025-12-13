@@ -1,5 +1,9 @@
 # iRacing 2026 Season 1 – Ray FF1600 Rookie Fixed
 
+This is the training-dojo journal for Lonn's Ray FF1600 Rookie Fixed campaign. It's the external memory for the season: weekly logs, soft-commitment rituals, and deep-dive lore on every track in the schedule. The goal isn't farming iRating; it's running the full season with intention: show up every week, stay out of avoidable chaos, grow racecraft (mirrors, defending, patience, exits), and let momentum driving slowly sink into muscle memory. Everything here exists to support that.
+
+---
+
 iRacing 2026 Season 1 runs **December 16, 2025 → March 9, 2026** (12 weeks). Build 2025.12.08.03 launched December 9, 2025.
 
 - **Week:** Currently in prep for [the first week](weeks/week01/)
@@ -16,10 +20,6 @@ iRacing 2026 Season 1 runs **December 16, 2025 → March 9, 2026** (12 weeks). B
 | **Consistency (σ)** | 5.22s   | 0.26s   | **−4.96s**  |
 | **Coasting %**      | 12.2%   | 1.7%    | **−10.5%**  |
 | **Gap to optimal**  | 2.8s    | 0.19s   | **−2.6s**   |
-
----
-
-This is the training-dojo journal for Lonn's Ray FF1600 Rookie Fixed campaign. It's the external memory for the season: weekly logs, soft-commitment rituals, and deep-dive lore on every track in the schedule. The goal isn't farming iRating; it's running the full season with intention: show up every week, stay out of avoidable chaos, grow racecraft (mirrors, defending, patience, exits), and let momentum driving slowly sink into muscle memory. Everything here exists to support that.
 
 ---
 

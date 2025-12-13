@@ -86,7 +86,7 @@ Jefferson isn’t about glory laps; it’s about quietly sharpening the fundamen
 
 > _First impressions and learnings. Worth revisiting next time I'm here._
 
-### Week 01 – December 2025 (Pre-Season 2026S1 on iRacing)
+### [Week 01 – December 2025](../weeks/week01/) (Pre-Season 2026S1 on iRacing)
 
 **First Discovery:** Jefferson isn't a configuration of Summit Point – it's a completely separate 1.1-mile training track built on the same property in 1996. Purpose-built for car control, not racing spectacle.
 
@@ -103,6 +103,15 @@ Jefferson isn’t about glory laps; it’s about quietly sharpening the fundamen
 **Brake Bias:** Settled on **56.0%** – I tested in the range 57 - 54, where 54% was too pointy, made the rear too eager to rotate under braking.
 
 **The Breakthrough:** Time came from filling the gaps between brake and throttle (coasting dropped from 12% to 1.7%), not from braking later or carrying more corner speed. The transitions are where the time lives.
+
+### Overtaking
+
+- **T1 inside:** Only reliable passing zone on this track
+- **Setup required:** Need strong carousel exit to get the draft down the short straight
+- **Patience is mandatory:** One real chance per lap – if you're not in position at carousel exit, there's no pass that lap, and that's FINE
+- **The trap:** Urge to force passes elsewhere leads to erratic driving and broken rhythm. Better to follow for 2 laps, learn their weakness, strike clean at T1
+
+> *"I'm faster. I can wait."*
 
 ---
 

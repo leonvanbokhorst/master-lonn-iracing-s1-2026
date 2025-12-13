@@ -348,7 +348,7 @@ def main():
     
     # Update week README
     print(f"   Updating week README...")
-    update_week_readme(args.week, weeks_dir, all_events)
+    update_week_readme(args.week, week_dir.parent, all_events)
     
     # Regenerate week visualization
     if not args.no_viz:
