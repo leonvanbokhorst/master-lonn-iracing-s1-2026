@@ -1,22 +1,12 @@
 ---
 week: 01
-track: "Summit Point Raceway"
-layout: "Jefferson Circuit"
-season: "2026 Season 1"
-series: "Ray FF1600 Rookie Fixed"
-schedule:
-  start: "2025-12-10"
-  end: "2025-12-16"
 ---
 
 # Week 01 – Summit Point Raceway – Jefferson Circuit
 
-- **Season:** 2026 Season 1
-- **Series:** Ray FF1600 Rookie Fixed
-- **Schedule:** Dec 10 – Dec 16, 2025
-- **Car dossier:** [Ray FF1600](../../cars/car-ray-ff1600.md)
-- **Track dossier:** [Summit Point Jefferson Circuit](../../tracks/track-summit-point-jefferson-circuit.md)
-- **Intent:** _Keep it smooth. Stay out of the weeds. Focus on transitions. Build rhythm._
+> Track dossier: [Summit Point Jefferson Circuit](../../tracks/track-summit-point-jefferson-circuit.md)
+
+> **Intent:** _Write your intent here..._
 
 ## Events
 
