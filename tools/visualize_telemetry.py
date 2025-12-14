@@ -12,6 +12,8 @@ from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+from matplotlib.patches import Patch
+from matplotlib.lines import Line2D
 import numpy as np
 
 # Style configuration
@@ -35,6 +37,35 @@ def load_telemetry(csv_path: Path) -> pd.DataFrame:
     df['TrackPct'] = df['LapDistPct'] * 100
     
     return df
+
+
+def compute_coasting_zones(df: pd.DataFrame, throttle_threshold: float, brake_threshold: float):
+    """Compute coasting zones from pedal data.
+    
+    Returns:
+        coasting_mask: Boolean array for each sample
+        coasting_starts: List of track % where coasting begins
+        coasting_ends: List of track % where coasting ends
+        coasting_pct: Percentage of lap spent coasting
+    """
+    coasting_mask = (df['Throttle'] < throttle_threshold) & (df['Brake'] < brake_threshold)
+    coasting_starts = []
+    coasting_ends = []
+    in_coast = False
+    
+    for i, is_coasting in enumerate(coasting_mask):
+        if is_coasting and not in_coast:
+            coasting_starts.append(df['TrackPct'].iloc[i])
+            in_coast = True
+        elif not is_coasting and in_coast:
+            coasting_ends.append(df['TrackPct'].iloc[i])
+            in_coast = False
+    if in_coast:
+        coasting_ends.append(df['TrackPct'].iloc[-1])
+    
+    coasting_pct = coasting_mask.sum() / len(coasting_mask) * 100
+    
+    return coasting_mask, coasting_starts, coasting_ends, coasting_pct
 
 
 def create_telemetry_visualization(
@@ -73,41 +104,32 @@ def create_telemetry_visualization(
     throttle = df['Throttle'].values
     brake = df['Brake'].values
     
-    # Identify and draw coasting zones as vertical bands (same as throttle/brake graph)
-    coasting_mask = (df['Throttle'] < throttle_threshold) & (df['Brake'] < brake_threshold)
-    coasting_starts = []
-    coasting_ends = []
-    in_coast = False
-    for i, is_coasting in enumerate(coasting_mask):
-        if is_coasting and not in_coast:
-            coasting_starts.append(df['TrackPct'].iloc[i])
-            in_coast = True
-        elif not is_coasting and in_coast:
-            coasting_ends.append(df['TrackPct'].iloc[i])
-            in_coast = False
-    if in_coast:
-        coasting_ends.append(df['TrackPct'].iloc[-1])
+    # Compute coasting zones once (used by speed trace, track map, and pedal graph)
+    coasting_mask, coasting_starts, coasting_ends, coasting_pct = compute_coasting_zones(
+        df, throttle_threshold, brake_threshold
+    )
     
     # Draw coasting zones behind everything
     for start, end in zip(coasting_starts, coasting_ends):
         ax1.axvspan(start, end, alpha=0.25, color='#38BDF8', zorder=0)
     
-    # Plot speed trace colored by pedal state (segment by segment)
-    for i in range(len(x) - 1):
-        # Determine color based on pedal state
-        if brake[i] > brake_threshold:
-            color = COLORS['brake']  # Braking = red
-            alpha = 0.9
-        elif throttle[i] > throttle_threshold:
-            color = COLORS['throttle']  # Throttle = green
-            alpha = 0.9
-        else:
-            # Coasting = thin, light, dashed - "nothing happening here"
-            ax1.plot(x[i:i+2], y[i:i+2], color='#D1D5DB', linewidth=1.5, 
-                    alpha=0.6, linestyle='--')
-            continue
-        
-        ax1.plot(x[i:i+2], y[i:i+2], color=color, linewidth=2.5, alpha=alpha, solid_capstyle='round')
+    # Plot speed trace colored by pedal state using vectorized masks (performance)
+    # Brake has precedence over throttle
+    brake_mask = brake > brake_threshold
+    throttle_mask = (throttle > throttle_threshold) & ~brake_mask
+    coast_mask = ~(brake_mask | throttle_mask)
+    
+    # Use NaNs to break lines between segments of different states
+    y_brake = np.where(brake_mask, y, np.nan)
+    y_throttle = np.where(throttle_mask, y, np.nan)
+    y_coast = np.where(coast_mask, y, np.nan)
+    
+    # Coasting = thin, light, dashed - "nothing happening here"
+    ax1.plot(x, y_coast, color='#D1D5DB', linewidth=1.5, alpha=0.6, linestyle='--')
+    # Throttle = green
+    ax1.plot(x, y_throttle, color=COLORS['throttle'], linewidth=2.5, alpha=0.9, solid_capstyle='round')
+    # Braking = red
+    ax1.plot(x, y_brake, color=COLORS['brake'], linewidth=2.5, alpha=0.9, solid_capstyle='round')
     
     # Add subtle fill for shape context
     ax1.fill_between(x, 0, y, color='#E5E7EB', alpha=0.3)
@@ -132,7 +154,6 @@ def create_telemetry_visualization(
                 color=COLORS['brake'], fontweight='bold')
     
     # Add legend for pedal colors
-    from matplotlib.lines import Line2D
     legend_elements = [
         Line2D([0], [0], color=COLORS['throttle'], linewidth=3, label='Throttle'),
         Line2D([0], [0], color=COLORS['brake'], linewidth=3, label='Braking'),
@@ -145,25 +166,6 @@ def create_telemetry_visualization(
     ax1.set_title('Speed Trace (colored by pedal input)', fontsize=12, fontweight='bold')
     ax1.set_xlim(0, 100)
     ax1.set_ylim(0, df['Speed'].max() * 3.6 * 1.1)
-    
-    # Calculate coasting zones (used by track map and throttle/brake graph)
-    coasting_mask = (df['Throttle'] < throttle_threshold) & (df['Brake'] < brake_threshold)
-    coasting_starts = []
-    coasting_ends = []
-    in_coast = False
-    for i, is_coasting in enumerate(coasting_mask):
-        if is_coasting and not in_coast:
-            coasting_starts.append(df['TrackPct'].iloc[i])
-            in_coast = True
-        elif not is_coasting and in_coast:
-            coasting_ends.append(df['TrackPct'].iloc[i])
-            in_coast = False
-    if in_coast:
-        coasting_ends.append(df['TrackPct'].iloc[-1])
-    
-    coasting_pct = coasting_mask.sum() / len(coasting_mask) * 100
-    
-    from matplotlib.patches import Patch
     
     # ========== 3. TRACK MAP COLORED BY PEDAL STATE (full width, row 2) ==========
     ax3 = fig.add_subplot(gs[2])  # Full width, bottom row
@@ -195,7 +197,7 @@ def create_telemetry_visualization(
                 fontweight='bold', color=COLORS['track_start'])
     
     ax3.set_aspect('equal')
-    ax3.set_title('Track Map (colored by pedal input)', fontsize=12, fontweight='bold')
+    ax3.set_title(f'Track Map (colored by pedal input) – Coasting: {coasting_pct:.1f}%', fontsize=12, fontweight='bold')
     ax3.set_xlabel('')
     ax3.set_ylabel('')
     ax3.set_xticks([])
@@ -227,10 +229,11 @@ def create_telemetry_visualization(
     overlap_mask = (df['Throttle'] > 0.02) & (df['Brake'] > 0.05)  # 2% throttle + 5% brake = foot not lifted
     
     # Find overlap spans, filtering out brief blips using TIME (sample count)
-    # Telemetry is ~60Hz, so:
-    # - Blip (~200ms) = ~12 samples
-    # - Sustained (>400ms) = >24 samples = real problem
-    min_overlap_samples = 24  # ~400ms at 60Hz - blips are shorter than this
+    # Estimate sample rate from data: samples / (lap time in seconds)
+    # Typical lap ~51s with ~3000 samples = ~60Hz, but calculate to be robust
+    estimated_sample_rate = len(df) / 51.0  # Assume ~51s lap if no timing data
+    min_overlap_duration_sec = 0.4  # 400ms = blip threshold
+    min_overlap_samples = int(min_overlap_duration_sec * estimated_sample_rate)
     
     overlap_starts = []
     overlap_ends = []

@@ -51,7 +51,7 @@ schedule:
 - **Mindset:** "Don't chase the time, let it come" worked. Best lap came when not trying.
 - **Traffic lesson (Events #5→#6):** Discovered the urge to pass slower cars immediately breaks rhythm. Tested patience: follow for 2 laps, strike clean at T1. Result: σ dropped from 3.44s to 0.23s. Patience isn't optional – it's faster.
 - **Gap management:** Replay showed bumping cars in braking zones when following. Need more space cushion – stay out of their braking zone.
-- AI race only worked after I treated lap 1–3 as a **survival exercise** instead of a passing contest. Once I did that, the band came back and the race felt calmer.
+- AI race only worked after I treated laps 1–3 as a **survival exercise** instead of a passing contest. Once I did that, the band came back and the race felt calmer.
 
 ### Hypothesis Validated ✅
 

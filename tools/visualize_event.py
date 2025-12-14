@@ -222,7 +222,7 @@ def create_event_visualization(
     
     ax3.set_xlabel('Lap Time (s)', fontsize=11)
     ax3.set_ylabel('Density', fontsize=11)
-    ax3.set_title('Rhythm Band', fontsize=12, fontweight='bold')
+    ax3.set_title(f'Rhythm Band ({in_band_pct:.0f}% in band)', fontsize=12, fontweight='bold')
     ax3.legend(loc='upper right', fontsize=9, framealpha=0.95)
     
     # ═══════════════════════════════════════════════════════════════════════════
@@ -276,21 +276,33 @@ def create_event_visualization(
         s2_best = df['Sector 2'].min()
         s3_best = df['Sector 3'].min()
         
+        # Calculate deltas, handling NaN values robustly
         s1_delta = df['Sector 1'].values - s1_best
         s2_delta = df['Sector 2'].values - s2_best
         s3_delta = df['Sector 3'].values - s3_best
         
+        # Replace NaN with 0 for stacking (incomplete laps won't contribute)
+        s1_delta = np.nan_to_num(s1_delta, nan=0.0)
+        s2_delta = np.nan_to_num(s2_delta, nan=0.0)
+        s3_delta = np.nan_to_num(s3_delta, nan=0.0)
+        
+        # Clamp negative values to 0 for "time lost" visualization
+        # (negative = faster than best, not "lost" time)
+        s1_loss = np.maximum(s1_delta, 0)
+        s2_loss = np.maximum(s2_delta, 0)
+        s3_loss = np.maximum(s3_delta, 0)
+        
         # Stacked bars - each bar shows total time lost, colored by sector contribution
         bar_width = 0.7
-        ax5.bar(laps, s1_delta, bar_width, color=COLORS['s1'], alpha=0.85, 
-                label=f'S1 (+{np.sum(s1_delta):.1f}s total)')
-        ax5.bar(laps, s2_delta, bar_width, bottom=s1_delta, color=COLORS['s2'], alpha=0.85,
-                label=f'S2 (+{np.sum(s2_delta):.1f}s total)')
-        ax5.bar(laps, s3_delta, bar_width, bottom=s1_delta + s2_delta, color=COLORS['s3'], alpha=0.85,
-                label=f'S3 (+{np.sum(s3_delta):.1f}s total)')
+        ax5.bar(laps, s1_loss, bar_width, color=COLORS['s1'], alpha=0.85, 
+                label=f'S1 (+{np.nansum(s1_loss):.1f}s total)')
+        ax5.bar(laps, s2_loss, bar_width, bottom=s1_loss, color=COLORS['s2'], alpha=0.85,
+                label=f'S2 (+{np.nansum(s2_loss):.1f}s total)')
+        ax5.bar(laps, s3_loss, bar_width, bottom=s1_loss + s2_loss, color=COLORS['s3'], alpha=0.85,
+                label=f'S3 (+{np.nansum(s3_loss):.1f}s total)')
         
         # Add total time lost annotation on bars > 1s
-        total_delta = s1_delta + s2_delta + s3_delta
+        total_delta = s1_loss + s2_loss + s3_loss
         for i, (lap, total) in enumerate(zip(laps, total_delta)):
             if total > 1.0:
                 ax5.text(lap, total + 0.05, f'+{total:.1f}', ha='center', va='bottom', 
