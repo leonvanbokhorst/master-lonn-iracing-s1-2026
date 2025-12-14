@@ -9,26 +9,28 @@ help:
 	@echo "🏎️  iRacing Season Logbook Commands"
 	@echo "===================================="
 	@echo ""
-	@echo "  make add-event WEEK=01 FILE=...   Add new event (copies CSV, creates page, updates week)"
-	@echo "  make update-week WEEK=01          Regenerate week visualizations + summary"
-	@echo "  make compare-laps WEEK=01         Compare best laps (needs telemetry CSVs)"
+	@echo "  make add-event WEEK=01 FILE=... [TELEMETRY=...]   Add new event (processes all 4 visualizations)"
+	@echo "  make update-week WEEK=01                          Regenerate week visualizations + summary"
+	@echo "  make compare-laps WEEK=01                         Compare best laps (needs telemetry CSVs)"
 	@echo ""
 	@echo "  make viz-event FILE=...           Visualize a single event CSV (lap times)"
 	@echo "  make viz-week WEEK=01             Generate week progress visualization only"
 	@echo "  make viz-telemetry FILE=...       Analyze single-lap telemetry (speed, pedals, G-forces)"
 	@echo ""
 	@echo "Workflow:"
-	@echo "  1. Export CSV from Garage61"
-	@echo "  2. make add-event WEEK=01 FILE=~/Downloads/export.csv"
+	@echo "  1. Export CSV from Garage61 (Session + Fastest Lap Telemetry)"
+	@echo "  2. make add-event WEEK=01 FILE=~/Downloads/event.csv TELEMETRY=~/Downloads/lap.csv"
 	@echo "  3. Edit debrief: weeks/week01/events/XX-date-type.md"
 	@echo ""
 
 # Add a new event to the week structure
-# Usage: make add-event WEEK=01 FILE=path/to/export.csv
+# Usage: make add-event WEEK=01 FILE=path/to/export.csv [TELEMETRY=path/to/lap.csv]
 add-event:
-	@if [ -z "$(WEEK)" ]; then echo "❌ Usage: make add-event WEEK=01 FILE=path/to/export.csv"; exit 1; fi
-	@if [ -z "$(FILE)" ]; then echo "❌ Usage: make add-event WEEK=01 FILE=path/to/export.csv"; exit 1; fi
-	uv run python tools/add_event.py $(WEEK) "$(FILE)"
+	@if [ -z "$(WEEK)" ]; then echo "❌ Usage: make add-event WEEK=01 FILE=path/to/export.csv [TELEMETRY=path/to/lap.csv]"; exit 1; fi
+	@if [ -z "$(FILE)" ]; then echo "❌ Usage: make add-event WEEK=01 FILE=path/to/export.csv [TELEMETRY=path/to/lap.csv]"; exit 1; fi
+	uv run python tools/add_event.py $(WEEK) "$(FILE)" $(if $(TELEMETRY),--telemetry "$(TELEMETRY)",)
+	@echo "📊 Updating lap comparison..."
+	uv run python tools/compare_laps.py weeks/week$(WEEK)/data/
 
 # Compare best laps from telemetry exports
 # Usage: make compare-laps WEEK=01

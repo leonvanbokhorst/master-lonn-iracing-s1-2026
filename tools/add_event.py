@@ -20,6 +20,7 @@ import re
 # Import our visualization tools
 from visualize_event import load_event_csv, create_event_visualization
 from visualize_week import load_week_events, create_week_visualization
+from visualize_telemetry import load_telemetry, create_telemetry_visualization
 
 
 def detect_event_type(filename: str) -> str:
@@ -86,12 +87,58 @@ def extract_event_info(df: pd.DataFrame, csv_path: Path) -> dict:
     return info
 
 
+METRIC_KEY_MAP = {
+    "laps": "laps",
+    "best lap": "best",
+    "consistency (σ)": "sigma",
+}
+
+
+def parse_event_stats(md_path: Path) -> dict:
+    """Extract stats from an event markdown file."""
+    if not md_path.exists():
+        return {}
+
+    content = md_path.read_text()
+    stats: dict[str, float | int] = {}
+
+    # Match lines like: | **Label** | value |
+    row_re = re.compile(r"\|\s*\*{0,2}(.*?)\*{0,2}\s*\|\s*([0-9.]+)")
+
+    for label_raw, value_raw in row_re.findall(content):
+        label_norm = label_raw.strip().lower()
+        key = METRIC_KEY_MAP.get(label_norm)
+        if not key:
+            continue
+        try:
+            value = float(value_raw)
+            stats[key] = int(value) if key == "laps" else value
+        except ValueError:
+            continue
+
+    return stats
+
+
+def render_template(template: str, context: dict[str, str]) -> str:
+    """Simple template renderer.
+    
+    Replaces {{name}} with context[name].
+    If name is not in context, leaves {{name}} as is.
+    """
+    def repl(match: re.Match) -> str:
+        name = match.group(1).strip()
+        # Convert to string, or keep original if not found
+        return str(context.get(name, match.group(0)))
+    
+    return re.sub(r"\{\{(.*?)\}\}", repl, template)
+
+
 def create_event_page(
     event_num: int,
     week: str,
     info: dict,
     events_dir: Path,
-    has_telemetry: bool = False
+    telemetry_stats: dict | None = None
 ) -> Path:
     """Create an event markdown page."""
     
@@ -122,6 +169,22 @@ type: "{{type}}"
 | **Consistency (σ)** | {{sigma}}s |
 | **Clean Laps** | {{clean_pct}}% |
 
+## Lap Times
+
+![Lap Progression](../images/event-{{event_num_pad}}-laptimes.png)
+
+{{#if telemetry}}
+## Telemetry Analysis
+
+![Telemetry](../images/event-{{event_num_pad}}-telemetry.png)
+
+### Pedal Usage
+
+- Full throttle: {{throttle_pct}}%
+- Braking: {{brake_pct}}%
+- Coasting: {{coast_pct}}%
+{{/if}}
+
 ## Debrief
 
 **The Facts:**
@@ -134,27 +197,37 @@ type: "{{type}}"
 1. _..._
 """
     
-    # Simple template substitution
-    content = template
-    content = content.replace('{{event_num}}', str(event_num))
-    content = content.replace('{{week}}', week)
-    content = content.replace('{{date}}', info['date'])
-    content = content.replace('{{type}}', info['type'])
-    content = content.replace('{{laps}}', str(info['laps']))
-    content = content.replace('{{best}}', f"{info['best']:.3f}")
-    content = content.replace('{{optimal}}', f"{info['optimal']:.3f}")
-    content = content.replace('{{settled}}', f"{info['settled']:.3f}")
-    content = content.replace('{{sigma}}', f"{info['sigma']:.2f}")
-    content = content.replace('{{clean_pct}}', f"{info['clean_pct']:.0f}")
+    # Build context
+    ctx = {
+        "event_num": str(event_num),
+        "event_num_pad": f"{event_num:02d}",
+        "week": week,
+        "date": info['date'],
+        "type": info['type'],
+        "laps": str(info['laps']),
+        "best": f"{info['best']:.3f}",
+        "optimal": f"{info['optimal']:.3f}",
+        "settled": f"{info['settled']:.3f}",
+        "sigma": f"{info['sigma']:.2f}",
+        "clean_pct": f"{info['clean_pct']:.0f}",
+    }
     
     # Handle conditional telemetry section
-    if not has_telemetry:
-        # Remove telemetry section
-        content = re.sub(r'\{\{#if telemetry\}\}.*?\{\{/if\}\}', '', content, flags=re.DOTALL)
+    if telemetry_stats:
+        ctx.update({
+            "throttle_pct": f"{telemetry_stats['throttle_pct']:.1f}",
+            "brake_pct": f"{telemetry_stats['brake_pct']:.1f}",
+            "coast_pct": f"{telemetry_stats['coast_pct']:.1f}",
+        })
+        # Strip condition markers
+        template = template.replace('{{#if telemetry}}', '').replace('{{/if}}', '')
     else:
-        content = content.replace('{{#if telemetry}}', '')
-        content = content.replace('{{/if}}', '')
+        # Remove telemetry section
+        template = re.sub(r'\{\{#if telemetry\}\}.*?\{\{/if\}\}', '', template, flags=re.DOTALL)
     
+    # Render
+    content = render_template(template, ctx)
+
     # Event filename
     type_slug = info['type'].replace(' ', '-')
     event_filename = f"{event_num:02d}-{info['date']}-{type_slug}.md"
@@ -163,6 +236,29 @@ type: "{{type}}"
     event_path.write_text(content)
     
     return event_path
+
+
+def compute_week_summary(events: list[dict]) -> str:
+    """Compute summary statistics for the week."""
+    if not events:
+        return "_No events yet._"
+
+    # Filter for valid events with stats
+    valid = [e for e in events if isinstance(e.get("best"), (int, float)) and e.get("best", 0) > 0]
+    if not valid:
+        return "_No events yet._"
+
+    best_lap = min(e["best"] for e in valid)
+    first_lap = valid[0]["best"]
+    last_sigma = valid[-1]["sigma"]
+    improvement = first_lap - best_lap
+
+    return (
+        f"- **Events:** {len(events)}\n"
+        f"- **Best Lap:** {best_lap:.3f}s\n"
+        f"- **Improvement:** {improvement:+.3f}s (from {first_lap:.3f}s)\n"
+        f"- **Latest σ:** {last_sigma:.2f}s"
+    )
 
 
 def update_week_readme(week: str, weeks_dir: Path, events: list[dict]):
@@ -176,6 +272,7 @@ def update_week_readme(week: str, weeks_dir: Path, events: list[dict]):
     for e in events:
         notes = "_Add notes..._" if not e.get('notes') else e['notes']
         details_link = f"[→](events/{e['filename']})"
+        
         table_rows.append(
             f"| {e['num']} | {e['date']} | {e['type']} | {e['laps']} | "
             f"{e['best']:.3f}s | {e['sigma']:.2f}s | {notes} | {details_link} |"
@@ -183,63 +280,79 @@ def update_week_readme(week: str, weeks_dir: Path, events: list[dict]):
     
     events_table = '\n'.join(table_rows)
     
-    # Check if README exists and preserve some sections
+    # Compute new summary
+    summary = compute_week_summary(events)
+    
+    # Preserve existing content or create new
     if readme_path.exists():
-        existing = readme_path.read_text()
+        content = readme_path.read_text()
         
-        # Try to preserve intent and reflection sections
-        intent_match = re.search(r'>\s*\*\*Intent:\*\*\s*_(.+?)_', existing)
-        intent = intent_match.group(1) if intent_match else "Write your intent here..."
+        # 1. Preserve Notes from existing table
+        for e in events:
+             # Look for | N | ... | ... | ... | ... | ... | NOTES | ... |
+             row_match = re.search(r'\|\s*' + str(e['num']) + r'\s*\|.*?\|.*?\|.*?\|.*?\|.*?\|\s*(.*?)\s*\|', content)
+             if row_match:
+                 e['notes'] = row_match.group(1).strip()
+                 # Rebuild the row with preserved notes
+                 table_rows[events.index(e)] = (
+                    f"| {e['num']} | {e['date']} | {e['type']} | {e['laps']} | "
+                    f"{e['best']:.3f}s | {e['sigma']:.2f}s | {e['notes']} | [→](events/{e['filename']}) |"
+                 )
+        events_table = '\n'.join(table_rows)
         
-        # Preserve reflection section
-        reflection_match = re.search(r'## Reflection\n\n(.+?)(?=\n---|\Z)', existing, re.DOTALL)
-        reflection = reflection_match.group(1).strip() if reflection_match else """- Track craft takeaways: ...
-- Brake bias learnings: ...
-- Driver mindset notes: ..."""
+        # 2. Update the Events table in place
+        table_start_match = re.search(r'\|\s*#\s*\|\s*Date', content)
+        
+        if table_start_match:
+            start_idx = table_start_match.start()
+            
+            # Find the end of the table
+            lines = content[start_idx:].split('\n')
+            end_offset = 0
+            for i, line in enumerate(lines):
+                if i > 1 and not line.strip().startswith('|'): # i>1 to skip header and separator
+                    break
+                end_offset += len(line) + 1 # +1 for newline
+            
+            pre_table = content[:start_idx]
+            post_table = content[start_idx + end_offset:]
+            
+            # Build new table
+            new_table_header = "| # | Date | Type | Laps | Best | σ | Notes | Details |\n|---|------|------|------|------|---|-------|---------|"
+            new_table = f"{new_table_header}\n{events_table}"
+            
+            content = f"{pre_table}{new_table}{post_table}"
+            
+        else:
+            # Append if missing
+            if "## Events" in content:
+                content = content.replace("## Events", f"## Events\n\n| # | Date | Type | Laps | Best | σ | Notes | Details |\n|---|------|------|------|------|---|-------|---------|\n{events_table}")
+            else:
+                content += f"\n\n## Events\n\n| # | Date | Type | Laps | Best | σ | Notes | Details |\n|---|------|------|------|------|---|-------|---------|\n{events_table}"
+
+        # 3. Update Summary section
+        summary_pattern = r'(## Summary\n\n)([\s\S]*?)(?=\n## |\Z)'
+        if re.search(summary_pattern, content):
+            content = re.sub(summary_pattern, f"\\1{summary}\n", content)
+
     else:
+        # Create new file (fallback)
         intent = "Write your intent here..."
         reflection = """- Track craft takeaways: ...
 - Brake bias learnings: ...
 - Driver mindset notes: ..."""
-    
-    # Summary stats
-    if events:
-        best_lap = min(e['best'] for e in events)
-        first_lap = events[0]['best']
-        last_sigma = events[-1]['sigma']
-        improvement = first_lap - best_lap
         
-        summary = f"""- **Events:** {len(events)}
-- **Best Lap:** {best_lap:.3f}s
-- **Improvement:** {improvement:+.3f}s (from {first_lap:.3f}s)
-- **Latest σ:** {last_sigma:.2f}s"""
-    else:
-        summary = "_No events yet._"
-    
-    # Build README content
-    content = f"""---
+        content = f"""---
 week: {week}
 ---
 
-# Week {week} – Summit Point Raceway – Jefferson Circuit
-
-> Track dossier: [Summit Point Jefferson Circuit](../../tracks/track-summit-point-jefferson-circuit.md)
-
-> **Intent:** _{intent}_
+# Week {week}
 
 ## Events
 
 | # | Date | Type | Laps | Best | σ | Notes | Details |
 |---|------|------|------|------|---|-------|---------|
 {events_table}
-
-## Week Progress
-
-![Week Progress](../../images/week{week}/week-progress.png)
-
-## Lap Comparison
-
-![Lap Comparison](../../images/week{week}/lap-comparison.png)
 
 ## Summary
 
@@ -248,14 +361,27 @@ week: {week}
 ## Reflection
 
 {reflection}
-
----
-
-[← Back to Season](../../README.md)
 """
     
     readme_path.write_text(content)
     return readme_path
+
+
+def compute_telemetry_stats(telem_df: pd.DataFrame) -> dict[str, float]:
+    """Compute basic telemetry stats (pedal usage)."""
+    throttle_threshold = 0.05
+    brake_threshold = 0.01
+    full_throttle_pct = (telem_df["Throttle"] > 0.95).sum() / len(telem_df) * 100
+    braking_pct = (telem_df["Brake"] > brake_threshold).sum() / len(telem_df) * 100
+    coasting_pct = (
+        (telem_df["Throttle"] < throttle_threshold)
+        & (telem_df["Brake"] < brake_threshold)
+    ).sum() / len(telem_df) * 100
+    return {
+        "throttle_pct": full_throttle_pct,
+        "brake_pct": braking_pct,
+        "coast_pct": coasting_pct,
+    }
 
 
 def main():
@@ -275,7 +401,7 @@ def main():
     # Setup paths - everything lives under weeks/weekXX/
     project_root = Path(__file__).parent.parent
     week_dir = project_root / "weeks" / f"week{args.week}"
-    data_dir = week_dir / "data"
+    data_dir = week_dir / "data" / "processed"
     images_dir = week_dir / "images"
     events_dir = week_dir / "events"
     
@@ -291,6 +417,9 @@ def main():
     if not dest_csv.exists():
         shutil.copy(args.csv_file, dest_csv)
         print(f"   Copied CSV to data/{dest_csv.name}")
+    else:
+        # If file exists, we still want to process it, maybe it was updated
+        pass
     
     # Load and analyze event
     print(f"   Analyzing event data...")
@@ -311,19 +440,32 @@ def main():
                                    output_path=event_viz_path)
     
     # Handle telemetry if provided
-    has_telemetry = False
+    telemetry_stats = None
     if args.telemetry and args.telemetry.exists():
         print(f"   Processing telemetry...")
         # Copy telemetry
         telem_dest = data_dir / args.telemetry.name
         if not telem_dest.exists():
             shutil.copy(args.telemetry, telem_dest)
-        has_telemetry = True
-        # TODO: Generate telemetry viz
+        
+        if not args.no_viz:
+            # Generate telemetry visualization
+            telem_viz_path = images_dir / f"event-{event_num:02d}-telemetry.png"
+            telem_df = load_telemetry(args.telemetry)
+            
+            # Calculate stats for the template using helper
+            telemetry_stats = compute_telemetry_stats(telem_df)
+            
+            create_telemetry_visualization(
+                telem_df, 
+                title=f"Event #{event_num} Telemetry – Best Lap: {info['best']:.3f}s", 
+                output_path=telem_viz_path
+            )
+
     
     # Create event page
     print(f"   Creating event page...")
-    event_path = create_event_page(event_num, args.week, info, events_dir, has_telemetry)
+    event_path = create_event_page(event_num, args.week, info, events_dir, telemetry_stats)
     info['filename'] = event_path.name
     
     # Load all events for week README
@@ -332,14 +474,28 @@ def main():
         match = re.match(r'(\d+)-(\d{4}-\d{2}-\d{2})-(.+)\.md', event_file.name)
         if match:
             num, date, type_slug = match.groups()
-            # Read basic info from file (would need to parse, simplified here)
+            num = int(num)
+            
+            # Get stats
+            if num == event_num:
+                # Use current info
+                laps = info['laps']
+                best = info['best']
+                sigma = info['sigma']
+            else:
+                # Parse from file using new helper
+                stats = parse_event_stats(event_file)
+                laps = stats.get('laps', '?')
+                best = stats.get('best', 0.0)
+                sigma = stats.get('sigma', 0.0)
+
             all_events.append({
-                'num': int(num),
+                'num': num,
                 'date': date,
                 'type': type_slug.replace('-', ' '),
-                'laps': info['laps'] if int(num) == event_num else '?',
-                'best': info['best'] if int(num) == event_num else 0,
-                'sigma': info['sigma'] if int(num) == event_num else 0,
+                'laps': laps,
+                'best': best,
+                'sigma': sigma,
                 'filename': event_file.name,
             })
     
@@ -353,6 +509,7 @@ def main():
     # Regenerate week visualization
     if not args.no_viz:
         print(f"   Regenerating week visualization...")
+        # Point to the processed data directory
         events_data = load_week_events(data_dir)
         if events_data:
             week_viz_path = images_dir / "week-progress.png"
@@ -371,4 +528,3 @@ def main():
 
 if __name__ == "__main__":
     exit(main())
-
