@@ -10,16 +10,16 @@ week: 01
 
 ## Events
 
-| #   | Date       | Type    | Laps | Best    | σ     | Notes                 | Details                              |
-| --- | ---------- | ------- | ---- | ------- | ----- | --------------------- | ------------------------------------ |
-| 1   | 2025-12-11 | solo    | 34   | 51.438s | 6.08s | First contact         | [→](events/01-2025-12-11-solo.md)    |
-| 2   | 2025-12-11 | solo    | 63   | 51.101s | 1.47s | Finding rhythm        | [→](events/02-2025-12-11-solo.md)    |
-| 3   | 2025-12-12 | solo    | 40   | 50.985s | 1.90s | **PB lap** 🏆         | [→](events/03-2025-12-12-solo.md)    |
-| 4   | 2025-12-12 | ai race | 29   | 51.148s | 1.03s | Race pace!            | [→](events/04-2025-12-12-ai-race.md) |
-| 5   | 2025-12-13 | ai race | 13   | 51.403s | 3.21s | Patience test         | [→](events/05-2025-12-13-ai-race.md) |
-| 6   | 2025-12-13 | ai race | 13   | 51.290s | 0.81s | **Patience works** ✅ | [→](events/06-2025-12-13-ai-race.md) |
-| 7   | 2025-12-14 | ai race | 13   | 51.198s | 0.92s | _Add notes..._        | [→](events/07-2025-12-14-ai-race.md) |
-| 8   | 2025-12-14 | ai race | 13   | 51.107s | 1.03s | _Add notes..._        | [→](events/08-2025-12-14-ai-race.md) |
+| #   | Date       | Type    | Laps | Best    | σ     | Notes                  | Details                              |
+| --- | ---------- | ------- | ---- | ------- | ----- | ---------------------- | ------------------------------------ |
+| 1   | 2025-12-11 | solo    | 34   | 51.438s | 6.08s | First contact          | [→](events/01-2025-12-11-solo.md)    |
+| 2   | 2025-12-11 | solo    | 63   | 51.101s | 1.47s | Finding rhythm         | [→](events/02-2025-12-11-solo.md)    |
+| 3   | 2025-12-12 | solo    | 40   | 50.985s | 1.90s | **PB lap** 🏆          | [→](events/03-2025-12-12-solo.md)    |
+| 4   | 2025-12-12 | ai race | 29   | 51.148s | 1.03s | Race pace!             | [→](events/04-2025-12-12-ai-race.md) |
+| 5   | 2025-12-13 | ai race | 13   | 51.403s | 3.21s | Patience test          | [→](events/05-2025-12-13-ai-race.md) |
+| 6   | 2025-12-13 | ai race | 13   | 51.290s | 0.81s | **Patience works** ✅  | [→](events/06-2025-12-13-ai-race.md) |
+| 7   | 2025-12-14 | ai race | 13   | 51.198s | 0.92s | **Patience validated** | [→](events/07-2025-12-14-ai-race.md) |
+| 8   | 2025-12-14 | ai race | 13   | 51.107s | 1.03s | **Ready for the grid** | [→](events/08-2025-12-14-ai-race.md) |
 
 ## Week Progress
 
@@ -44,6 +44,7 @@ week: 01
 - **Traffic lesson (Events #5→#6):** Discovered the urge to pass slower cars immediately breaks rhythm. Tested patience: follow for 2 laps, strike clean at T1. Result: σ dropped from 3.21s to 0.81s. Patience isn't optional – it's faster.
 - **Gap management:** Replay showed bumping cars in braking zones when following. Need more space cushion – stay out of their braking zone.
 - **AI race only worked after I treated laps 1–3 as a **survival exercise\*\* instead of a passing contest. Once I did that, the band came back and the race felt calmer.
+- **Final Validation (Events #7 & #8):** Confirmed the "Survival Protocol" works. Ran two full races 100% clean. Event #8 proved we can add aggression (61% throttle) without losing safety. **Ready for the grid.**
 
 ### Hypothesis Validated ✅
 
