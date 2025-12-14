@@ -6,8 +6,11 @@ Uses config.toml in the project root. Falls back to defaults if not found.
 
 import tomllib
 from pathlib import Path
-from dataclasses import dataclass
-from typing import Optional
+from dataclasses import dataclass, fields
+from typing import Optional, Any, Type, TypeVar
+from collections.abc import Mapping
+
+T = TypeVar("T")
 
 # Find config.toml relative to this file
 CONFIG_PATH = Path(__file__).parent.parent / "config.toml"
@@ -53,6 +56,33 @@ class Config:
     visualization: VisualizationConfig
 
 
+# Shared color constants for consistent styling
+COLORS = {
+    'first': '#E94F37',    # Red
+    'best': '#1B998B',     # Teal
+    'latest': '#F6AE2D',   # Yellow/Gold
+    'muted': '#D1D5DB',    # Gray (non-journey events)
+    'throttle': '#1B998B',
+    'brake': '#E94F37',
+    'coasting': '#94A3B8',
+}
+
+
+def _build_section(cls: Type[T], raw: Mapping[str, Any] | None) -> T:
+    """Filter a raw config mapping down to fields defined on the dataclass.
+    
+    Ignores unknown/misspelled keys to avoid TypeError on config changes.
+    """
+    if not isinstance(raw, Mapping):
+        raw_dict: dict[str, Any] = {}
+    else:
+        raw_dict = dict(raw)
+    
+    allowed_keys = {f.name for f in fields(cls)}
+    filtered = {k: v for k, v in raw_dict.items() if k in allowed_keys}
+    return cls(**filtered)
+
+
 def load_config(config_path: Optional[Path] = None) -> Config:
     """Load configuration from TOML file."""
     path = config_path or CONFIG_PATH
@@ -64,11 +94,11 @@ def load_config(config_path: Optional[Path] = None) -> Config:
         data = {}
     
     return Config(
-        telemetry=TelemetryConfig(**data.get("telemetry", {})),
-        pedals=PedalsConfig(**data.get("pedals", {})),
-        overlap=OverlapConfig(**data.get("overlap", {})),
-        laps=LapsConfig(**data.get("laps", {})),
-        visualization=VisualizationConfig(**data.get("visualization", {})),
+        telemetry=_build_section(TelemetryConfig, data.get("telemetry")),
+        pedals=_build_section(PedalsConfig, data.get("pedals")),
+        overlap=_build_section(OverlapConfig, data.get("overlap")),
+        laps=_build_section(LapsConfig, data.get("laps")),
+        visualization=_build_section(VisualizationConfig, data.get("visualization")),
     )
 
 

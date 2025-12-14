@@ -8,17 +8,19 @@ Usage:
 """
 
 import argparse
+import sys
 from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime
 
+# Add parent to path for config import when running as script
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from tools.config import pedals, visualization, COLORS
+
 # Style configuration
 plt.style.use('seaborn-v0_8-whitegrid')
-
-# Colors for laps (chronological order)
-LAP_COLORS = ['#E94F37', '#F6AE2D', '#33A1FD', '#1B998B', '#A23B72', '#2E86AB']
 
 
 def decode_ulid_timestamp(ulid: str) -> int:
@@ -145,7 +147,7 @@ def create_comparison_visualization(
     # Build journey laps (deduplicate if best=first or best=latest)
     journey_laps = []
     journey_labels = []
-    journey_colors = ['#E94F37', '#1B998B', '#F6AE2D']  # Red (First), Teal (Best), Yellow (Latest)
+    journey_colors = [COLORS['first'], COLORS['best'], COLORS['latest']]
     
     journey_laps.append(first_lap)
     journey_labels.append(f"First (#{first_lap[1]['event_num']}): {first_lap[1]['lap_time']:.3f}s")
@@ -175,10 +177,11 @@ def create_comparison_visualization(
     ax1.set_facecolor('#FAFAFA')
     
     # Plot all three with equal weight - let the delta chart below tell the details
+    vis_cfg = visualization()
     for i, ((df, info), label) in enumerate(zip(journey_laps, journey_labels)):
         color = journey_colors[i % len(journey_colors)]
         ax1.plot(df['TrackPct'], df['Speed'] * 3.6, color=color, 
-                linewidth=2.0, alpha=0.65, label=label)
+                linewidth=2.0, alpha=vis_cfg.trace_alpha, label=label)
     
     ax1.set_xlabel('Track Position (%)', fontsize=11)
     ax1.set_ylabel('Speed (km/h)', fontsize=11)
@@ -195,11 +198,11 @@ def create_comparison_visualization(
     ref_speed = np.interp(track_positions, ref_df['TrackPct'], ref_df['Speed'])
     
     # Only show Best and Latest vs First (cleaner)
-    compare_laps = [(best_lap, 'Best', '#1B998B'), (latest_lap, 'Latest', '#F6AE2D')]
+    compare_laps = [(best_lap, 'Best', COLORS['best']), (latest_lap, 'Latest', COLORS['latest'])]
     if best_idx == len(laps) - 1:
-        compare_laps = [(latest_lap, 'Latest (Best)', '#1B998B')]
+        compare_laps = [(latest_lap, 'Latest (Best)', COLORS['best'])]
     elif best_idx == 0:
-        compare_laps = [(latest_lap, 'Latest', '#F6AE2D')]
+        compare_laps = [(latest_lap, 'Latest', COLORS['latest'])]
     
     for (df, info), label, color in compare_laps:
         compare_speed = np.interp(track_positions, df['TrackPct'], df['Speed'])
@@ -242,14 +245,13 @@ def create_comparison_visualization(
         'Coasting': [],
     }
     
-    # Use same thresholds as visualize_telemetry.py
-    throttle_threshold = 0.05  # 5% = on throttle
-    brake_threshold = 0.01     # 1% = truly off brake (trail braking counts as braking)
+    # Use thresholds from config
+    pedals_cfg = pedals()
     
     for df, info in journey_laps:
-        full_throttle = (df['Throttle'] > 0.95).sum() / len(df) * 100
-        braking = (df['Brake'] > brake_threshold).sum() / len(df) * 100
-        coasting = ((df['Throttle'] < throttle_threshold) & (df['Brake'] < brake_threshold)).sum() / len(df) * 100
+        full_throttle = (df['Throttle'] > pedals_cfg.throttle_full).sum() / len(df) * 100
+        braking = (df['Brake'] > pedals_cfg.brake_on).sum() / len(df) * 100
+        coasting = ((df['Throttle'] < pedals_cfg.throttle_on) & (df['Brake'] < pedals_cfg.brake_on)).sum() / len(df) * 100
         
         metrics['Full Throttle'].append(full_throttle)
         metrics['Braking'].append(braking)
@@ -281,13 +283,13 @@ def create_comparison_visualization(
     bar_colors = []
     for i, (_, info) in enumerate(laps):
         if i == 0:
-            bar_colors.append('#E94F37')  # First
+            bar_colors.append(COLORS['first'])
         elif i == best_idx:
-            bar_colors.append('#1B998B')  # Best
+            bar_colors.append(COLORS['best'])
         elif i == len(laps) - 1:
-            bar_colors.append('#F6AE2D')  # Latest (yellow)
+            bar_colors.append(COLORS['latest'])
         else:
-            bar_colors.append('#D1D5DB')  # Others (muted)
+            bar_colors.append(COLORS['muted'])
     
     bars = ax5.bar(event_nums, lap_times, color=bar_colors,
                   alpha=0.9, edgecolor='white', linewidth=1.5)
@@ -298,9 +300,9 @@ def create_comparison_visualization(
         ax5.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.02,
                 f'{lap_time:.3f}', ha='center', va='bottom', fontsize=9, fontweight=fontweight)
     
-    # Add delta labels for highlighted events only
+    # Add delta labels for highlighted events only (use set to avoid duplicates when best=latest)
     first_time = lap_times[0]
-    for i in [best_idx, len(laps)-1]:
+    for i in {best_idx, len(laps)-1}:  # Set deduplicates when best_idx == len(laps)-1
         if i > 0:
             delta = lap_times[i] - first_time
             ax5.text(event_nums[i], lap_times[i] - 0.12,
@@ -329,10 +331,10 @@ def create_comparison_visualization(
     plt.close()
     
     # Print summary
-    print_comparison_summary(laps, corners)
+    print_comparison_summary(laps)
 
 
-def print_comparison_summary(laps: list[tuple[pd.DataFrame, dict]], corners: dict):
+def print_comparison_summary(laps: list[tuple[pd.DataFrame, dict]]):
     """Print learning insights from lap comparison."""
     
     print("\n" + "="*70)
@@ -351,43 +353,20 @@ def print_comparison_summary(laps: list[tuple[pd.DataFrame, dict]], corners: dic
     print(f"\n🎯 Total improvement: {first_time:.3f}s → {best_time:.3f}s = {first_time - best_time:+.3f}s")
     print(f"   Best lap: Event #{laps[best_idx][1]['event_num']}")
     
-    # Corner analysis
-    print(f"\n🔄 Corner minimum speeds:")
-    print(f"   {'Corner':<12} {'#1':>8} {'Best':>8} {'Δ':>8}")
-    print("   " + "-"*40)
-    
-    for corner_name, (start, end) in corners.items():
-        first_df = laps[0][0]
-        mask_first = (first_df['TrackPct'] >= start) & (first_df['TrackPct'] <= end)
-        min_first = first_df.loc[mask_first, 'Speed'].min() if mask_first.any() else 0
-        
-        best_corner = min_first
-        best_event = 1
-        for i, (df, info) in enumerate(laps):
-            mask = (df['TrackPct'] >= start) & (df['TrackPct'] <= end)
-            min_speed = df.loc[mask, 'Speed'].min() if mask.any() else 0
-            if min_speed > best_corner:
-                best_corner = min_speed
-                best_event = info['event_num']
-        
-        delta = best_corner - min_first
-        print(f"   {corner_name:<12} {min_first:>7.1f} {best_corner:>7.1f} {delta:>+7.1f}")
-    
     # Technique evolution
     print(f"\n🦶 Technique evolution:")
     first_df = laps[0][0]
     last_df = laps[-1][0]
     
-    # Use same thresholds as visualize_telemetry.py
-    throttle_threshold = 0.05
-    brake_threshold = 0.01
-    coast_first = ((first_df['Throttle'] < throttle_threshold) & (first_df['Brake'] < brake_threshold)).sum() / len(first_df) * 100
-    coast_last = ((last_df['Throttle'] < throttle_threshold) & (last_df['Brake'] < brake_threshold)).sum() / len(last_df) * 100
+    # Use thresholds from config
+    pedals_cfg = pedals()
+    coast_first = ((first_df['Throttle'] < pedals_cfg.throttle_on) & (first_df['Brake'] < pedals_cfg.brake_on)).sum() / len(first_df) * 100
+    coast_last = ((last_df['Throttle'] < pedals_cfg.throttle_on) & (last_df['Brake'] < pedals_cfg.brake_on)).sum() / len(last_df) * 100
     
     print(f"   Coasting: {coast_first:.1f}% → {coast_last:.1f}% ({coast_last - coast_first:+.1f}%)")
     
-    throttle_first = (first_df['Throttle'] > 0.95).sum() / len(first_df) * 100
-    throttle_last = (last_df['Throttle'] > 0.95).sum() / len(last_df) * 100
+    throttle_first = (first_df['Throttle'] > pedals_cfg.throttle_full).sum() / len(first_df) * 100
+    throttle_last = (last_df['Throttle'] > pedals_cfg.throttle_full).sum() / len(last_df) * 100
     print(f"   Full throttle: {throttle_first:.1f}% → {throttle_last:.1f}% ({throttle_last - throttle_first:+.1f}%)")
 
 
@@ -421,7 +400,12 @@ def main():
         dir_name = args.directory.name
         if dir_name.lower() == 'data':
             dir_name = args.directory.parent.name
-        week_name = dir_name.replace('week', 'Week ').title()
+        
+        # Handle weekXX pattern, otherwise use directory name as-is
+        if dir_name.lower().startswith('week'):
+            week_name = dir_name.replace('week', 'Week ').replace('Week 0', 'Week ')
+        else:
+            week_name = dir_name.title()
         title = f"{week_name} Best Lap Evolution"
     
     # Output path
