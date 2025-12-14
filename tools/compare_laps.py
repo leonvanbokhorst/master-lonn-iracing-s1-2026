@@ -129,170 +129,189 @@ def create_comparison_visualization(
     title: str = "Lap Comparison",
     output_path: Path = None
 ):
-    """Create a comprehensive lap comparison visualization."""
+    """Create a focused lap comparison visualization showing The Journey: First → Best → Latest."""
     
     n_laps = len(laps)
     if n_laps < 2:
         print("❌ Need at least 2 laps to compare!")
         return
     
-    # Create figure
-    fig = plt.figure(figsize=(16, 14))
+    # === THE JOURNEY: Select First, Best, Latest ===
+    first_lap = laps[0]
+    best_idx = min(range(len(laps)), key=lambda i: laps[i][1]['lap_time'])
+    best_lap = laps[best_idx]
+    latest_lap = laps[-1]
+    
+    # Build journey laps (deduplicate if best=first or best=latest)
+    journey_laps = []
+    journey_labels = []
+    journey_colors = ['#E94F37', '#1B998B', '#F6AE2D']  # Red (First), Teal (Best), Yellow (Latest)
+    
+    journey_laps.append(first_lap)
+    journey_labels.append(f"First (#{first_lap[1]['event_num']}): {first_lap[1]['lap_time']:.3f}s")
+    
+    if best_idx != 0 and best_idx != len(laps) - 1:
+        journey_laps.append(best_lap)
+        journey_labels.append(f"Best (#{best_lap[1]['event_num']}): {best_lap[1]['lap_time']:.3f}s")
+    
+    if len(laps) > 1:
+        journey_laps.append(latest_lap)
+        best_marker = " ⭐" if best_idx == len(laps) - 1 else ""
+        journey_labels.append(f"Latest (#{latest_lap[1]['event_num']}): {latest_lap[1]['lap_time']:.3f}s{best_marker}")
+    
+    n_journey = len(journey_laps)
+    
+    # Create figure - cleaner 3-row layout (removed corner speed chart)
+    fig = plt.figure(figsize=(16, 12))
     
     gs = fig.add_gridspec(3, 2, height_ratios=[1.2, 1, 1],
-                          hspace=0.3, wspace=0.25,
-                          left=0.06, right=0.98, top=0.92, bottom=0.05)
+                          hspace=0.35, wspace=0.25,
+                          left=0.06, right=0.98, top=0.93, bottom=0.06)
     
     fig.suptitle(title, fontsize=16, fontweight='bold', y=0.97)
     
-    # ========== 1. SPEED TRACE OVERLAY (full width) ==========
+    # ========== 1. SPEED TRACE: THE JOURNEY (full width) ==========
     ax1 = fig.add_subplot(gs[0, :])
     ax1.set_facecolor('#FAFAFA')
     
-    for i, (df, info) in enumerate(laps):
-        color = LAP_COLORS[i % len(LAP_COLORS)]
-        label = f"#{info['event_num']}: {info['lap_time']:.3f}s"
-        ax1.plot(df['TrackPct'], df['Speed'], color=color, 
-                linewidth=1.5 if i == len(laps)-1 else 1.0,
-                alpha=0.9 if i == len(laps)-1 else 0.6,
-                label=label)
+    # Plot all three with equal weight - let the delta chart below tell the details
+    for i, ((df, info), label) in enumerate(zip(journey_laps, journey_labels)):
+        color = journey_colors[i % len(journey_colors)]
+        ax1.plot(df['TrackPct'], df['Speed'] * 3.6, color=color, 
+                linewidth=2.0, alpha=0.65, label=label)
     
     ax1.set_xlabel('Track Position (%)', fontsize=11)
-    ax1.set_ylabel('Speed', fontsize=11)
-    ax1.set_title('Speed Trace Evolution (all best laps)', fontsize=12, fontweight='bold')
+    ax1.set_ylabel('Speed (km/h)', fontsize=11)
+    ax1.set_title('The Journey: First → Best → Latest', fontsize=12, fontweight='bold')
     ax1.set_xlim(0, 100)
-    ax1.legend(loc='upper right', fontsize=9)
+    ax1.legend(loc='upper right', fontsize=10, framealpha=0.95)
     
-    # ========== 2. SPEED DIFFERENCE FROM FIRST LAP (left) ==========
+    # ========== 2. SPEED DELTA: Where did the time come from? (left) ==========
     ax2 = fig.add_subplot(gs[1, 0])
     ax2.set_facecolor('#FAFAFA')
     
-    ref_df = laps[0][0]  # First lap as reference
+    ref_df = first_lap[0]  # First lap as reference
     track_positions = np.linspace(0, 100, 500)
     ref_speed = np.interp(track_positions, ref_df['TrackPct'], ref_df['Speed'])
     
-    for i, (df, info) in enumerate(laps[1:], start=1):  # Skip first lap
-        color = LAP_COLORS[i % len(LAP_COLORS)]
+    # Only show Best and Latest vs First (cleaner)
+    compare_laps = [(best_lap, 'Best', '#1B998B'), (latest_lap, 'Latest', '#F6AE2D')]
+    if best_idx == len(laps) - 1:
+        compare_laps = [(latest_lap, 'Latest (Best)', '#1B998B')]
+    elif best_idx == 0:
+        compare_laps = [(latest_lap, 'Latest', '#F6AE2D')]
+    
+    for (df, info), label, color in compare_laps:
         compare_speed = np.interp(track_positions, df['TrackPct'], df['Speed'])
         speed_diff = compare_speed - ref_speed  # Positive = faster
-        
-        label = f"#{info['event_num']} vs #1"
-        ax2.plot(track_positions, speed_diff, color=color, linewidth=1.2, 
-                alpha=0.8, label=label)
+        ax2.plot(track_positions, speed_diff, color=color, linewidth=2, 
+                alpha=0.9, label=f"{label} vs First")
     
     ax2.axhline(y=0, color='#999', linewidth=1, linestyle='--')
-    ax2.fill_between(track_positions, 0, 0, alpha=0)  # Dummy for consistent ylim
     
     ax2.set_xlabel('Track Position (%)', fontsize=11)
-    ax2.set_ylabel('Speed Δ (vs Event #1)', fontsize=11)
-    ax2.set_title('Speed Gain/Loss vs First Lap', fontsize=12, fontweight='bold')
+    ax2.set_ylabel('Speed Δ (vs First)', fontsize=11)
+    ax2.set_title('Where did the speed come from?', fontsize=12, fontweight='bold')
     ax2.set_xlim(0, 100)
-    ax2.legend(loc='upper right', fontsize=9)
+    ax2.legend(loc='upper right', fontsize=10)
     
     # Add green/red zones
     ylim = ax2.get_ylim()
-    ax2.fill_between([0, 100], [0, 0], [ylim[1], ylim[1]], alpha=0.05, color='green')
-    ax2.fill_between([0, 100], [ylim[0], ylim[0]], [0, 0], alpha=0.05, color='red')
-    ax2.text(2, ylim[1]*0.8, 'FASTER', fontsize=8, color='green', alpha=0.5)
-    ax2.text(2, ylim[0]*0.8, 'SLOWER', fontsize=8, color='red', alpha=0.5)
+    max_y = max(abs(ylim[0]), abs(ylim[1]))
+    ax2.set_ylim(-max_y * 1.1, max_y * 1.1)
+    ylim = ax2.get_ylim()
+    ax2.fill_between([0, 100], [0, 0], [ylim[1], ylim[1]], alpha=0.08, color='#1B998B')
+    ax2.fill_between([0, 100], [ylim[0], ylim[0]], [0, 0], alpha=0.08, color='#E94F37')
+    ax2.text(2, ylim[1]*0.85, 'FASTER', fontsize=9, color='#1B998B', fontweight='bold', alpha=0.7)
+    ax2.text(2, ylim[0]*0.85, 'SLOWER', fontsize=9, color='#E94F37', fontweight='bold', alpha=0.7)
     
-    # ========== 3. MIN CORNER SPEED PROGRESSION (right) ==========
-    ax3 = fig.add_subplot(gs[1, 1])
-    ax3.set_facecolor('#FAFAFA')
+    # Build journey short labels for charts
+    journey_short_labels = ['First', 'Best', 'Latest'][:n_journey]
+    if best_idx == len(laps) - 1:
+        journey_short_labels = ['First', 'Latest ⭐']
+    elif best_idx == 0:
+        journey_short_labels = ['First ⭐', 'Latest']
     
-    # Define approximate corner locations (percentage of track)
-    # For Jefferson Circuit - these are rough estimates based on speed trace
-    corners = {
-        'T1-2': (12, 22),
-        'Esses': (28, 42),
-        'T6': (48, 58),
-        'Carousel': (72, 92),
-    }
-    
-    corner_names = list(corners.keys())
-    x_pos = np.arange(len(corner_names))
-    bar_width = 0.8 / n_laps
-    
-    for i, (df, info) in enumerate(laps):
-        min_speeds = []
-        for corner_name, (start, end) in corners.items():
-            mask = (df['TrackPct'] >= start) & (df['TrackPct'] <= end)
-            min_speed = df.loc[mask, 'Speed'].min() if mask.any() else 0
-            min_speeds.append(min_speed)
-        
-        color = LAP_COLORS[i % len(LAP_COLORS)]
-        offset = (i - n_laps/2 + 0.5) * bar_width
-        bars = ax3.bar(x_pos + offset, min_speeds, bar_width * 0.9, 
-                      color=color, alpha=0.7, label=f"#{info['event_num']}")
-    
-    ax3.set_xticks(x_pos)
-    ax3.set_xticklabels(corner_names, fontsize=10)
-    ax3.set_ylabel('Min Speed', fontsize=11)
-    ax3.set_title('Corner Minimum Speed (higher = better)', fontsize=12, fontweight='bold')
-    ax3.legend(loc='upper right', fontsize=9)
-    
-    # ========== 4. TECHNIQUE METRICS (left) ==========
-    ax4 = fig.add_subplot(gs[2, 0])
+    # ========== 3. TECHNIQUE: The Journey metrics (right of delta) ==========
+    ax4 = fig.add_subplot(gs[1, 1])
     ax4.set_facecolor('#FAFAFA')
     
     metrics = {
-        'Full Throttle %': [],
-        'Braking %': [],
-        'Coasting %': [],
+        'Full Throttle': [],
+        'Braking': [],
+        'Coasting': [],
     }
     
-    for df, info in laps:
-        full_throttle = (df['Throttle'] > 0.95).sum() / len(df) * 100
-        braking = (df['Brake'] > 0.1).sum() / len(df) * 100
-        coasting = ((df['Throttle'] < 0.1) & (df['Brake'] < 0.1)).sum() / len(df) * 100
-        
-        metrics['Full Throttle %'].append(full_throttle)
-        metrics['Braking %'].append(braking)
-        metrics['Coasting %'].append(coasting)
+    # Use same thresholds as visualize_telemetry.py
+    throttle_threshold = 0.05  # 5% = on throttle
+    brake_threshold = 0.01     # 1% = truly off brake (trail braking counts as braking)
     
-    x_pos = np.arange(n_laps)
+    for df, info in journey_laps:
+        full_throttle = (df['Throttle'] > 0.95).sum() / len(df) * 100
+        braking = (df['Brake'] > brake_threshold).sum() / len(df) * 100
+        coasting = ((df['Throttle'] < throttle_threshold) & (df['Brake'] < brake_threshold)).sum() / len(df) * 100
+        
+        metrics['Full Throttle'].append(full_throttle)
+        metrics['Braking'].append(braking)
+        metrics['Coasting'].append(coasting)
+    
+    x_pos = np.arange(n_journey)
     bar_width = 0.25
     
+    metric_colors = ['#1B998B', '#E94F37', '#94A3B8']
     for j, (metric_name, values) in enumerate(metrics.items()):
         offset = (j - 1) * bar_width
-        color = ['#1B998B', '#E94F37', '#999'][j]
-        ax4.bar(x_pos + offset, values, bar_width * 0.9, 
-               color=color, alpha=0.7, label=metric_name)
+        ax4.bar(x_pos + offset, values, bar_width * 0.85, 
+               color=metric_colors[j], alpha=0.8, label=metric_name, edgecolor='white', linewidth=1)
     
     ax4.set_xticks(x_pos)
-    ax4.set_xticklabels([f"#{info['event_num']}" for _, info in laps], fontsize=10)
+    ax4.set_xticklabels(journey_short_labels, fontsize=11)
     ax4.set_ylabel('% of Lap', fontsize=11)
     ax4.set_title('Pedal Technique Evolution', fontsize=12, fontweight='bold')
-    ax4.legend(loc='upper right', fontsize=9)
+    ax4.legend(loc='upper right', fontsize=10)
     
-    # ========== 5. LAP TIME PROGRESSION (right) ==========
-    ax5 = fig.add_subplot(gs[2, 1])
+    # ========== 4. LAP TIME: Full progression with journey highlighted (full width) ==========
+    ax5 = fig.add_subplot(gs[2, :])
     ax5.set_facecolor('#FAFAFA')
     
     lap_times = [info['lap_time'] for _, info in laps]
     event_nums = [info['event_num'] for _, info in laps]
     
-    bars = ax5.bar(event_nums, lap_times, color=[LAP_COLORS[i % len(LAP_COLORS)] for i in range(n_laps)],
-                  alpha=0.8, edgecolor='white', linewidth=1.5)
+    # Color bars: journey events highlighted, others muted
+    bar_colors = []
+    for i, (_, info) in enumerate(laps):
+        if i == 0:
+            bar_colors.append('#E94F37')  # First
+        elif i == best_idx:
+            bar_colors.append('#1B998B')  # Best
+        elif i == len(laps) - 1:
+            bar_colors.append('#F6AE2D')  # Latest (yellow)
+        else:
+            bar_colors.append('#D1D5DB')  # Others (muted)
+    
+    bars = ax5.bar(event_nums, lap_times, color=bar_colors,
+                  alpha=0.9, edgecolor='white', linewidth=1.5)
     
     # Add lap time labels
-    for bar, lap_time in zip(bars, lap_times):
-        ax5.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.05,
-                f'{lap_time:.3f}', ha='center', va='bottom', fontsize=10)
+    for i, (bar, lap_time) in enumerate(zip(bars, lap_times)):
+        fontweight = 'bold' if i in [0, best_idx, len(laps)-1] else 'normal'
+        ax5.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.02,
+                f'{lap_time:.3f}', ha='center', va='bottom', fontsize=9, fontweight=fontweight)
     
-    # Add delta labels
-    for i in range(1, len(lap_times)):
-        delta = lap_times[i] - lap_times[0]
-        color = '#1B998B' if delta < 0 else '#E94F37'
-        ax5.text(event_nums[i], lap_times[i] - 0.15,
-                f'{delta:+.3f}', ha='center', va='top', fontsize=9,
-                fontweight='bold', color='white')
+    # Add delta labels for highlighted events only
+    first_time = lap_times[0]
+    for i in [best_idx, len(laps)-1]:
+        if i > 0:
+            delta = lap_times[i] - first_time
+            ax5.text(event_nums[i], lap_times[i] - 0.12,
+                    f'{delta:+.3f}', ha='center', va='top', fontsize=9,
+                    fontweight='bold', color='white')
     
     ax5.set_xlabel('Event #', fontsize=11)
     ax5.set_ylabel('Lap Time (s)', fontsize=11)
-    ax5.set_title('Best Lap Progression', fontsize=12, fontweight='bold')
+    ax5.set_title('Best Lap Progression (Journey highlighted)', fontsize=12, fontweight='bold')
     
-    # Adjust y-axis to show differences clearly
+    # Adjust y-axis
     y_min = min(lap_times) - 0.3
     y_max = max(lap_times) + 0.3
     ax5.set_ylim(y_min, y_max)
@@ -359,8 +378,11 @@ def print_comparison_summary(laps: list[tuple[pd.DataFrame, dict]], corners: dic
     first_df = laps[0][0]
     last_df = laps[-1][0]
     
-    coast_first = ((first_df['Throttle'] < 0.1) & (first_df['Brake'] < 0.1)).sum() / len(first_df) * 100
-    coast_last = ((last_df['Throttle'] < 0.1) & (last_df['Brake'] < 0.1)).sum() / len(last_df) * 100
+    # Use same thresholds as visualize_telemetry.py
+    throttle_threshold = 0.05
+    brake_threshold = 0.01
+    coast_first = ((first_df['Throttle'] < throttle_threshold) & (first_df['Brake'] < brake_threshold)).sum() / len(first_df) * 100
+    coast_last = ((last_df['Throttle'] < throttle_threshold) & (last_df['Brake'] < brake_threshold)).sum() / len(last_df) * 100
     
     print(f"   Coasting: {coast_first:.1f}% → {coast_last:.1f}% ({coast_last - coast_first:+.1f}%)")
     
@@ -395,8 +417,12 @@ def main():
     # Generate title
     title = args.title
     if not title:
-        week_name = args.directory.name.upper()
-        title = f"{week_name} – Learning Progression ({len(laps)} Best Laps)"
+        # Try parent dir if current is 'data'
+        dir_name = args.directory.name
+        if dir_name.lower() == 'data':
+            dir_name = args.directory.parent.name
+        week_name = dir_name.replace('week', 'Week ').title()
+        title = f"{week_name} Best Lap Evolution"
     
     # Output path
     output_path = args.output
