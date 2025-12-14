@@ -46,10 +46,12 @@ schedule:
 
 ## Reflection
 
-- **Track craft:** Jefferson rewards smooth transitions. The time comes from filling the gaps between brake and throttle, not from braking later.
-- **Brake bias:** 56.0% worked well. 54% was too pointy.
+- **Track craft:** Jefferson rewards smooth transitions. The time comes from filling the gaps between brake and throttle, not from braking later. Use the full track width – edges exist for a reason.
+- **Brake bias:** 56.0% still too pointy – rear breaks out in every corner. 54% was worse. → Test 57% next.
 - **Mindset:** "Don't chase the time, let it come" worked. Best lap came when not trying.
 - **Traffic lesson (Events #5→#6):** Discovered the urge to pass slower cars immediately breaks rhythm. Tested patience: follow for 2 laps, strike clean at T1. Result: σ dropped from 3.44s to 0.23s. Patience isn't optional – it's faster.
+- **Gap management:** Replay showed bumping cars in braking zones when following. Need more space cushion – stay out of their braking zone.
+- AI race only worked after I treated lap 1–3 as a **survival exercise** instead of a passing contest. Once I did that, the band came back and the race felt calmer.
 
 ### Hypothesis Validated ✅
 
@@ -63,6 +65,8 @@ schedule:
 - Focus on "laps to settle" – can we find pace faster?
 - Maintain clean incident count in official races
 - Practice patience in traffic – strike clean, not desperate
+- Experiment with 57% brake bias for stability
+- Consciously use full track width
 
 ---
 

@@ -177,24 +177,52 @@ def create_event_visualization(
     ax2.set_ylim(y_min, y_max)
     
     # ═══════════════════════════════════════════════════════════════════════════
-    # PLOT 3: Distribution
+    # PLOT 3: Rhythm Band Distribution
     # ═══════════════════════════════════════════════════════════════════════════
     ax3 = fig.add_subplot(gs[1, 0])
     ax3.set_facecolor('#FFFFFF')
     
-    sns.histplot(times, bins=15, kde=True, color=COLORS['primary'], 
-                 alpha=0.6, edgecolor='white', linewidth=0.8, ax=ax3)
+    # Calculate the band from main phase (settled pace)
+    main_phase_times = times[middle_end:] if middle_end < len(times) else times
+    band_mean = np.mean(main_phase_times)
+    band_std = np.std(main_phase_times)
+    band_low = band_mean - band_std
+    band_high = band_mean + band_std
     
-    mean_val = np.mean(times)
-    median_val = np.median(times)
-    ax3.axvline(mean_val, color=COLORS['dirty'], linestyle='--', linewidth=1.5, 
-                label=f'Mean: {mean_val:.2f}s')
-    ax3.axvline(median_val, color=COLORS['fastest'], linestyle=':', linewidth=1.5, 
-                label=f'Median: {median_val:.2f}s')
+    # Identify in-band vs out-of-band laps
+    in_band_mask = (times >= band_low) & (times <= band_high)
+    in_band_times = times[in_band_mask]
+    out_band_times = times[~in_band_mask]
+    in_band_pct = (len(in_band_times) / len(times)) * 100
+    
+    # Draw smooth KDE curve - subtle gray, not distracting
+    sns.kdeplot(times, color='#6B7280', linewidth=1.5, ax=ax3, fill=True, alpha=0.15)
+    
+    # Add band shading - prominent green zone
+    ax3.axvspan(band_low, band_high, alpha=0.35, color='#10B981', zorder=1)
+    
+    # Band boundary lines - subtle
+    ax3.axvline(band_low, color='#10B981', linestyle='--', linewidth=1, alpha=0.5)
+    ax3.axvline(band_high, color='#10B981', linestyle='--', linewidth=1, alpha=0.5)
+    ax3.axvline(band_mean, color='#059669', linestyle='-', linewidth=2, alpha=0.8)
+    
+    # Plot out-of-band laps only - in-band count shown in legend
+    y_base = ax3.get_ylim()[1] * 0.03
+    
+    # Out-of-band laps: orange markers - these need attention
+    if len(out_band_times) > 0:
+        ax3.scatter(out_band_times, [y_base] * len(out_band_times), 
+                   color='#F59E0B', s=45, marker='o', zorder=6, alpha=0.85,
+                   edgecolor='#D97706', linewidth=1, label=f'Out of band ({len(out_band_times)})')
+    
+    # Add all info to legend (right side, away from left peak)
+    ax3.plot([], [], ' ', label=f'In band ({len(in_band_times)})')
+    ax3.plot([], [], ' ', label=f'Band: {band_low:.2f}s – {band_high:.2f}s')
+    ax3.plot([], [], ' ', label=f'σ {band_std:.2f}s')
     
     ax3.set_xlabel('Lap Time (s)', fontsize=11)
-    ax3.set_ylabel('Frequency', fontsize=11)
-    ax3.set_title('Lap Time Distribution', fontsize=12, fontweight='bold')
+    ax3.set_ylabel('Density', fontsize=11)
+    ax3.set_title('Rhythm Band', fontsize=12, fontweight='bold')
     ax3.legend(loc='upper right', fontsize=9, framealpha=0.95)
     
     # ═══════════════════════════════════════════════════════════════════════════
@@ -239,7 +267,7 @@ def create_event_visualization(
     # PLOT 5 & 6: Sector Analysis (if available)
     # ═══════════════════════════════════════════════════════════════════════════
     if has_sectors:
-        # Sector delta from best - all on same scale for comparison
+        # Stacked bar: time lost per lap, colored by sector
         ax5 = fig.add_subplot(gs[2, 0])
         ax5.set_facecolor('#FFFFFF')
         
@@ -252,19 +280,25 @@ def create_event_visualization(
         s2_delta = df['Sector 2'].values - s2_best
         s3_delta = df['Sector 3'].values - s3_best
         
-        ax5.plot(laps, s1_delta, 'o-', color=COLORS['s1'], 
-                linewidth=1.2, markersize=4, label=f'S1 (best: {s1_best:.2f}s)', alpha=0.8)
-        ax5.plot(laps, s2_delta, 's-', color=COLORS['s2'], 
-                linewidth=1.2, markersize=4, label=f'S2 (best: {s2_best:.2f}s)', alpha=0.8)
-        ax5.plot(laps, s3_delta, '^-', color=COLORS['s3'], 
-                linewidth=1.2, markersize=4, label=f'S3 (best: {s3_best:.2f}s)', alpha=0.8)
+        # Stacked bars - each bar shows total time lost, colored by sector contribution
+        bar_width = 0.7
+        ax5.bar(laps, s1_delta, bar_width, color=COLORS['s1'], alpha=0.85, 
+                label=f'S1 (+{np.sum(s1_delta):.1f}s total)')
+        ax5.bar(laps, s2_delta, bar_width, bottom=s1_delta, color=COLORS['s2'], alpha=0.85,
+                label=f'S2 (+{np.sum(s2_delta):.1f}s total)')
+        ax5.bar(laps, s3_delta, bar_width, bottom=s1_delta + s2_delta, color=COLORS['s3'], alpha=0.85,
+                label=f'S3 (+{np.sum(s3_delta):.1f}s total)')
         
-        # Add zero line (= personal best)
-        ax5.axhline(0, color='#999', linestyle='--', linewidth=1, alpha=0.5)
+        # Add total time lost annotation on bars > 1s
+        total_delta = s1_delta + s2_delta + s3_delta
+        for i, (lap, total) in enumerate(zip(laps, total_delta)):
+            if total > 1.0:
+                ax5.text(lap, total + 0.05, f'+{total:.1f}', ha='center', va='bottom', 
+                        fontsize=8, color='#666', fontweight='bold')
         
         ax5.set_xlabel('Lap', fontsize=11)
-        ax5.set_ylabel('Delta from Best (s)', fontsize=11)
-        ax5.set_title('Sector Time Loss', fontsize=12, fontweight='bold')
+        ax5.set_ylabel('Time Lost (s)', fontsize=11)
+        ax5.set_title('Lap Time Loss by Sector', fontsize=12, fontweight='bold')
         ax5.legend(loc='upper right', fontsize=8, framealpha=0.95)
         
         # Sector Focus Analysis - "Where's the Time?"
@@ -339,7 +373,7 @@ def create_event_visualization(
     print(f"Total laps: {len(laps)}")
     print(f"Clean laps: {int(clean.sum())} ({100*clean.sum()/len(clean):.0f}%)")
     print(f"Best lap: {times[fastest_idx]:.3f}s (lap {fastest_lap})")
-    print(f"Mean: {mean_val:.3f}s | Median: {median_val:.3f}s")
+    print(f"Mean: {np.mean(times):.3f}s | Median: {np.median(times):.3f}s")
     
     if middle_end < len(times):
         main_times = times[middle_end:]
