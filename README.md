@@ -17,11 +17,11 @@ iRacing 2026 Season 1 runs **December 16, 2025 → March 9, 2026** (12 weeks). B
 | Metric              | Start (Event #1) | Best Achieved    | Latest (Event #6) |
 | ------------------- | ---------------- | ---------------- | ----------------- |
 | **Best lap**        | 51.438s          | **50.985s** (#3) | 51.290s           |
-| **Consistency (σ)** | 5.31s            | **0.23s** (#6)   | 0.23s             |
+| **Consistency (σ)** | 6.08s            | **0.81s** (#6)   | 0.81s             |
 | **Coasting %**      | 12.2%            | **1.7%** (#4)    | 11.4%             |
 | **Gap to optimal**  | 2.8s             | **0.20s**        | 0.20s             |
 
-**Key learning:** Patience in traffic validated. σ 3.44s (impatient) → 0.23s (patient) in back-to-back races.
+**Key learning:** Patience in traffic validated. σ 3.21s (impatient) → 0.81s (patient) in back-to-back races.
 
 ---
 

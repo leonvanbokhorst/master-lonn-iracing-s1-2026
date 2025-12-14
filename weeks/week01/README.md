@@ -22,12 +22,12 @@ schedule:
 
 | #   | Date       | Type     | Laps | Best    | σ     | Notes                 | Details                              |
 | --- | ---------- | -------- | ---- | ------- | ----- | --------------------- | ------------------------------------ |
-| 1   | 2025-12-11 | Practice | 33   | 51.438s | 5.31s | First contact         | [→](events/01-2025-12-11-solo.md)    |
-| 2   | 2025-12-11 | Practice | 62   | 51.101s | 1.10s | Finding rhythm        | [→](events/02-2025-12-11-solo.md)    |
-| 3   | 2025-12-12 | Practice | 39   | 50.985s | 2.35s | **PB lap** 🏆         | [→](events/03-2025-12-12-solo.md)    |
-| 4   | 2025-12-12 | AI Race  | 28   | 51.148s | 0.26s | Race pace!            | [→](events/04-2025-12-12-ai-race.md) |
-| 5   | 2025-12-13 | AI Race  | 13   | 51.403s | 3.44s | Patience test         | [→](events/05-2025-12-13-ai-race.md) |
-| 6   | 2025-12-13 | AI Race  | 13   | 51.290s | 0.23s | **Patience works** ✅ | [→](events/06-2025-12-13-ai-race.md) |
+| 1   | 2025-12-11 | Practice | 33   | 51.438s | 6.08s | First contact         | [→](events/01-2025-12-11-solo.md)    |
+| 2   | 2025-12-11 | Practice | 62   | 51.101s | 1.47s | Finding rhythm        | [→](events/02-2025-12-11-solo.md)    |
+| 3   | 2025-12-12 | Practice | 39   | 50.985s | 1.90s | **PB lap** 🏆         | [→](events/03-2025-12-12-solo.md)    |
+| 4   | 2025-12-12 | AI Race  | 28   | 51.148s | 1.03s | Race pace!            | [→](events/04-2025-12-12-ai-race.md) |
+| 5   | 2025-12-13 | AI Race  | 13   | 51.403s | 3.21s | Patience test         | [→](events/05-2025-12-13-ai-race.md) |
+| 6   | 2025-12-13 | AI Race  | 13   | 51.290s | 0.81s | **Patience works** ✅ | [→](events/06-2025-12-13-ai-race.md) |
 
 ## Week Progress
 
@@ -41,7 +41,7 @@ schedule:
 
 - **Events:** 6
 - **Best Lap:** 50.985s (Event #3)
-- **Best Consistency:** σ 0.23s (Event #6 – patience pays!)
+- **Best Consistency:** σ 0.81s (Event #6 – patience pays!)
 - **Total flying laps:** 188
 
 ## Reflection
@@ -49,7 +49,7 @@ schedule:
 - **Track craft:** Jefferson rewards smooth transitions. The time comes from filling the gaps between brake and throttle, not from braking later. Use the full track width – edges exist for a reason.
 - **Brake bias:** 56.0% still too pointy – rear breaks out in every corner. 54% was worse. → Test 57% next.
 - **Mindset:** "Don't chase the time, let it come" worked. Best lap came when not trying.
-- **Traffic lesson (Events #5→#6):** Discovered the urge to pass slower cars immediately breaks rhythm. Tested patience: follow for 2 laps, strike clean at T1. Result: σ dropped from 3.44s to 0.23s. Patience isn't optional – it's faster.
+- **Traffic lesson (Events #5→#6):** Discovered the urge to pass slower cars immediately breaks rhythm. Tested patience: follow for 2 laps, strike clean at T1. Result: σ dropped from 3.21s to 0.81s. Patience isn't optional – it's faster.
 - **Gap management:** Replay showed bumping cars in braking zones when following. Need more space cushion – stay out of their braking zone.
 - AI race only worked after I treated laps 1–3 as a **survival exercise** instead of a passing contest. Once I did that, the band came back and the race felt calmer.
 
