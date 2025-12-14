@@ -103,10 +103,10 @@ def parse_event_stats(md_path: Path) -> dict:
     stats: dict[str, float | int] = {}
 
     # Match lines like: | **Label** | value |
-    row_re = re.compile(r"\|\s*\*{0,2}(.*?)\*{0,2}\s*\|\s*([0-9.]+)")
+    row_re = re.compile(r"\|\s*([^|]+?)\s*\|\s*([0-9.]+)")
 
     for label_raw, value_raw in row_re.findall(content):
-        label_norm = label_raw.strip().lower()
+        label_norm = label_raw.replace('*', '').strip().lower()
         key = METRIC_KEY_MAP.get(label_norm)
         if not key:
             continue
