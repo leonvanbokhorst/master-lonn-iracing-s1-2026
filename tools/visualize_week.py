@@ -58,7 +58,8 @@ def load_week_events(week_dir: Path, exclude_first_lap: bool = True) -> list[tup
     sessions = []
     
     # Filter out telemetry files (single-lap exports)
-    csv_files = [f for f in sorted(week_dir.glob("*.csv")) 
+    # Use rglob to find CSVs in subdirectories (like data/processed/)
+    csv_files = [f for f in sorted(week_dir.rglob("*.csv")) 
                  if not is_telemetry_file(f.name)]
     
     for csv_file in csv_files:

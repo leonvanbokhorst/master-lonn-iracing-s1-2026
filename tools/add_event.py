@@ -379,7 +379,7 @@ def main():
     # Setup paths - everything lives under weeks/weekXX/
     project_root = Path(__file__).parent.parent
     week_dir = project_root / "weeks" / f"week{args.week}"
-    data_dir = week_dir / "data"
+    data_dir = week_dir / "data" / "processed"
     images_dir = week_dir / "images"
     events_dir = week_dir / "events"
     
@@ -497,6 +497,7 @@ def main():
     # Regenerate week visualization
     if not args.no_viz:
         print(f"   Regenerating week visualization...")
+        # Point to the processed data directory
         events_data = load_week_events(data_dir)
         if events_data:
             week_viz_path = images_dir / "week-progress.png"

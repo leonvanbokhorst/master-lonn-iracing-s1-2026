@@ -37,7 +37,8 @@ def load_telemetry_files(directory: Path) -> list[tuple[pd.DataFrame, dict]]:
     telemetry_files = []
     
     # Find telemetry files (they have lap times and ULIDs in filename)
-    for csv_file in directory.glob("*.csv"):
+    # Use rglob to find CSVs in subdirectories (like data/processed/)
+    for csv_file in directory.rglob("*.csv"):
         filename = csv_file.name
         
         # Telemetry files have format: "... - 00.XX.XXX - ULID.csv"
