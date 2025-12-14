@@ -23,11 +23,11 @@ week: 01
 
 ## Week Progress
 
-![Week Progress](../../images/week01/week-progress.png)
+![Week Progress](images/week-progress.png)
 
 ## Lap Comparison
 
-![Lap Comparison](../../images/week01/lap-comparison.png)
+![Lap Comparison](images/lap-comparison.png)
 
 ## Summary
 
