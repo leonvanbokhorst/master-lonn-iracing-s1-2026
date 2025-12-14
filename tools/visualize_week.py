@@ -379,7 +379,7 @@ def create_week_visualization(
         
         bars = ax5.bar(x_pos, clean_pcts, color=COLORS['fastest'], alpha=0.6, label='Clean %')
         ax5_twin.plot(x_pos, lap_counts, 'o-', color=COLORS['secondary'], 
-                     linewidth=1.2, markersize=7, label='Lap Count')
+            linewidth=1.2, markersize=7, label='Lap Count')
         
         ax5.set_xticks(x_pos)
         ax5.set_xticklabels(event_labels, fontsize=8, rotation=label_rotation, ha=label_ha)
@@ -394,12 +394,8 @@ def create_week_visualization(
     
     if output_path:
         plt.savefig(output_path, dpi=150, bbox_inches='tight',
-                   facecolor='#FAFAFA', edgecolor='none')
+            facecolor='#FAFAFA', edgecolor='none')
         print(f"✅ Saved to: {output_path}")
-    
-    # Show interactive window if requested
-    if args.show:
-        plt.show()
     
     # Print summary
     print("\n" + "="*70)
@@ -412,7 +408,7 @@ def create_week_visualization(
     for i, (df, info) in enumerate(sessions):
         date_str = info['start_time'].strftime('%Y-%m-%d %H:%M')
         print(f"#{i+1:<9} {date_str:<18} {info['type']:<10} {info['laps']:<6} "
-              f"{info['best']:.3f}s    {info['settled_mean']:.3f}s      {info['settled_std']:.3f}s")
+            f"{info['best']:.3f}s | {info['settled_mean']:.3f}s | {info['settled_std']:.3f}s")
     
     # Progress summary
     print("\n" + "-"*70)
@@ -439,7 +435,7 @@ def main():
     parser.add_argument("--output", "-o", type=Path, help="Output file path")
     parser.add_argument("--title", "-t", type=str, help="Custom title")
     parser.add_argument("--include-first-lap", action="store_true",
-                       help="Include lap 1 in analysis (use for rolling starts)")
+        help="Include lap 1 in analysis (use for rolling starts)")
     
     args = parser.parse_args()
     
