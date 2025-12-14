@@ -319,9 +319,9 @@ def update_week_readme(week: str, weeks_dir: Path, events: list[dict]):
             
             # Build new table
             new_table_header = "| # | Date | Type | Laps | Best | σ | Notes | Details |\n|---|------|------|------|------|---|-------|---------|"
-            new_table = f"{new_table_header}\n{events_table}"
+            new_table = f"{new_table_header}\n{events_table}\n"
             
-            content = f"{pre_table}{new_table}{post_table}"
+            content = f"{pre_table}{new_table}\n{post_table.lstrip()}"
             
         else:
             # Append if missing
