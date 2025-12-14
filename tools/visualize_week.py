@@ -475,6 +475,10 @@ def main():
     # Create visualization
     create_week_visualization(events, title=title, output_path=output_path)
     
+    # Show interactive window if requested
+    if args.show:
+        plt.show()
+    
     return 0
 
 
