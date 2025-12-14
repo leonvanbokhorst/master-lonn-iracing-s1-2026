@@ -18,8 +18,139 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from scipy.interpolate import make_interp_spline
+from scipy.ndimage import gaussian_filter1d
 
 from data_loader import load_event_csv
+
+
+def build_event_title(base_title: str, times: np.ndarray, laps: np.ndarray) -> str:
+    """Add best lap and lap count to a base title."""
+    best_time = np.min(times)
+    laps_count = len(laps)
+    return f"{base_title} · Best {best_time:.3f}s · Laps {laps_count}"
+
+
+def _plot_pace_trend(ax, laps, times, middle_end, colors):
+    """Render the pace trend with a smoothed 5-lap corridor and trend line."""
+    y_min, y_max = min(times) - 0.5, max(times) + 0.5
+    ax.scatter(laps, times, color=colors['primary'], alpha=0.4, s=30, label='Individual')
+
+    # Guard for short sessions (<5 laps) before computing windows
+    if len(times) >= 5:
+        window_5_min = np.array([np.min(times[i:i+5]) for i in range(len(times) - 4)])
+        window_5_max = np.array([np.max(times[i:i+5]) for i in range(len(times) - 4)])
+        x_5 = laps[2:-2]
+    else:
+        window_5_min = np.array([])
+        window_5_max = np.array([])
+        x_5 = np.array([])
+
+    sigma = max(2, len(laps) // 10) if len(laps) > 1 else 1
+
+    if len(x_5) >= 4:
+        smooth_min = gaussian_filter1d(window_5_min, sigma=sigma)
+        smooth_max = gaussian_filter1d(window_5_max, sigma=sigma)
+
+        x_smooth = np.linspace(x_5.min(), x_5.max(), 200)
+
+        spline_min = make_interp_spline(x_5, smooth_min, k=3)
+        spline_max = make_interp_spline(x_5, smooth_max, k=3)
+        y_min_smooth = spline_min(x_smooth)
+        y_max_smooth = spline_max(x_smooth)
+
+        ax.fill_between(
+            x_smooth, y_min_smooth, y_max_smooth,
+            color=colors['fastest'], alpha=0.2, label='5-lap range',
+        )
+
+        smooth_mid = gaussian_filter1d((window_5_min + window_5_max) / 2, sigma=sigma)
+        spline_mid = make_interp_spline(x_5, smooth_mid, k=3)
+        ax.plot(x_smooth, spline_mid(x_smooth), '-', color=colors['accent'],
+                linewidth=2.5, label='Trend')
+    elif len(x_5) > 0:
+        ax.fill_between(x_5, window_5_min, window_5_max,
+                        color=colors['fastest'], alpha=0.2, label='5-lap range')
+        ax.plot(x_5, (window_5_min + window_5_max) / 2, '-',
+                color=colors['accent'], linewidth=2.5, label='Trend')
+    else:
+        # Fallback: smooth the raw times only (no corridor)
+        smooth = gaussian_filter1d(times, sigma=sigma)
+        ax.plot(laps, smooth, '-', color=colors['accent'], linewidth=2.5, label='Trend')
+
+    # Settled average line
+    if middle_end < len(times):
+        settled_times = times[middle_end:]
+        settled_mean = np.mean(settled_times)
+        ax.axhline(settled_mean, color=colors['secondary'], linestyle='--', linewidth=1.2,
+                   alpha=0.7, label=f'Settled: {settled_mean:.2f}s')
+
+    ax.set_xlabel('Lap', fontsize=11)
+    ax.set_ylabel('Lap Time (s)', fontsize=11)
+    ax.set_title('Pace Trend', fontsize=12, fontweight='bold', pad=10)
+    ax.legend(loc='upper right', fontsize=8, framealpha=0.95)
+    ax.set_ylim(y_min, y_max)
+
+
+def _plot_smoothed_series(ax, x, series, color, label, sigma, use_spline=True,
+                          linewidth=2.5, marker_style=None):
+    """Smooth a series with Gaussian + optional spline, with short-session fallback."""
+    if len(x) >= 6:
+        smooth = gaussian_filter1d(series, sigma=sigma)
+        if use_spline and len(x) >= 4:
+            x_smooth = np.linspace(x.min(), x.max(), 200)
+            spline = make_interp_spline(x, smooth, k=3)
+            ax.plot(x_smooth, spline(x_smooth), '-', color=color,
+                    linewidth=linewidth, label=label, alpha=0.9)
+        else:
+            ax.plot(x, smooth, '-', color=color,
+                    linewidth=linewidth, label=label, alpha=0.9)
+    else:
+        style = '-o' if marker_style is None else marker_style
+        ax.plot(x, series, style, color=color, linewidth=2, markersize=4,
+                label=label, alpha=0.9)
+
+
+def _plot_sector_loss_trend(ax, df, laps, colors):
+    """Render smoothed sector loss trends with scatter overlays."""
+    s1_best = df['Sector 1'].min()
+    s2_best = df['Sector 2'].min()
+    s3_best = df['Sector 3'].min()
+
+    s1_delta = df['Sector 1'].values - s1_best
+    s2_delta = df['Sector 2'].values - s2_best
+    s3_delta = df['Sector 3'].values - s3_best
+
+    s1_loss = np.nan_to_num(np.maximum(s1_delta, 0), nan=0.0)
+    s2_loss = np.nan_to_num(np.maximum(s2_delta, 0), nan=0.0)
+    s3_loss = np.nan_to_num(np.maximum(s3_delta, 0), nan=0.0)
+
+    sigma = max(2, len(laps) // 8) if len(laps) > 1 else 1
+
+    _plot_smoothed_series(
+        ax, laps, s1_loss, colors['s1'],
+        label=f'S1 (+{np.sum(s1_loss):.1f}s total)', sigma=sigma,
+    )
+    _plot_smoothed_series(
+        ax, laps, s2_loss, colors['s2'],
+        label=f'S2 (+{np.sum(s2_loss):.1f}s total)', sigma=sigma,
+    )
+    _plot_smoothed_series(
+        ax, laps, s3_loss, colors['s3'],
+        label=f'S3 (+{np.sum(s3_loss):.1f}s total)', sigma=sigma,
+    )
+
+    if len(laps) >= 6:
+        ax.scatter(laps, s1_loss, color=colors['s1'], alpha=0.3, s=15, zorder=1)
+        ax.scatter(laps, s2_loss, color=colors['s2'], alpha=0.3, s=15, zorder=1)
+        ax.scatter(laps, s3_loss, color=colors['s3'], alpha=0.3, s=15, zorder=1)
+
+    ax.axhline(0, color='#ccc', linewidth=1, linestyle='--', alpha=0.5)
+    ax.set_xlabel('Lap', fontsize=11)
+    ax.set_ylabel('Time Lost (s)', fontsize=11)
+    ax.set_title('Sector Loss Trend', fontsize=12, fontweight='bold', pad=10)
+    ax.legend(loc='upper right', fontsize=8, framealpha=0.95)
+    ax.set_ylim(bottom=0)
 
 # Configure seaborn style - light and fancy
 sns.set_theme(style="whitegrid", palette="husl", font_scale=1.1)
@@ -112,7 +243,14 @@ def create_event_visualization(
     n_rows = 3 if has_sectors else 2
     fig = plt.figure(figsize=(14, 4 * n_rows + 1))
     fig.patch.set_facecolor('#FAFAFA')
-    fig.suptitle(title, fontsize=18, fontweight='bold', color='#2C3E50', y=0.99)
+    full_title = build_event_title(title, times, laps)
+    fig.suptitle(
+        full_title,
+        fontsize=18,
+        fontweight='bold',
+        color='#2C3E50',
+        y=0.99,
+    )
     
     gs = fig.add_gridspec(n_rows, 2, hspace=0.35, wspace=0.25)
     
@@ -144,48 +282,29 @@ def create_event_visualization(
     
     ax1.set_xlabel('Lap', fontsize=11)
     ax1.set_ylabel('Lap Time (s)', fontsize=11)
-    ax1.set_title('Lap Progression', fontsize=12, fontweight='bold')
+    ax1.set_title('Lap Progression', fontsize=12, fontweight='bold', pad=10)
     ax1.legend(loc='upper right', fontsize=8, framealpha=0.95)
     
     y_min, y_max = min(times) - 0.5, max(times) + 0.5
     ax1.set_ylim(y_min, y_max)
     
     # ═══════════════════════════════════════════════════════════════════════════
-    # PLOT 2: Rolling average trend
+    # PLOT 2: Pace Trend - LEFT column, row 1 (lap-based)
     # ═══════════════════════════════════════════════════════════════════════════
-    ax2 = fig.add_subplot(gs[0, 1])
+    ax2 = fig.add_subplot(gs[1, 0])
     ax2.set_facecolor('#FFFFFF')
-    
-    window_3 = np.convolve(times, np.ones(3)/3, mode='valid')
-    window_5 = np.convolve(times, np.ones(5)/5, mode='valid')
-    
-    ax2.scatter(laps, times, color=COLORS['primary'], alpha=0.4, s=30, label='Individual')
-    ax2.plot(laps[1:-1], window_3, '-', color=COLORS['accent'], linewidth=1.5, label='3-lap avg')
-    ax2.plot(laps[2:-2], window_5, '-', color=COLORS['fastest'], linewidth=1.8, label='5-lap avg')
-    
-    # Settled average line
-    if middle_end < len(times):
-        settled_times = times[middle_end:]
-        settled_mean = np.mean(settled_times)
-        ax2.axhline(settled_mean, color=COLORS['secondary'], linestyle='--', linewidth=1.2, 
-                    alpha=0.7, label=f'Settled: {settled_mean:.2f}s')
-    
-    ax2.set_xlabel('Lap', fontsize=11)
-    ax2.set_ylabel('Lap Time (s)', fontsize=11)
-    ax2.set_title('Pace Trend', fontsize=12, fontweight='bold')
-    ax2.legend(loc='upper right', fontsize=8, framealpha=0.95)
-    ax2.set_ylim(y_min, y_max)
+    _plot_pace_trend(ax2, laps, times, middle_end, COLORS)
     
     # ═══════════════════════════════════════════════════════════════════════════
-    # PLOT 3: Rhythm Band Distribution
+    # PLOT 3: Rhythm Band Distribution - RIGHT column, row 0 (summary)
     # ═══════════════════════════════════════════════════════════════════════════
-    ax3 = fig.add_subplot(gs[1, 0])
+    ax3 = fig.add_subplot(gs[0, 1])
     ax3.set_facecolor('#FFFFFF')
     
-    # Calculate the band from main phase (settled pace)
-    main_phase_times = times[middle_end:] if middle_end < len(times) else times
-    band_mean = np.mean(main_phase_times)
-    band_std = np.std(main_phase_times)
+    # Calculate the band from ALL flying laps (honest race reality)
+    # Lap 1 already excluded by data_loader, so this includes warmup + main phase
+    band_mean = np.mean(times)
+    band_std = np.std(times)
     band_low = band_mean - band_std
     band_high = band_mean + band_std
     
@@ -222,7 +341,7 @@ def create_event_visualization(
     
     ax3.set_xlabel('Lap Time (s)', fontsize=11)
     ax3.set_ylabel('Density', fontsize=11)
-    ax3.set_title(f'Rhythm Band ({in_band_pct:.0f}% in band)', fontsize=12, fontweight='bold')
+    ax3.set_title(f'Rhythm Band ({in_band_pct:.0f}% in band)', fontsize=12, fontweight='bold', pad=10)
     ax3.legend(loc='upper right', fontsize=9, framealpha=0.95)
     
     # ═══════════════════════════════════════════════════════════════════════════
@@ -261,57 +380,16 @@ def create_event_visualization(
     
     ax4.set_xlabel('', fontsize=11)
     ax4.set_ylabel('Lap Time (s)', fontsize=11)
-    ax4.set_title('Phase Comparison', fontsize=12, fontweight='bold')
+    ax4.set_title('Phase Comparison', fontsize=12, fontweight='bold', pad=10)
     
     # ═══════════════════════════════════════════════════════════════════════════
     # PLOT 5 & 6: Sector Analysis (if available)
     # ═══════════════════════════════════════════════════════════════════════════
     if has_sectors:
-        # Stacked bar: time lost per lap, colored by sector
+        # Rolling sector loss trend (smooth flowing lines)
         ax5 = fig.add_subplot(gs[2, 0])
         ax5.set_facecolor('#FFFFFF')
-        
-        # Calculate delta from best for each sector
-        s1_best = df['Sector 1'].min()
-        s2_best = df['Sector 2'].min()
-        s3_best = df['Sector 3'].min()
-        
-        # Calculate deltas, handling NaN values robustly
-        s1_delta = df['Sector 1'].values - s1_best
-        s2_delta = df['Sector 2'].values - s2_best
-        s3_delta = df['Sector 3'].values - s3_best
-        
-        # Replace NaN with 0 for stacking (incomplete laps won't contribute)
-        s1_delta = np.nan_to_num(s1_delta, nan=0.0)
-        s2_delta = np.nan_to_num(s2_delta, nan=0.0)
-        s3_delta = np.nan_to_num(s3_delta, nan=0.0)
-        
-        # Clamp negative values to 0 for "time lost" visualization
-        # (negative = faster than best, not "lost" time)
-        s1_loss = np.maximum(s1_delta, 0)
-        s2_loss = np.maximum(s2_delta, 0)
-        s3_loss = np.maximum(s3_delta, 0)
-        
-        # Stacked bars - each bar shows total time lost, colored by sector contribution
-        bar_width = 0.7
-        ax5.bar(laps, s1_loss, bar_width, color=COLORS['s1'], alpha=0.85, 
-                label=f'S1 (+{np.nansum(s1_loss):.1f}s total)')
-        ax5.bar(laps, s2_loss, bar_width, bottom=s1_loss, color=COLORS['s2'], alpha=0.85,
-                label=f'S2 (+{np.nansum(s2_loss):.1f}s total)')
-        ax5.bar(laps, s3_loss, bar_width, bottom=s1_loss + s2_loss, color=COLORS['s3'], alpha=0.85,
-                label=f'S3 (+{np.nansum(s3_loss):.1f}s total)')
-        
-        # Add total time lost annotation on bars > 1s
-        total_delta = s1_loss + s2_loss + s3_loss
-        for i, (lap, total) in enumerate(zip(laps, total_delta)):
-            if total > 1.0:
-                ax5.text(lap, total + 0.05, f'+{total:.1f}', ha='center', va='bottom', 
-                        fontsize=8, color='#666', fontweight='bold')
-        
-        ax5.set_xlabel('Lap', fontsize=11)
-        ax5.set_ylabel('Time Lost (s)', fontsize=11)
-        ax5.set_title('Lap Time Loss by Sector', fontsize=12, fontweight='bold')
-        ax5.legend(loc='upper right', fontsize=8, framealpha=0.95)
+        _plot_sector_loss_trend(ax5, df, laps, COLORS)
         
         # Sector Focus Analysis - "Where's the Time?"
         ax6 = fig.add_subplot(gs[2, 1])
@@ -356,7 +434,7 @@ def create_event_visualization(
         ax6.set_xticklabels(sectors, fontsize=11)
         ax6.set_xlabel('', fontsize=11)
         ax6.set_ylabel('Gap to Best (s)', fontsize=11)
-        ax6.set_title("Where's the Time? (Main Phase)", fontsize=12, fontweight='bold')
+        ax6.set_title("Where's the Time? (Main Phase)", fontsize=12, fontweight='bold', pad=10)
         max_gap = max(gaps)
         ax6.set_ylim(0, max_gap * 1.4 if max_gap > 0 else 0.5)
         
@@ -456,10 +534,6 @@ def main():
         title = f"{event_type} Analysis"
         if date_str:
             title += f" – {date_str}"
-        
-        # Add key stats
-        best = df['Lap time'].min()
-        title += f"\nBest: {best:.3f}s | Laps: {len(df)}"
     
     # Create visualization
     create_event_visualization(df, title=title, output_path=output_path)

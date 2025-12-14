@@ -23,13 +23,15 @@ import pandas as pd
 
 # Sector colors - vibrant and distinct
 COLORS = {
-    'S1': '#3498db',      # Blue
-    'S2': '#e67e22',      # Orange  
-    'S3': '#27ae60',      # Green
-    'start_finish': '#e74c3c',  # Red
-    'sector_line': '#2c3e50',   # Dark gray
-    'background': '#1a1a2e',    # Dark blue-black
-    'track_bg': '#16213e',      # Slightly lighter
+    # Match the light, friendly style of the lap/pace graphs
+    'S1': '#1f78b4',          # Blue
+    'S2': '#e38f14',          # Orange
+    'S3': '#2ca25f',          # Green
+    'start_finish': '#e74c3c',# Red accent
+    'sector_line': '#8c8c8c', # Mid-gray
+    'background': '#FFFFFF',  # White figure background
+    'track_bg': '#F5F7FA',    # Light panel background
+    'track_outline': '#d0d7e2' # Soft outline for context
 }
 
 
@@ -112,12 +114,12 @@ def create_track_map(
     s2_mask = (dist_pct >= s1_end) & (dist_pct < s2_end)
     s3_mask = dist_pct >= s2_end
     
-    # Set up the figure with dark theme
+    # Set up the figure with light theme to match other graphs
     fig, ax = plt.subplots(figsize=(12, 10), facecolor=COLORS['background'])
     ax.set_facecolor(COLORS['track_bg'])
     
-    # Plot track outline (thin gray line for reference)
-    ax.plot(x, y, color='#4a4a6a', linewidth=8, alpha=0.3, solid_capstyle='round')
+    # Plot track outline (soft reference line)
+    ax.plot(x, y, color=COLORS['track_outline'], linewidth=6, alpha=0.6, solid_capstyle='round')
     
     # Plot each sector with thick colored lines
     linewidth = 5
@@ -163,7 +165,7 @@ def create_track_map(
                 arrowprops=dict(arrowstyle='->', color='white', lw=2))
     
     # Title and styling
-    ax.set_title(title, fontsize=18, fontweight='bold', color='white', pad=20)
+    ax.set_title(title, fontsize=18, fontweight='bold', color='#2C3E50', pad=20)
     
     # Equal aspect ratio for proper track shape
     ax.set_aspect('equal')
@@ -182,8 +184,8 @@ def create_track_map(
     ]
     
     ax.legend(handles=legend_elements, loc='lower center', fontsize=11,
-              facecolor=COLORS['track_bg'], edgecolor='#444', 
-              labelcolor='white', framealpha=0.95, ncol=3,
+              facecolor='white', edgecolor='#d0d7e2',
+              labelcolor='#2C3E50', framealpha=0.95, ncol=3,
               bbox_to_anchor=(0.5, -0.06))
     
     plt.tight_layout()

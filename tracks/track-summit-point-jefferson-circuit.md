@@ -21,7 +21,7 @@ On paper it looks like a glorified kart track. In the car, it’s a **“no hidi
 
 ## Track Map
 
-![Jefferson Circuit Track Map](images/jefferson-circuit-map.png)
+<a href="images/jefferson-circuit-map.png"><img src="images/jefferson-circuit-map.png" alt="Jefferson Circuit Track Map" width="70%"></a>
 
 ## Sector Definitions (iRacing)
 
@@ -110,7 +110,7 @@ Jefferson isn’t about glory laps; it’s about quietly sharpening the fundamen
 - **T6 inside:** Secondary option – _if_ you have better carousel exit, inside opens up
 - **Setup required:** Both passes come from the same place: carousel exit quality
 - **Patience is mandatory:** Follow for 2 laps, learn their weakness, strike clean
-- **The trap:** Forcing passes breaks rhythm. σ 3.44s (impatient) → σ 0.23s (patient) proved this
+- **The trap:** Forcing passes breaks rhythm. σ 3.21s (impatient) → σ 0.81s (patient) proved this
 
 > _"I'm faster. I can wait."_
 
