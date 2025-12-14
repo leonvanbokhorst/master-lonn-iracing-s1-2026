@@ -38,6 +38,8 @@ def load_telemetry_files(directory: Path) -> list[tuple[pd.DataFrame, dict]]:
     
     # Find telemetry files (they have lap times and ULIDs in filename)
     # Use rglob to find CSVs in subdirectories (like data/processed/)
+    seen_ulids = set()
+    
     for csv_file in directory.rglob("*.csv"):
         filename = csv_file.name
         
@@ -68,12 +70,14 @@ def load_telemetry_files(directory: Path) -> list[tuple[pd.DataFrame, dict]]:
                         continue
         
         if lap_time and ulid:
-            telemetry_files.append({
-                'path': csv_file,
-                'lap_time': lap_time,
-                'ulid': ulid,
-                'sort_key': decode_ulid_timestamp(ulid)
-            })
+            if ulid not in seen_ulids:
+                seen_ulids.add(ulid)
+                telemetry_files.append({
+                    'path': csv_file,
+                    'lap_time': lap_time,
+                    'ulid': ulid,
+                    'sort_key': decode_ulid_timestamp(ulid)
+                })
     
     # Sort by ULID timestamp (chronological order)
     telemetry_files.sort(key=lambda x: x['sort_key'])

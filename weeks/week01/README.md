@@ -10,18 +10,18 @@ week: 01
 
 ## Events
 
-| #   | Date       | Type    | Laps | Best    | σ     | Notes                  | Details                              |
-| --- | ---------- | ------- | ---- | ------- | ----- | ---------------------- | ------------------------------------ |
-| 1   | 2025-12-11 | solo    | 34   | 51.438s | 6.08s | First contact          | [→](events/01-2025-12-11-solo.md)    |
-| 2   | 2025-12-11 | solo    | 63   | 51.101s | 1.47s | Finding rhythm         | [→](events/02-2025-12-11-solo.md)    |
-| 3   | 2025-12-12 | solo    | 40   | 50.985s | 1.90s | **PB lap** 🏆          | [→](events/03-2025-12-12-solo.md)    |
-| 4   | 2025-12-12 | ai race | 29   | 51.148s | 1.03s | Race pace!             | [→](events/04-2025-12-12-ai-race.md) |
-| 5   | 2025-12-13 | ai race | 13   | 51.403s | 3.21s | Patience test          | [→](events/05-2025-12-13-ai-race.md) |
-| 6   | 2025-12-13 | ai race | 13   | 51.290s | 0.81s | **Patience works** ✅  | [→](events/06-2025-12-13-ai-race.md) |
-| 7   | 2025-12-14 | ai race | 13   | 51.198s | 0.92s | **Patience validated** | [→](events/07-2025-12-14-ai-race.md) |
-| 8   | 2025-12-14 | ai race | 13   | 51.107s | 1.03s | **Ready for the grid** | [→](events/08-2025-12-14-ai-race.md) |
-
-## Week Progress
+| # | Date | Type | Laps | Best | σ | Notes | Details |
+|---|------|------|------|------|---|-------|---------|
+| 1 | 2025-12-11 | solo | ? | 0.000s | 0.00s | First contact | [→](events/01-2025-12-11-solo.md) |
+| 2 | 2025-12-11 | solo | ? | 0.000s | 0.00s | Finding rhythm | [→](events/02-2025-12-11-solo.md) |
+| 3 | 2025-12-12 | solo | ? | 0.000s | 0.00s | **PB lap** 🏆 | [→](events/03-2025-12-12-solo.md) |
+| 4 | 2025-12-12 | ai race | ? | 0.000s | 0.00s | Race pace! | [→](events/04-2025-12-12-ai-race.md) |
+| 5 | 2025-12-13 | ai race | ? | 0.000s | 0.00s | Patience test | [→](events/05-2025-12-13-ai-race.md) |
+| 6 | 2025-12-13 | ai race | ? | 0.000s | 0.00s | **Patience works** ✅ | [→](events/06-2025-12-13-ai-race.md) |
+| 7 | 2025-12-14 | ai race | ? | 0.000s | 0.00s | **Patience validated** | [→](events/07-2025-12-14-ai-race.md) |
+| 8 | 2025-12-14 | ai race | ? | 0.000s | 0.00s | **Ready for the grid** | [→](events/08-2025-12-14-ai-race.md) |
+| 9 | 2025-12-14 | ai race | ? | 0.000s | 0.00s | _Add notes..._ | [→](events/09-2025-12-14-ai-race.md) |
+| 10 | 2025-12-14 | ai race | 13 | 50.768s | 0.36s | _Add notes..._ | [→](events/10-2025-12-14-ai-race.md) |## Week Progress
 
 ![Week Progress](images/week-progress.png)
 
@@ -31,10 +31,10 @@ week: 01
 
 ## Summary
 
-- **Events:** 8
-- **Best Lap:** 50.985s
-- **Improvement:** +0.453s (from 51.438s)
-- **Latest σ:** 1.03s
+- **Events:** 10
+- **Best Lap:** 50.768s
+- **Improvement:** +0.000s (from 50.768s)
+- **Latest σ:** 0.36s
 
 ## Reflection
 
