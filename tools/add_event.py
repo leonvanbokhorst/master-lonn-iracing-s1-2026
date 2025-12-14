@@ -234,24 +234,14 @@ def update_week_readme(week: str, weeks_dir: Path, events: list[dict]):
     
     events_table = '\n'.join(table_rows)
     
-    # Check if README exists and preserve some sections
+    # Preserve existing content
     if readme_path.exists():
-        existing = readme_path.read_text()
+        content = readme_path.read_text()
         
-        # Try to preserve intent and reflection sections
-        intent_match = re.search(r'>\s*\*\*Intent:\*\*\s*_(.+?)_', existing)
-        intent = intent_match.group(1) if intent_match else "Write your intent here..."
-        
-        # Preserve reflection section
-        reflection_match = re.search(r'## Reflection\n\n(.+?)(?=\n---|\Z)', existing, re.DOTALL)
-        reflection = reflection_match.group(1).strip() if reflection_match else """- Track craft takeaways: ...
-- Brake bias learnings: ...
-- Driver mindset notes: ..."""
-        
-        # Try to preserve NOTES from existing table
+        # 1. Preserve Notes from existing table
         for e in events:
              # Look for | N | ... | ... | ... | ... | ... | NOTES | ... |
-             row_match = re.search(r'\|\s*' + str(e['num']) + r'\s*\|.*?\|.*?\|.*?\|.*?\|.*?\|\s*(.*?)\s*\|', existing)
+             row_match = re.search(r'\|\s*' + str(e['num']) + r'\s*\|.*?\|.*?\|.*?\|.*?\|.*?\|\s*(.*?)\s*\|', content)
              if row_match:
                  e['notes'] = row_match.group(1).strip()
                  # Rebuild the row with preserved notes
@@ -260,56 +250,81 @@ def update_week_readme(week: str, weeks_dir: Path, events: list[dict]):
                     f"{e['best']:.3f}s | {e['sigma']:.2f}s | {e['notes']} | [→](events/{e['filename']}) |"
                  )
         events_table = '\n'.join(table_rows)
+        
+        # 2. Update the Events table in place
+        # We look for the table block:
+        # | # | ...
+        # |---| ...
+        # ... rows ...
+        # (until blank line or next header)
+        
+        # Regex to find the table start
+        table_start_match = re.search(r'\|\s*#\s*\|\s*Date', content)
+        
+        if table_start_match:
+            # We found a table. Now we need to replace it.
+            # Strategy: Split content into [Pre-Table] [Table] [Post-Table]
+            # Table usually ends at double newline or next section
+            
+            start_idx = table_start_match.start()
+            
+            # Find the end of the table (look for a line that doesn't start with |)
+            lines = content[start_idx:].split('\n')
+            end_offset = 0
+            for i, line in enumerate(lines):
+                if i > 1 and not line.strip().startswith('|'): # i>1 to skip header and separator
+                    break
+                end_offset += len(line) + 1 # +1 for newline
+            
+            pre_table = content[:start_idx]
+            post_table = content[start_idx + end_offset:]
+            
+            # Build new table
+            new_table_header = "| # | Date | Type | Laps | Best | σ | Notes | Details |\n|---|------|------|------|------|---|-------|---------|"
+            new_table = f"{new_table_header}\n{events_table}"
+            
+            content = f"{pre_table}{new_table}{post_table}"
+            
+        else:
+            # No table found? Append it after ## Events?
+            if "## Events" in content:
+                content = content.replace("## Events", f"## Events\n\n| # | Date | Type | Laps | Best | σ | Notes | Details |\n|---|------|------|------|------|---|-------|---------|\n{events_table}")
+            else:
+                # Append to end
+                content += f"\n\n## Events\n\n| # | Date | Type | Laps | Best | σ | Notes | Details |\n|---|------|------|------|------|---|-------|---------|\n{events_table}"
 
     else:
+        # Create new file (fallback) - this shouldn't happen for existing weeks if workflow followed
         intent = "Write your intent here..."
         reflection = """- Track craft takeaways: ...
 - Brake bias learnings: ...
 - Driver mindset notes: ..."""
-    
-    # Summary stats
-    if events:
-        # Filter out events with incomplete stats (if any)
-        valid_events = [e for e in events if isinstance(e['best'], (int, float)) and e['best'] > 0]
-        if valid_events:
-            best_lap = min(e['best'] for e in valid_events)
-            first_lap = valid_events[0]['best']
-            last_sigma = valid_events[-1]['sigma']
-            improvement = first_lap - best_lap
-            
-            summary = f"""- **Events:** {len(events)}
+        
+        # Summary stats
+        summary = "_No events yet._"
+        if events:
+            valid_events = [e for e in events if isinstance(e['best'], (int, float)) and e['best'] > 0]
+            if valid_events:
+                best_lap = min(e['best'] for e in valid_events)
+                first_lap = valid_events[0]['best']
+                last_sigma = valid_events[-1]['sigma']
+                improvement = first_lap - best_lap
+                summary = f"""- **Events:** {len(events)}
 - **Best Lap:** {best_lap:.3f}s
 - **Improvement:** {improvement:+.3f}s (from {first_lap:.3f}s)
 - **Latest σ:** {last_sigma:.2f}s"""
-        else:
-            summary = "_No valid events yet._"
-    else:
-        summary = "_No events yet._"
-    
-    # Build README content
-    content = f"""---
+
+        content = f"""---
 week: {week}
 ---
 
-# Week {week} – Summit Point Raceway – Jefferson Circuit
-
-> Track dossier: [Summit Point Jefferson Circuit](../../tracks/track-summit-point-jefferson-circuit.md)
-
-> **Intent:** _{intent}_
+# Week {week}
 
 ## Events
 
 | # | Date | Type | Laps | Best | σ | Notes | Details |
 |---|------|------|------|------|---|-------|---------|
 {events_table}
-
-## Week Progress
-
-![Week Progress](../../images/week{week}/week-progress.png)
-
-## Lap Comparison
-
-![Lap Comparison](../../images/week{week}/lap-comparison.png)
 
 ## Summary
 
@@ -318,12 +333,31 @@ week: {week}
 ## Reflection
 
 {reflection}
-
----
-
-[← Back to Season](../../README.md)
 """
     
+    # 3. Update Summary section if it exists
+    if events:
+        valid_events = [e for e in events if isinstance(e['best'], (int, float)) and e['best'] > 0]
+        if valid_events:
+            best_lap = min(e['best'] for e in valid_events)
+            first_lap = valid_events[0]['best']
+            last_sigma = valid_events[-1]['sigma']
+            improvement = first_lap - best_lap
+            
+            new_summary = f"""- **Events:** {len(events)}
+- **Best Lap:** {best_lap:.3f}s
+- **Improvement:** {improvement:+.3f}s (from {first_lap:.3f}s)
+- **Latest σ:** {last_sigma:.2f}s"""
+            
+            # Replace existing summary block
+            # Look for ## Summary followed by content until next ## or EOF
+            summary_pattern = r'(## Summary\n\n)([\s\S]*?)(?=\n## |\Z)'
+            if re.search(summary_pattern, content):
+                content = re.sub(summary_pattern, f"\\1{new_summary}\n", content)
+            else:
+                # Add if missing
+                pass # If it's missing, we leave it. The user might have deleted it.
+
     readme_path.write_text(content)
     return readme_path
 
