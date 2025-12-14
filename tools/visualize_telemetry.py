@@ -314,10 +314,12 @@ def print_telemetry_summary(df: pd.DataFrame):
     
     print(f"\n⚙️  Gears used: {int(df['Gear'].min())} - {int(df['Gear'].max())}")
     
-    # Throttle/brake time
+    # Throttle/brake time - use same thresholds as visualization (5%/1%)
+    throttle_threshold = 0.05
+    brake_threshold = 0.01
     full_throttle_pct = (df['Throttle'] > 0.95).sum() / len(df) * 100
-    braking_pct = (df['Brake'] > 0.1).sum() / len(df) * 100
-    coasting_pct = ((df['Throttle'] < 0.1) & (df['Brake'] < 0.1)).sum() / len(df) * 100
+    braking_pct = (df['Brake'] > brake_threshold).sum() / len(df) * 100
+    coasting_pct = ((df['Throttle'] < throttle_threshold) & (df['Brake'] < brake_threshold)).sum() / len(df) * 100
     
     print(f"\n🦶 Pedal usage:")
     print(f"   Full throttle: {full_throttle_pct:.1f}%")

@@ -1,0 +1,43 @@
+# iRacing Telemetry Analysis Configuration
+# ==========================================
+# All thresholds and settings in one place.
+# Values are normalized (0.0 - 1.0) unless noted.
+
+[telemetry]
+# Sample rate for iRacing telemetry (Hz)
+sample_rate = 60
+
+[pedals]
+# Throttle threshold: above this = "on throttle"
+throttle_on = 0.05          # 5%
+
+# Throttle threshold for "full throttle" metric
+throttle_full = 0.95        # 95%
+
+# Brake threshold: above this = "braking" (low to count trail braking)
+brake_on = 0.01             # 1% (~0.4 bar of 40 bar max)
+
+[coasting]
+# Coasting = throttle < throttle_on AND brake < brake_on
+# No separate config needed - derived from [pedals]
+
+[overlap]
+# Overlap detection: throttle while braking (foot not lifted)
+throttle_min = 0.02         # 2% throttle while braking = overlap
+
+# Minimum duration to count as overlap (filters out heel-toe blips)
+min_duration_sec = 0.4      # 400ms - blips are shorter
+
+[laps]
+# Lap time filters for data cleaning
+min_time = 48.0             # Minimum valid lap time (s)
+max_time = 90.0             # Maximum valid lap time (s)
+exclude_first_lap = true    # Exclude standing start lap
+
+[visualization]
+# Default figure DPI for saved images
+dpi = 150
+
+# Line transparency for overlaid traces
+trace_alpha = 0.65
+
