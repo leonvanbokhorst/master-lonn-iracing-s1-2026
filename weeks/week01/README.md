@@ -19,9 +19,10 @@ week: 01
 | 5   | 2025-12-13 | ai race | 13   | 51.403s | 3.21s | Patience test          | [→](events/05-2025-12-13-ai-race.md) |
 | 6   | 2025-12-13 | ai race | 13   | 51.290s | 0.81s | **Patience works** ✅  | [→](events/06-2025-12-13-ai-race.md) |
 | 7   | 2025-12-14 | ai race | 13   | 51.198s | 0.92s | **Patience validated** | [→](events/07-2025-12-14-ai-race.md) |
-| 8   | 2025-12-14 | ai race | 13   | 51.107s | 1.03s | **Ready for the grid** | [→](events/08-2025-12-14-ai-race.md) |
-| 9   | 2025-12-14 | ai race | 13   | 51.088s | 2.12s | _Add notes..._         | [→](events/09-2025-12-14-ai-race.md) |
-| 10  | 2025-12-14 | ai race | 13   | 50.768s | 0.36s | _Add notes..._         | [→](events/10-2025-12-14-ai-race.md) |
+| 8   | 2025-12-14 | ai race | 13   | 51.107s | 1.03s | **Ready for the grid?** | [→](events/08-2025-12-14-ai-race.md) |
+| 9   | 2025-12-14 | ai race | 13   | 51.088s | 2.12s | Retried after a restart | [→](events/09-2025-12-14-ai-race.md) |
+| 10  | 2025-12-14 | ai race | 13   | 50.768s | 0.36s | Personal best         | [→](events/10-2025-12-14-ai-race.md) |
+| 11  | 2025-12-15 | ai race | 13   | 51.255s | 0.24s | **Metronome** 🤖       | [→](events/11-2025-12-15-ai-race.md) |
 
 ## Week Progress
 
@@ -33,10 +34,10 @@ week: 01
 
 ## Summary
 
-- **Events:** 10
+- **Events:** 11
 - **Best Lap:** 50.768s
 - **Improvement:** +0.670s (from 51.438s)
-- **Latest σ:** 0.36s
+- **Latest σ:** 0.24s
 
 ## Reflection
 
