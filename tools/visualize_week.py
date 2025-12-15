@@ -220,12 +220,12 @@ def create_week_visualization(
     ax2.set_title('Band Evolution (Mean ± Std)', fontsize=12, fontweight='bold')
     
     # ═══════════════════════════════════════════════════════════════════════════
-    # PLOT 3: Rhythm Discovery (Settling Pattern)
+    # PLOT 3: Rhythm Discovery (Laps to Settle) - LINE CHART
     # ═══════════════════════════════════════════════════════════════════════════
     ax3 = fig.add_subplot(gs[1, 0])
     ax3.set_facecolor('#FFFFFF')
     
-    # Calculate settling metrics for each session
+    # Calculate settling metrics
     settling_data = []
     for i, (df, info) in enumerate(sessions):
         times = df['Lap time'].values
@@ -242,63 +242,53 @@ def create_week_visualization(
         else:
             laps_to_settle = len(times) // 2  # Default if never settled
         
-        settling_data.append({
-            'session': i + 1,
-            'laps_to_settle': laps_to_settle,
-            'settled_mean': settled_mean,
-            'settled_std': settled_std,
-            'type': info['type']
-        })
+        settling_data.append(laps_to_settle)
+
+    # Plot line chart
+    ax3.plot(x_pos, settling_data, 'o-', color=COLORS['accent'], linewidth=1.5, markersize=6)
     
-    # Create horizontal bar chart showing settling
-    y_positions = range(n_events)
-    colors = [EVENT_COLORS[i % len(EVENT_COLORS)] for i in range(n_events)]
-    
-    # Bar for "laps to settle" 
-    laps_to_settle = [d['laps_to_settle'] for d in settling_data]
-    bars = ax3.barh(y_positions, laps_to_settle, color=colors, alpha=0.7, 
-                    edgecolor='white', linewidth=1)
-    
-    # Add settled pace annotation
-    for i, (d, bar) in enumerate(zip(settling_data, bars)):
-        # Laps to settle on the bar
-        ax3.text(bar.get_width() + 0.3, bar.get_y() + bar.get_height()/2,
-                f'{d["laps_to_settle"]} laps → {d["settled_mean"]:.2f}s (σ={d["settled_std"]:.2f})',
-                va='center', ha='left', fontsize=8, fontweight='medium')
-    
-    # Labels
-    type_labels = ['AI' if d['type'] == 'Race' else 'P' for d in settling_data]
-    ax3.set_yticks(y_positions)
-    ax3.set_yticklabels([f'#{d["session"]} [{type_labels[i]}]' for i, d in enumerate(settling_data)], fontsize=9)
-    ax3.set_xlabel('Laps to Settle', fontsize=11)
+    # Add labels
+    for i, val in enumerate(settling_data):
+        ax3.annotate(str(val), xy=(x_pos[i], val), xytext=(0, 5), 
+                    textcoords='offset points', ha='center', fontsize=8)
+
+    ax3.set_xticks(x_pos)
+    ax3.set_xticklabels(event_labels_short, fontsize=9)
+    ax3.set_ylabel('Laps to Settle', fontsize=11)
     ax3.set_title('Rhythm Discovery (Laps to settle)', fontsize=12, fontweight='bold')
-    ax3.set_xlim(0, max(laps_to_settle) * 2.5)  # Room for annotations
-    ax3.invert_yaxis()  # First session at top
+    ax3.set_ylim(0, max(settling_data) * 1.2)
     
     # ═══════════════════════════════════════════════════════════════════════════
-    # PLOT 4: Lap Time Distributions
+    # PLOT 4: Consistency Trend (Sigma) - LINE CHART
     # ═══════════════════════════════════════════════════════════════════════════
     ax4 = fig.add_subplot(gs[1, 1])
     ax4.set_facecolor('#FFFFFF')
     
-    # Combine all data with session labels
-    all_data = []
-    for i, (df, info) in enumerate(sessions):
-        event_df = df[['Lap time']].copy()
-        event_df['Event'] = f'#{i+1}'
-        all_data.append(event_df)
+    sigmas = []
+    for df, info in sessions:
+        sigma = info.get('settled_std')
+        if sigma is None or (isinstance(sigma, float) and np.isnan(sigma)):
+            settled_start = int(len(df) * 0.4)
+            settled_df = df.iloc[settled_start:]
+            sigma = settled_df['Lap time'].std()
+        if sigma is None or (isinstance(sigma, float) and np.isnan(sigma)):
+            sigma = 0.0
+        sigmas.append(sigma)
     
-    combined = pd.concat(all_data, ignore_index=True)
+    # Plot line chart for Sigma
+    ax4.plot(x_pos, sigmas, 'o-', color=COLORS['secondary'], linewidth=1.5, markersize=6)
+    ax4.fill_between(x_pos, 0, sigmas, alpha=0.1, color=COLORS['secondary'])
     
-    sns.violinplot(data=combined, x='Event', y='Lap time', hue='Event',
-                   palette=EVENT_COLORS[:n_events], alpha=0.6, 
-                   inner=None, legend=False, ax=ax4)
-    sns.stripplot(data=combined, x='Event', y='Lap time', color='#2C3E50',
-                  alpha=0.5, size=3, jitter=0.2, legend=False, ax=ax4)
+    # Add value labels
+    for i, sigma in enumerate(sigmas):
+        ax4.annotate(f'{sigma:.2f}s', xy=(x_pos[i], sigma), xytext=(0, 5), 
+                    textcoords='offset points', ha='center', fontsize=8)
     
-    ax4.set_xlabel('', fontsize=11)
-    ax4.set_ylabel('Lap Time (s)', fontsize=11)
-    ax4.set_title('Distribution Comparison', fontsize=12, fontweight='bold')
+    ax4.set_xticks(x_pos)
+    ax4.set_xticklabels(event_labels_short, fontsize=9)
+    ax4.set_ylabel('Consistency σ (s)', fontsize=11)
+    ax4.set_title('Consistency Evolution (Lower is Better)', fontsize=12, fontweight='bold')
+    ax4.set_ylim(0, max(sigmas) * 1.2)
     
     # ═══════════════════════════════════════════════════════════════════════════
     # PLOT 5: Sector Progress (if available)
@@ -437,6 +427,8 @@ def main():
     parser.add_argument("--title", "-t", type=str, help="Custom title")
     parser.add_argument("--include-first-lap", action="store_true",
         help="Include lap 1 in analysis (use for rolling starts)")
+    parser.add_argument("--show", action="store_true",
+        help="Display the visualization after saving (requires GUI)")
     
     args = parser.parse_args()
     
@@ -474,10 +466,9 @@ def main():
         title = f"{week_name.upper()} Progress – {n_events} Events\n{first_date} → {last_date}"
     
     # Create visualization
-    create_week_visualization(events, title=title, output_path=output_path)
-    
-    # Show interactive window if requested
-    if args.show:
+    fig = create_week_visualization(events, title=title, output_path=output_path)
+
+    if args.show and fig is not None:
         plt.show()
     
     return 0
