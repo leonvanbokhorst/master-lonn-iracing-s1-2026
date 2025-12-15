@@ -249,7 +249,7 @@ def create_week_visualization(
     
     # Add labels
     for i, val in enumerate(settling_data):
-        ax3.annotate(str(val), xy=(i, val), xytext=(0, 5), 
+        ax3.annotate(str(val), xy=(x_pos[i], val), xytext=(0, 5), 
                     textcoords='offset points', ha='center', fontsize=8)
 
     ax3.set_xticks(x_pos)
@@ -264,7 +264,16 @@ def create_week_visualization(
     ax4 = fig.add_subplot(gs[1, 1])
     ax4.set_facecolor('#FFFFFF')
     
-    sigmas = [info['settled_std'] for _, info in sessions]
+    sigmas = []
+    for df, info in sessions:
+        sigma = info.get('settled_std')
+        if sigma is None or (isinstance(sigma, float) and np.isnan(sigma)):
+            settled_start = int(len(df) * 0.4)
+            settled_df = df.iloc[settled_start:]
+            sigma = settled_df['Lap time'].std()
+        if sigma is None or (isinstance(sigma, float) and np.isnan(sigma)):
+            sigma = 0.0
+        sigmas.append(sigma)
     
     # Plot line chart for Sigma
     ax4.plot(x_pos, sigmas, 'o-', color=COLORS['secondary'], linewidth=1.5, markersize=6)
@@ -272,7 +281,7 @@ def create_week_visualization(
     
     # Add value labels
     for i, sigma in enumerate(sigmas):
-        ax4.annotate(f'{sigma:.2f}s', xy=(i, sigma), xytext=(0, 5), 
+        ax4.annotate(f'{sigma:.2f}s', xy=(x_pos[i], sigma), xytext=(0, 5), 
                     textcoords='offset points', ha='center', fontsize=8)
     
     ax4.set_xticks(x_pos)
@@ -418,6 +427,8 @@ def main():
     parser.add_argument("--title", "-t", type=str, help="Custom title")
     parser.add_argument("--include-first-lap", action="store_true",
         help="Include lap 1 in analysis (use for rolling starts)")
+    parser.add_argument("--show", action="store_true",
+        help="Display the visualization after saving (requires GUI)")
     
     args = parser.parse_args()
     
@@ -455,7 +466,10 @@ def main():
         title = f"{week_name.upper()} Progress – {n_events} Events\n{first_date} → {last_date}"
     
     # Create visualization
-    create_week_visualization(events, title=title, output_path=output_path)
+    fig = create_week_visualization(events, title=title, output_path=output_path)
+
+    if args.show and fig is not None:
+        plt.show()
     
     return 0
 

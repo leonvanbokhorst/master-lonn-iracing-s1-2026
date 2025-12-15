@@ -22,13 +22,13 @@ type: "{{type}}"
 
 ## Lap Times
 
-![Lap Progression](../images/event-{{event_num_pad}}-laptimes.png)
+![Lap Progression](../images/event-{{event_num}}-laptimes.png)
 
 {{#if telemetry}}
 
 ## Telemetry Analysis
 
-![Telemetry](../images/event-{{event_num_pad}}-telemetry.png)
+![Telemetry](../images/event-{{event_num}}-telemetry.png)
 
 ### Pedal Usage
 
