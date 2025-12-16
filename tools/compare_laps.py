@@ -70,16 +70,16 @@ def load_telemetry_files(directory: Path) -> list[tuple[pd.DataFrame, dict]]:
                         continue
         
         if lap_time and ulid:
-            if ulid not in seen_ulids:
-                seen_ulids.add(ulid)
-                telemetry_files.append({
-                    'path': csv_file,
-                    'lap_time': lap_time,
-                    'ulid': ulid,
-                    'sort_key': decode_ulid_timestamp(ulid)
-                })
-            else:
+            if ulid in seen_ulids:
                 print(f"⚠️  Skipping duplicate ULID {ulid} from {csv_file.name} (already seen)")
+                continue
+            seen_ulids.add(ulid)
+            telemetry_files.append({
+                'path': csv_file,
+                'lap_time': lap_time,
+                'ulid': ulid,
+                'sort_key': decode_ulid_timestamp(ulid)
+            })
     
     # Sort by ULID timestamp (chronological order)
     telemetry_files.sort(key=lambda x: x['sort_key'])
