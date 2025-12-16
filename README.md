@@ -10,16 +10,16 @@ iRacing 2026 Season 1 runs **December 16, 2025 → March 9, 2026** (12 weeks). B
 - **Car:** [Ray FF1600](cars/car-ray-ff1600.md)
 - **Track:** [Summit Point Jefferson Circuit](tracks/track-summit-point-jefferson-circuit.md)
 - **Official race schedule:** Tuesday 2025-12-16 → 2025-12-22
-- **Status:** Practice complete – 11 events, ready for race week! 🏁
+- **Status:** Practice complete – 12 events logged (first official win!) 🏁
 
 ## Week 01 Summary
 
-| Metric              | Start (Event #1) | Best Achieved     | Latest (Event #11) |
+| Metric              | Start (Event #1) | Best Achieved     | Latest (Event #12) |
 | ------------------- | ---------------- | ----------------- | ------------------ |
-| **Best lap**        | 51.438s          | **50.768s** (#10) | 51.255s            |
-| **Consistency (σ)** | 5.31s            | **0.23s** (#6)    | 0.24s              |
-| **Coasting %**      | 3.9%             | **1.7%** (#4)     | 6.2%               |
-| **Gap to optimal**  | 2.8s             | **0.00s** (#11)   | 0.00s              |
+| **Best lap**        | 51.438s          | **50.768s** (#10) | 50.913s            |
+| **Consistency (σ)** | 5.31s            | **0.23s** (#6)    | 0.38s              |
+| **Coasting %**      | 3.9%             | **1.7%** (#4)     | 4.8%               |
+| **Gap to optimal**  | 2.8s             | **0.00s** (#11)   | 0.30s              |
 
 **Key learning:** "Survival Protocol" unlocked speed. Treating laps 1-3 as survival instead of racing dropped σ from 3.44s to 0.23s. 92% clean laps in final simulation (11 laps).
 
