@@ -10,7 +10,7 @@ iRacing 2026 Season 1 runs **December 16, 2025 → March 9, 2026** (12 weeks). B
 - **Car:** [Ray FF1600](cars/car-ray-ff1600.md)
 - **Track:** [Summit Point Jefferson Circuit](tracks/track-summit-point-jefferson-circuit.md)
 - **Official race schedule:** Tuesday 2025-12-16 → 2025-12-22
-- **Status:** Practice complete – 12 events logged (first official win!) 🏁
+- **Status:** Practice complete – 12 events logged (first official win of the season!) 🏁
 
 ## Week 01 Summary
 
