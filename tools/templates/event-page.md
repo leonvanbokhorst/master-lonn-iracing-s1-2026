@@ -1,7 +1,9 @@
-event: {{event_num}}
+---
+event: { { event_num } }
 week: "{{week}}"
 date: "{{date}}"
 type: "{{type}}"
+---
 
 # Event #{{event_num}} – {{date}} – {{type}}
 
