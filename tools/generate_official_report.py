@@ -266,19 +266,35 @@ def build_event_section(
 
 
 def replace_or_insert_section(text: str, heading: str, new_section: str) -> str:
-    pattern = re.compile(rf"^({re.escape(heading)}\n(?:.+?))(?:\n(?=## )|\Z)", re.MULTILINE | re.DOTALL)
-    match = pattern.search(text)
-    if match:
-        start, end = match.span()
-        return text[:start] + new_section.rstrip() + "\n\n" + text[end:]
-    # Insert before Debrief if present
-    debrief_idx = text.find("\n## Debrief")
-    if debrief_idx != -1:
-        return text[:debrief_idx] + new_section.rstrip() + "\n\n" + text[debrief_idx:]
-    # Else append
-    if not text.endswith("\n"):
-        text += "\n"
-    return text + "\n" + new_section.strip() + "\n"
+    heading_clean = heading.strip()
+    new_lines = new_section.strip("\n").splitlines()
+    lines = text.rstrip("\n").splitlines()
+
+    try:
+        start_idx = next(i for i, line in enumerate(lines) if line.strip() == heading_clean)
+    except StopIteration:
+        start_idx = None
+
+    if start_idx is not None:
+        end_idx = start_idx + 1
+        while end_idx < len(lines) and not lines[end_idx].startswith("## "):
+            end_idx += 1
+        lines[start_idx:end_idx] = new_lines
+        follow_idx = start_idx + len(new_lines)
+        if follow_idx >= len(lines) or lines[follow_idx].strip():
+            lines.insert(follow_idx, "")
+    else:
+        try:
+            debrief_idx = next(i for i, line in enumerate(lines) if line.strip() == "## Debrief")
+        except StopIteration:
+            debrief_idx = None
+        insert_idx = debrief_idx if debrief_idx is not None else len(lines)
+        if insert_idx > 0 and lines[insert_idx - 1].strip():
+            lines.insert(insert_idx, "")
+            insert_idx += 1
+        lines[insert_idx:insert_idx] = new_lines + [""]
+
+    return "\n".join(lines).rstrip() + "\n"
 
 
 def update_event_page(event_path: Path, section_markdown: str) -> None:
@@ -287,9 +303,9 @@ def update_event_page(event_path: Path, section_markdown: str) -> None:
     event_path.write_text(updated, encoding="utf-8")
 
 
-def build_week_row(summary: RaceSummary, event_path: Path) -> tuple[int, str]:
+def build_week_row(summary: RaceSummary, event_path: Path, readme_path: Path) -> tuple[int, str]:
     date_str = summary.start_time.strftime("%Y-%m-%d %H:%M UTC")
-    link = event_path.relative_to(PROJECT_ROOT)
+    link = event_path.relative_to(readme_path.parent)
     row = (
         f"| {date_str} | {summary.track} | {summary.sof} | {summary.start_finish_text} | "
         f"{summary.laps_led_text} | {summary.incidents}x | {summary.best_avg_text} | "
@@ -311,42 +327,39 @@ def ensure_week_section(content: str) -> str:
 
 def update_week_readme(readme_path: Path, summary_row: tuple[int, str]) -> None:
     event_no, new_line = summary_row
-    content = readme_path.read_text(encoding="utf-8")
-    content = ensure_week_section(content)
+    content = ensure_week_section(readme_path.read_text(encoding="utf-8"))
+    lines = content.splitlines()
 
-    section_pattern = re.compile(
-        r"(## Official Race Reports\n)(.*?)(?=\n## |\Z)", re.DOTALL
-    )
-    match = section_pattern.search(content)
-    if not match:
-        raise RuntimeError("Failed to locate Official Race Reports section")
-    header = match.group(1)
-    body = match.group(2)
-    lines = [line for line in body.strip("\n").splitlines() if line.strip()]
+    try:
+        heading_idx = next(i for i, line in enumerate(lines) if line.strip() == "## Official Race Reports")
+    except StopIteration:
+        raise RuntimeError("Failed to locate Official Race Reports heading")
 
-    if not lines:
-        data_lines: list[str] = []
-    else:
-        data_lines = lines[2:]  # skip header/separator
+    idx = heading_idx + 1
+    while idx < len(lines) and not lines[idx].startswith("|"):
+        idx += 1
+    if idx >= len(lines):
+        raise RuntimeError("Official Race Reports table header missing")
 
+    header_line = lines[idx]
+    separator_line = lines[idx + 1] if idx + 1 < len(lines) else "| --- | --- | --- | --- | --- | --- | --- | --- | --- |"
+
+    data_start = idx + 2
+    data_end = data_start
+    while data_end < len(lines) and lines[data_end].startswith("|"):
+        data_end += 1
+
+    data_lines = lines[data_start:data_end]
     row_map: dict[int, str] = {}
     for line in data_lines:
         event_match = re.search(r"Event #(\d+)", line)
-        if not event_match:
-            continue
-        row_map[int(event_match.group(1))] = line
+        if event_match:
+            row_map[int(event_match.group(1))] = line
 
     row_map[event_no] = new_line
-    rebuilt_rows = [
-        "| Date (UTC) | Track | SOF | Start->Finish | Laps led | Inc | Best / Avg | Pts | Report |",
-        "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",
-    ]
-    for key in sorted(row_map):
-        rebuilt_rows.append(row_map[key])
-
-    new_body = "\n" + "\n".join(rebuilt_rows) + "\n\n"
-    new_content = content[: match.start(1)] + header + new_body + content[match.end():]
-    readme_path.write_text(new_content, encoding="utf-8")
+    rebuilt_rows = [header_line, separator_line] + [row_map[key] for key in sorted(row_map)]
+    new_lines = lines[:idx] + rebuilt_rows + lines[data_end:]
+    readme_path.write_text("\n".join(new_lines).rstrip() + "\n", encoding="utf-8")
 
 
 def main() -> None:
@@ -391,7 +404,7 @@ def main() -> None:
     if not readme_path.is_absolute():
         readme_path = PROJECT_ROOT / readme_path
 
-    row = build_week_row(summary, event_path)
+    row = build_week_row(summary, event_path, readme_path)
     update_week_readme(readme_path, row)
 
     print(f"Updated {event_path.relative_to(PROJECT_ROOT)} and {readme_path.relative_to(PROJECT_ROOT)}")
@@ -399,3 +412,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

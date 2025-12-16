@@ -117,6 +117,16 @@ def parse_time_trial(data: dict, *, week: str, cust_id: Optional[int]) -> TimeTr
         unit_str = "mph" if wind_units == 0 else "kph"
         wind_desc = f"{wind_val:.1f} {unit_str}"
 
+    sof_candidates = [
+        meta.get("event_strength_of_field"),
+        meta.get("car_classes", [{}])[0].get("strength_of_field"),
+    ]
+    sof_value = None
+    for candidate in sof_candidates:
+        if isinstance(candidate, (int, float)) and candidate > 0:
+            sof_value = int(candidate)
+            break
+
     return TimeTrialResult(
         tt_id=meta["subsession_id"],
         week=week,
@@ -137,8 +147,7 @@ def parse_time_trial(data: dict, *, week: str, cust_id: Optional[int]) -> TimeTr
         weather_temp_c=temp_c,
         weather_desc=_SKY_MAP.get(weather.get("skies")),
         wind_desc=wind_desc,
-        sof=meta.get("event_strength_of_field")
-        or meta.get("car_classes", [{}])[0].get("strength_of_field"),
+        sof=sof_value,
     )
 
 
@@ -185,7 +194,7 @@ def build_report_content(result: TimeTrialResult, avg_label: str) -> str:
         f"| Best lap | {format_laptime(result.best_lap)} |",
         f"| TT average | {format_laptime(result.best_avg)} |",
         f"| Overall average | {format_laptime(result.avg_lap)} |",
-        f"| Strength of Field | {result.sof or '—'} |",
+        f"| Strength of Field | {result.sof if result.sof is not None else '—'} |",
         f"| TT rating | {format_rating(result.tt_rating_before, result.tt_rating_after)} |",
         f"| TT points | {result.tt_points if result.tt_points is not None else '—'} |",
         f"| Incidents | {result.incidents}x |",
@@ -228,6 +237,7 @@ TT_HEADER = (
 
 
 def update_week_readme(readme_path: Path, result: TimeTrialResult, report_path: Path) -> None:
+    """Upsert the time-trial summary row keyed by high-resolution start time."""
     content = readme_path.read_text(encoding="utf-8")
     if TT_SECTION not in content:
         content = content.rstrip() + f"\n\n{TT_SECTION}\n\n{TT_HEADER}\n"
@@ -242,22 +252,31 @@ def update_week_readme(readme_path: Path, result: TimeTrialResult, report_path: 
     lines = [line for line in body.strip("\n").splitlines() if line.strip()]
 
     data_lines = lines[2:] if len(lines) >= 2 else []
+    key_pattern = re.compile(r"<!--\s*key:(.+?)\s*-->")
     row_map: dict[str, str] = {}
     for line in data_lines:
+        key_match = key_pattern.search(line)
+        if key_match:
+            row_map[key_match.group(1).strip()] = line
+            continue
         cells = [cell.strip() for cell in line.split("|")[1:-1]]
         if cells:
             row_map[cells[0]] = line
 
-    row_key = result.start_time.strftime("%Y-%m-%d %H:%M")
+    display_date = result.start_time.strftime("%Y-%m-%d %H:%M")
+    row_key = result.start_time.strftime("%Y-%m-%d %H:%M:%S")
     link = report_path.relative_to(readme_path.parent).as_posix()
+    legacy_key = display_date
+    if legacy_key in row_map:
+        del row_map[legacy_key]
     row_map[row_key] = (
-        f"| {row_key} | "
+        f"| {display_date} | "
         f"{result.track} {f'({result.config})' if result.config else ''} | "
         f"{format_laptime(result.best_lap)} | "
         f"{format_laptime(result.best_avg)} | "
         f"{result.laps_completed} | "
         f"{result.tt_points if result.tt_points is not None else '—'} | "
-        f"[Report]({link}) |"
+        f"[Report]({link}) | <!-- key:{row_key} -->"
     )
 
     sorted_rows = [row_map[key] for key in sorted(row_map.keys(), reverse=True)]
@@ -284,3 +303,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
