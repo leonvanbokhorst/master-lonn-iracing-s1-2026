@@ -10,18 +10,18 @@ iRacing 2026 Season 1 runs **December 16, 2025 → March 9, 2026** (12 weeks). B
 - **Car:** [Ray FF1600](cars/car-ray-ff1600.md)
 - **Track:** [Summit Point Jefferson Circuit](tracks/track-summit-point-jefferson-circuit.md)
 - **Official race schedule:** Tuesday 2025-12-16 → 2025-12-22
-- **Status:** Practice complete – 12 events logged (first official win of the season!) 🏁
+- **Status:** Practice complete – 10 events, 214 flying laps, ready for race week! 🏁
 
 ## Week 01 Summary
 
-| Metric              | Start (Event #1) | Best Achieved     | Latest (Event #12) |
-| ------------------- | ---------------- | ----------------- | ------------------ |
-| **Best lap**        | 51.438s          | **50.768s** (#10) | 50.913s            |
-| **Consistency (σ)** | 5.31s            | **0.23s** (#6)    | 0.38s              |
-| **Coasting %**      | 3.9%             | **1.7%** (#4)     | 4.8%               |
-| **Gap to optimal**  | 2.8s             | **0.00s** (#11)   | 0.30s              |
+| Metric              | Start (Event #1) | Best Achieved    | Latest (Event #8) |
+| ------------------- | ---------------- | ---------------- | ----------------- |
+| **Best lap**        | 51.438s          | **50.985s** (#3) | 51.107s           |
+| **Consistency (σ)** | 6.08s            | **0.81s** (#6)   | 1.03s             |
+| **Coasting %**      | 12.2%            | **1.7%** (#4)    | 8.9%              |
+| **Gap to optimal**  | 2.8s             | **0.13s** (#8)   | 0.13s             |
 
-**Key learning:** "Survival Protocol" unlocked speed. Treating laps 1-3 as survival instead of racing dropped σ from 3.44s to 0.23s. 92% clean laps in final simulation (11 laps).
+**Key learning:** Patience in traffic validated. σ 3.21s (impatient) → 0.81s (patient) in back-to-back races.
 
 ---
 
@@ -57,7 +57,7 @@ Need track context before a session? Start by skimming the track profile, then j
 | ---- | ----------------------- | -------------------------------------- | ------------------------------------------------------------------- | ------------------------------- |
 | 01   | 2025-12-16 → 2025-12-22 | Summit Point – Jefferson Circuit       | [dossier](tracks/track-summit-point-jefferson-circuit.md)           | [**week01/**](weeks/week01/) ✅ |
 | 02   | 2025-12-23 → 2025-12-29 | Rudskogen Motorsenter                  | [dossier](tracks/track-rudskogen-motorsenter.md)                    | [week02/](weeks/week02/)        |
-| 03   | 2025-12-30 → 2026-01-05 | Winton Motor Raceway – National        | [dossier](tracks/track-winton-motor-raceway-national.md)            | [week03/](weeks/week03/)        |
+| 03   | 2025-12-30 → 2026-01-05 | Winton Motor Raceway – Grand Prix      | [dossier](tracks/track-winton-motor-raceway-natl-md.md)             | [week03/](weeks/week03/)        |
 | 04   | 2026-01-06 → 2026-01-12 | Lime Rock Park – Grand Prix            | [dossier](tracks/track-lime-rock-park-grand-prix.md)                | [week04/](weeks/week04/)        |
 | 05   | 2026-01-13 → 2026-01-19 | Motorsport Arena Oschersleben – GP     | [dossier](tracks/track-motorsport-arena-oschersleben-grand-prix.md) | [week05/](weeks/week05/)        |
 | 06   | 2026-01-20 → 2026-01-26 | Oran Park Raceway – Grand Prix         | [dossier](tracks/track-oran-park-raceway-grand-prix.md)             | [week06/](weeks/week06/)        |

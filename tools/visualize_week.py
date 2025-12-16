@@ -243,7 +243,7 @@ def create_week_visualization(
             laps_to_settle = len(times) // 2  # Default if never settled
         
         settling_data.append(laps_to_settle)
-
+    
     # Plot line chart
     ax3.plot(x_pos, settling_data, 'o-', color=COLORS['accent'], linewidth=1.5, markersize=6)
     
@@ -467,7 +467,7 @@ def main():
     
     # Create visualization
     fig = create_week_visualization(events, title=title, output_path=output_path)
-
+    
     if args.show and fig is not None:
         plt.show()
     

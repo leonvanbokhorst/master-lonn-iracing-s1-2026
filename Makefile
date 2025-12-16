@@ -2,7 +2,7 @@
 # =================================
 # Workflow shortcuts for the AI dojo 🥋
 
-.PHONY: help update-week add-event viz-event viz-week viz-telemetry compare-laps clean
+.PHONY: help update-week add-event viz-event viz-week viz-telemetry compare-laps official-report tt-report clean
 
 # Default target
 help:
@@ -12,6 +12,8 @@ help:
 	@echo "  make add-event WEEK=01 FILE=... [TELEMETRY=...]   Add new event (processes all 4 visualizations)"
 	@echo "  make update-week WEEK=01                          Regenerate week visualizations + summary"
 	@echo "  make compare-laps WEEK=01                         Compare best laps (needs telemetry CSVs)"
+	@echo "  make official-report WEEK=01 EVENT=12 JSON=...    Write official race report + summary"
+	@echo "  make tt-report WEEK=01 JSON=...                   Generate time-trial report + summary"
 	@echo ""
 	@echo "  make viz-event FILE=...           Visualize a single event CSV (lap times)"
 	@echo "  make viz-week WEEK=01             Generate week progress visualization only"
@@ -68,6 +70,23 @@ viz-telemetry:
 	@if [ -z "$(FILE)" ]; then echo "❌ Usage: make viz-telemetry FILE=path/to/telemetry.csv"; exit 1; fi
 	@echo "🔬 Analyzing telemetry $(FILE)..."
 	uv run python tools/visualize_telemetry.py "$(FILE)"
+
+# Generate official race report from eventresult JSON
+# Usage: make official-report WEEK=01 EVENT=12 JSON=path/to/eventresult.json [EVENT_FILE=...]
+official-report:
+	@if [ -z "$(WEEK)" ]; then echo "❌ Usage: make official-report WEEK=01 EVENT=12 JSON=path/to/eventresult.json"; exit 1; fi
+	@if [ -z "$(EVENT)" ]; then echo "❌ Usage: make official-report WEEK=01 EVENT=12 JSON=path/to/eventresult.json"; exit 1; fi
+	@if [ -z "$(JSON)" ]; then echo "❌ Usage: make official-report WEEK=01 EVENT=12 JSON=path/to/eventresult.json"; exit 1; fi
+	@echo "📝 Generating official race report for week $(WEEK) event $(EVENT)..."
+	uv run python tools/generate_official_report.py --week $(WEEK) --event $(EVENT) --json "$(JSON)" $(if $(EVENT_FILE),--event-file "$(EVENT_FILE)",)
+
+# Generate Time Trial report
+# Usage: make tt-report WEEK=01 JSON=path/to/iracing_tt.json
+tt-report:
+	@if [ -z "$(WEEK)" ]; then echo "❌ Usage: make tt-report WEEK=01 JSON=path/to/eventresult.json"; exit 1; fi
+	@if [ -z "$(JSON)" ]; then echo "❌ Usage: make tt-report WEEK=01 JSON=path/to/eventresult.json"; exit 1; fi
+	@echo "⏱️  Recording time trial for week $(WEEK)..."
+	uv run python tools/generate_tt_report.py --week $(WEEK) --json "$(JSON)"
 
 # Generate track map with sectors from telemetry
 # Usage: make track-map FILE=path/to/telemetry.csv
