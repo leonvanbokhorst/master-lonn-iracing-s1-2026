@@ -1,6 +1,6 @@
 ---
 event: { { event_num } }
-week: { { week } }
+week: "{{week}}"
 date: "{{date}}"
 type: "{{type}}"
 ---
@@ -22,13 +22,13 @@ type: "{{type}}"
 
 ## Lap Times
 
-![Lap Progression](../images/event-{{event_num}}-laptimes.png)
+![Lap Progression](../images/event-{{event_num_pad}}-laptimes.png)
 
 {{#if telemetry}}
 
 ## Telemetry Analysis
 
-![Telemetry](../images/event-{{event_num}}-telemetry.png)
+![Telemetry](../images/event-{{event_num_pad}}-telemetry.png)
 
 ### Pedal Usage
 
