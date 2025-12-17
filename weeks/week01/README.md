@@ -24,6 +24,13 @@ week: 01
 | 10  | 2025-12-14 | ai race | 13   | 50.768s | 0.36s | Personal best           | [→](events/10-2025-12-14-ai-race.md) |
 | 11  | 2025-12-15 | ai race | 13   | 51.255s | 0.24s | **Metronome** 🤖        | [→](events/11-2025-12-15-ai-race.md) |
 | 12  | 2025-12-16 | race    | 12   | 50.913s | 0.38s | **Official win!** 🏆    | [→](events/12-2025-12-16-race.md)    |
+| 13  | 2025-12-17 | race    | 13   | 50.592s | 3.51s | Pole spin, P4 salvage   | [→](events/13-2025-12-17-race.md)    |
+
+## Time Trials
+
+| Date (UTC)       | Track & Config                   | Best / TT Avg     | Laps Used | Inc | TT Rating         | Details                                      |
+| ---------------- | -------------------------------- | ----------------- | --------- | --- | ----------------- | -------------------------------------------- |
+| 2025-12-16 13:04 | Summit Point – Jefferson Circuit | 50.685s / 50.815s | 8 (26–33) | 1x  | 1283 → 1332 (+49) | [TT report](time-trials/tt-20251216-1304.md) |
 
 ## Week Progress
 
@@ -35,10 +42,10 @@ week: 01
 
 ## Summary
 
-- **Events:** 12
-- **Best Lap:** 50.768s
-- **Improvement:** +0.670s (from 51.438s)
-- **Latest σ:** 0.38s
+- **Events:** 13
+- **Best Lap:** 50.592s
+- **Improvement:** +0.846s (from 51.438s)
+- **Latest σ:** 3.51s
 
 ## Reflection
 
@@ -71,7 +78,7 @@ week: 01
 
 ## Official Race Reports
 
-| Date (UTC) | Track | SOF | Start->Finish | Laps led | Inc | Best / Avg | Pts | Report |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2025-12-16 06:45 UTC | Summit Point Raceway | 1371 | P3->P1 | 12/14 | 2x | 50.913s / 51.622s | 80 | [Event #12](weeks/week01/events/12-2025-12-16-race.md) |
-
+| Date (UTC)           | Track                | SOF  | Start->Finish | Laps led | Inc | Best / Avg        | Pts | Report                                                 |
+| -------------------- | -------------------- | ---- | ------------- | -------- | --- | ----------------- | --- | ------------------------------------------------------ |
+| 2025-12-16 06:45 UTC | Summit Point Raceway | 1371 | P3->P1        | 12/14    | 2x  | 50.913s / 51.622s | 80  | [Event #12](weeks/week01/events/12-2025-12-16-race.md) |
+| 2025-12-17 17:45 UTC | Summit Point Raceway | 1368 | P1->P4        | 3/14     | 5x  | 50.592s / 52.838s | 58  | [Event #13](weeks/week01/events/13-2025-12-17-race.md) |
