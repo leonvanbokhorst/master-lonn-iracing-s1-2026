@@ -6,22 +6,24 @@ This is the training-dojo journal for Lonn's Ray FF1600 Rookie Fixed campaign. I
 
 iRacing 2026 Season 1 runs **December 16, 2025 → March 9, 2026** (12 weeks). Build 2025.12.08.03 launched December 9, 2025.
 
-- **Week:** Currently in prep for [the first week](weeks/week01/)
+- **Week:** Actively racing [Week 01](weeks/week01/) (Summit Point Jefferson)
 - **Car:** [Ray FF1600](cars/car-ray-ff1600.md)
 - **Track:** [Summit Point Jefferson Circuit](tracks/track-summit-point-jefferson-circuit.md)
 - **Official race schedule:** Tuesday 2025-12-16 → 2025-12-22
-- **Status:** Practice complete – 10 events, 214 flying laps, ready for race week! 🏁
+- **Status:** 13 logged events (451 flying laps) with a P1 official win and a P4 salvage already banked. 🏁
 
 ## Week 01 Summary
 
-| Metric              | Start (Event #1) | Best Achieved    | Latest (Event #8) |
-| ------------------- | ---------------- | ---------------- | ----------------- |
-| **Best lap**        | 51.438s          | **50.985s** (#3) | 51.107s           |
-| **Consistency (σ)** | 6.08s            | **0.81s** (#6)   | 1.03s             |
-| **Coasting %**      | 12.2%            | **1.7%** (#4)    | 8.9%              |
-| **Gap to optimal**  | 2.8s             | **0.13s** (#8)   | 0.13s             |
+| Metric              | Start (Event #1) | Best Achieved     | Latest (Event #13) |
+| ------------------- | ---------------- | ----------------- | ------------------ |
+| **Best lap**        | 51.438s          | **50.592s** (#13) | 50.592s            |
+| **Consistency (σ)** | 6.08s            | **0.81s** (#6)    | 3.51s              |
+| **Coasting %**      | 12.2%            | **1.7%** (#4)     | 5.7%               |
+| **Gap to optimal**  | 2.8s             | **0.13s** (#8)    | 0.18s              |
 
-**Key learning:** Patience in traffic validated. σ 3.21s (impatient) → 0.81s (patient) in back-to-back races.
+**Key learning:** Patience in traffic validated. σ 3.21s (impatient) → 0.81s (patient) in back-to-back races, and even after the Event #13 spin/contact the survival protocol kept the car in P4 with the fastest lap of the season.
+
+**Official scorecard:** Event #12 delivered the first official win (P3→P1, +96 iRating). Event #13 added a gritty P1→P4 recovery with a 50.592s best lap and +43 iRating despite damage. Details live in the Week 01 log.
 
 ---
 
