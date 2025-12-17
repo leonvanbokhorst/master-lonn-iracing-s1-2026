@@ -57,7 +57,7 @@ Need track context before a session? Start by skimming the track profile, then j
 | ---- | ----------------------- | -------------------------------------- | ------------------------------------------------------------------- | ------------------------------- |
 | 01   | 2025-12-16 → 2025-12-22 | Summit Point – Jefferson Circuit       | [dossier](tracks/track-summit-point-jefferson-circuit.md)           | [**week01/**](weeks/week01/) ✅ |
 | 02   | 2025-12-23 → 2025-12-29 | Rudskogen Motorsenter                  | [dossier](tracks/track-rudskogen-motorsenter.md)                    | [week02/](weeks/week02/)        |
-| 03   | 2025-12-30 → 2026-01-05 | Winton Motor Raceway – Grand Prix      | [dossier](tracks/track-winton-motor-raceway-national.md)            | [week03/](weeks/week03/)        |
+| 03   | 2025-12-30 → 2026-01-05 | Winton Motor Raceway – Grand Prix      | [dossier](tracks/track-winton-motor-raceway-natl-md.md)             | [week03/](weeks/week03/)        |
 | 04   | 2026-01-06 → 2026-01-12 | Lime Rock Park – Grand Prix            | [dossier](tracks/track-lime-rock-park-grand-prix.md)                | [week04/](weeks/week04/)        |
 | 05   | 2026-01-13 → 2026-01-19 | Motorsport Arena Oschersleben – GP     | [dossier](tracks/track-motorsport-arena-oschersleben-grand-prix.md) | [week05/](weeks/week05/)        |
 | 06   | 2026-01-20 → 2026-01-26 | Oran Park Raceway – Grand Prix         | [dossier](tracks/track-oran-park-raceway-grand-prix.md)             | [week06/](weeks/week06/)        |

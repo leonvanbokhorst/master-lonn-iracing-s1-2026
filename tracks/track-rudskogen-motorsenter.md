@@ -16,7 +16,7 @@ Today the same strip of tarmac hosts STCC and GT weekends, superkarts, drift eve
 
 The Grand Prix lap feels like a rally stage that decided to become a circuit. Fast, loaded arcs that climb and plunge through the trees, awkwardly late apexes that only make sense once you’ve overshot them a few times, and braking zones that tilt _just_ enough to keep your ABS foot honest. The forest walls close in, turning the whole thing into a tunnel of rock, bark and Armco.
 
-[![Track Guide: Rudskogen Motorsenter](https://img.youtube.com/vi/HAbDKK0oqVM/0.jpg)](https://www.youtube.com/watch?v=HAbDKK0oqVM)
+[![Track Guide: Rudskogen Motorsenter](https://img.youtube.com/vi/oOFBW2rcdZw/0.jpg)](https://www.youtube.com/watch?v=oOFBW2rcdZw)
 
 ---
 
