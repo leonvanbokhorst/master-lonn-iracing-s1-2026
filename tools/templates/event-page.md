@@ -7,7 +7,7 @@ type: "{{type}}"
 
 # Event #{{event_num}} – {{date}} – {{type}}
 
-[← Back to Week {{week}}](../README.md) | **[Garage 61 Event Page](https://garage61.net/app/event/{{garage_event_id}})**
+[← Back to Week {{week}}](../README.md){{garage_link}}
 
 ## Quick Stats
 
@@ -19,6 +19,8 @@ type: "{{type}}"
 | **Settled Pace**    | {{settled}}s   |
 | **Consistency (σ)** | {{sigma}}s     |
 | **Clean Laps**      | {{clean_pct}}% |
+
+{{filter_summary}}
 
 ## Lap Times
 
@@ -54,4 +56,4 @@ type: "{{type}}"
 
 ---
 
-[← Back to Week {{week}}](../README.md) | [Next Event →](./{{next_event}}.md)
+[← Back to Week {{week}}](../README.md){{next_event_nav}}

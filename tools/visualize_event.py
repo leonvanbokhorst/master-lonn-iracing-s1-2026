@@ -111,39 +111,23 @@ def _plot_smoothed_series(ax, x, series, color, label, sigma, use_spline=True,
                 label=label, alpha=0.9)
 
 
-def _plot_sector_loss_trend(ax, df, laps, colors):
+def _plot_sector_loss_trend(ax, df, laps, sector_cols):
     """Render smoothed sector loss trends with scatter overlays."""
-    s1_best = df['Sector 1'].min()
-    s2_best = df['Sector 2'].min()
-    s3_best = df['Sector 3'].min()
-
-    s1_delta = df['Sector 1'].values - s1_best
-    s2_delta = df['Sector 2'].values - s2_best
-    s3_delta = df['Sector 3'].values - s3_best
-
-    s1_loss = np.nan_to_num(np.maximum(s1_delta, 0), nan=0.0)
-    s2_loss = np.nan_to_num(np.maximum(s2_delta, 0), nan=0.0)
-    s3_loss = np.nan_to_num(np.maximum(s3_delta, 0), nan=0.0)
-
     sigma = max(2, len(laps) // 8) if len(laps) > 1 else 1
 
-    _plot_smoothed_series(
-        ax, laps, s1_loss, colors['s1'],
-        label=f'S1 (+{np.sum(s1_loss):.1f}s total)', sigma=sigma,
-    )
-    _plot_smoothed_series(
-        ax, laps, s2_loss, colors['s2'],
-        label=f'S2 (+{np.sum(s2_loss):.1f}s total)', sigma=sigma,
-    )
-    _plot_smoothed_series(
-        ax, laps, s3_loss, colors['s3'],
-        label=f'S3 (+{np.sum(s3_loss):.1f}s total)', sigma=sigma,
-    )
+    for idx, col in enumerate(sector_cols):
+        color = SECTOR_COLORS[idx % len(SECTOR_COLORS)]
+        best = df[col].min()
+        delta = df[col].values - best
+        loss = np.nan_to_num(np.maximum(delta, 0), nan=0.0)
 
-    if len(laps) >= 6:
-        ax.scatter(laps, s1_loss, color=colors['s1'], alpha=0.3, s=15, zorder=1)
-        ax.scatter(laps, s2_loss, color=colors['s2'], alpha=0.3, s=15, zorder=1)
-        ax.scatter(laps, s3_loss, color=colors['s3'], alpha=0.3, s=15, zorder=1)
+        _plot_smoothed_series(
+            ax, laps, loss, color,
+            label=f'{col} (+{np.sum(loss):.1f}s total)', sigma=sigma,
+        )
+
+        if len(laps) >= 6:
+            ax.scatter(laps, loss, color=color, alpha=0.3, s=15, zorder=1)
 
     ax.axhline(0, color='#ccc', linewidth=1, linestyle='--', alpha=0.5)
     ax.set_xlabel('Lap', fontsize=11)
@@ -167,10 +151,14 @@ COLORS = {
     'middle': '#F6AE2D',
     'main': '#33A1FD',
     'band': '#86BA90',
-    's1': '#2E86AB',
-    's2': '#F18F01',
-    's3': '#1B998B',
 }
+
+SECTOR_COLORS = ['#2E86AB', '#F18F01', '#1B998B', '#A23B72', '#F6AE2D']
+
+
+def get_sector_columns(df: pd.DataFrame) -> list[str]:
+    """Return ordered list of sector columns present in dataframe."""
+    return [col for col in df.columns if col.lower().startswith("sector ")]
 
 
 def detect_phases(lap_times: np.ndarray, threshold_pct: float = 0.03) -> tuple[int, int]:
@@ -218,6 +206,7 @@ def create_event_visualization(
     title: str = "Event Analysis",
     output_path: Path | None = None,
     phase_boundaries: tuple[int, int] | None = None,
+    filter_metadata: dict | None = None,
 ):
     """Create comprehensive session visualization from Garage 61 CSV data."""
     
@@ -237,7 +226,8 @@ def create_event_visualization(
     dirty_laps = laps[clean == 0].tolist()
     
     # Check if we have sector data
-    has_sectors = all(col in df.columns for col in ['Sector 1', 'Sector 2', 'Sector 3'])
+    sector_cols = get_sector_columns(df)
+    has_sectors = len(sector_cols) > 0
     
     # Create figure
     n_rows = 3 if has_sectors else 2
@@ -389,7 +379,7 @@ def create_event_visualization(
         # Rolling sector loss trend (smooth flowing lines)
         ax5 = fig.add_subplot(gs[2, 0])
         ax5.set_facecolor('#FFFFFF')
-        _plot_sector_loss_trend(ax5, df, laps, COLORS)
+        _plot_sector_loss_trend(ax5, df, laps, sector_cols)
         
         # Sector Focus Analysis - "Where's the Time?"
         ax6 = fig.add_subplot(gs[2, 1])
@@ -399,9 +389,6 @@ def create_event_visualization(
         main_df = df.iloc[middle_end:].copy() if middle_end < len(df) else df.copy()
         
         # Calculate metrics for each sector
-        sectors = ['S1', 'S2', 'S3']
-        sector_cols = ['Sector 1', 'Sector 2', 'Sector 3']
-        
         gaps = []  # Mean - Best (time left on table)
         cvs = []   # Coefficient of variation (normalized consistency)
         
@@ -409,12 +396,16 @@ def create_event_visualization(
             best = main_df[col].min()
             mean = main_df[col].mean()
             std = main_df[col].std()
-            gaps.append(mean - best)
-            cvs.append((std / mean) * 100 if mean > 0 else 0)
+            gap = (mean - best) if pd.notna(best) and pd.notna(mean) else 0.0
+            gaps.append(gap)
+            if pd.notna(mean) and mean != 0 and pd.notna(std):
+                cvs.append((std / mean) * 100)
+            else:
+                cvs.append(0.0)
         
         # Create bar chart for gaps
-        x = np.arange(len(sectors))
-        colors = [COLORS['s1'], COLORS['s2'], COLORS['s3']]
+        x = np.arange(len(sector_cols))
+        colors = [SECTOR_COLORS[i % len(SECTOR_COLORS)] for i in range(len(sector_cols))]
         
         bars = ax6.bar(x, gaps, width=0.6, color=colors, alpha=0.8, edgecolor='white', linewidth=2)
         
@@ -431,7 +422,7 @@ def create_event_visualization(
                     fontsize=9, color='#666')
         
         ax6.set_xticks(x)
-        ax6.set_xticklabels(sectors, fontsize=11)
+        ax6.set_xticklabels([col.replace('Sector ', 'S') for col in sector_cols], fontsize=11)
         ax6.set_xlabel('', fontsize=11)
         ax6.set_ylabel('Gap to Best (s)', fontsize=11)
         ax6.set_title("Where's the Time? (Main Phase)", fontsize=12, fontweight='bold', pad=10)
@@ -449,6 +440,27 @@ def create_event_visualization(
     # Finalize
     # ═══════════════════════════════════════════════════════════════════════════
     plt.subplots_adjust(top=0.93, hspace=0.35, wspace=0.25)
+
+    if filter_metadata and filter_metadata.get("lower_bound") is not None:
+        lower = filter_metadata.get("lower_bound")
+        upper = filter_metadata.get("upper_bound")
+        median = filter_metadata.get("median")
+        kept = filter_metadata.get("kept_count", len(df))
+        total = filter_metadata.get("total_count", len(df))
+        removed = filter_metadata.get("removed_count", 0)
+        fig.text(
+            0.5,
+            0.02,
+            (
+                f"Tukey filter: kept {kept}/{total} laps | "
+                f"bounds {lower:.3f}s–{upper:.3f}s | "
+                f"median {median:.3f}s | removed {removed}"
+            ),
+            ha="center",
+            va="center",
+            fontsize=9,
+            color="#374151",
+        )
     
     if output_path:
         plt.savefig(output_path, dpi=150, bbox_inches='tight', 
@@ -474,11 +486,23 @@ def create_event_visualization(
     
     if has_sectors:
         print(f"\nBEST SECTORS:")
-        print(f"  S1: {df['Sector 1'].min():.3f}s")
-        print(f"  S2: {df['Sector 2'].min():.3f}s")
-        print(f"  S3: {df['Sector 3'].min():.3f}s")
-        print(f"  Optimal: {df['Sector 1'].min() + df['Sector 2'].min() + df['Sector 3'].min():.3f}s")
+        optimal_total = 0.0
+        for col in sector_cols:
+            best = df[col].min()
+            if pd.notna(best):
+                print(f"  {col}: {best:.3f}s")
+                optimal_total += best
+        print(f"  Optimal: {optimal_total:.3f}s")
     
+    if filter_metadata and filter_metadata.get("lower_bound") is not None:
+        print(
+            f"\nFILTER SUMMARY: kept {filter_metadata.get('kept_count')}/"
+            f"{filter_metadata.get('total_count')} laps | "
+            f"bounds {filter_metadata.get('lower_bound'):.3f}s – "
+            f"{filter_metadata.get('upper_bound'):.3f}s | "
+            f"removed {filter_metadata.get('removed_count')}"
+        )
+
     return fig
 
 
