@@ -13,27 +13,17 @@ Example:
 import argparse
 import shutil
 from pathlib import Path
-from datetime import datetime
 import pandas as pd
 import re
 
+from core.models import EventInfo, FilterMetadata, TelemetryStats, WeekEventEntry
+from data import apply_tukey_filter, extract_event_info, load_event_csv
+
 # Import our visualization tools
-from visualize_event import load_event_csv, create_event_visualization
+from visualize_event import create_event_visualization
 from visualize_week import load_week_events, create_week_visualization
 from visualize_telemetry import load_telemetry, create_telemetry_visualization
-from data_loader import apply_tukey_filter
 from config import pedals
-
-
-def detect_event_type(filename: str) -> str:
-    """Detect event type from filename."""
-    filename_lower = filename.lower()
-    if 'race' in filename_lower:
-        return 'ai-race' if 'ai' in filename_lower or 'offline' in filename_lower else 'race'
-    elif 'qualify' in filename_lower:
-        return 'qualifying'
-    else:
-        return 'solo'
 
 
 def get_next_event_number(events_dir: Path) -> int:
@@ -49,47 +39,6 @@ def get_next_event_number(events_dir: Path) -> int:
             numbers.append(int(match.group(1)))
     
     return max(numbers, default=0) + 1
-
-
-def extract_event_info(df: pd.DataFrame, csv_path: Path) -> dict:
-    """Extract event information from dataframe and filename."""
-    
-    # Basic stats
-    info = {
-        'laps': len(df),
-        'best': df['Lap time'].min(),
-        'optimal': df['Optimal'].iloc[0] if 'Optimal' in df.columns else df['Lap time'].min(),
-        'sigma': df['Lap time'].std(),
-    }
-    
-    # Settled pace (last 60%)
-    settled_start = int(len(df) * 0.4)
-    settled_df = df.iloc[settled_start:]
-    info['settled'] = settled_df['Lap time'].mean()
-    
-    # Clean laps
-    if 'Valid' in df.columns:
-        info['clean_pct'] = (df['Valid'] == True).sum() / len(df) * 100
-    elif 'Clean' in df.columns:
-        clean_series = pd.to_numeric(df['Clean'], errors='coerce').fillna(0)
-        info['clean_pct'] = (clean_series > 0).sum() / len(df) * 100
-    else:
-        info['clean_pct'] = 100.0
-    
-    # Try to extract date from filename
-    filename = csv_path.name
-    date_match = re.search(r'(\d{4}-\d{2}-\d{2})', filename)
-    if date_match:
-        info['date'] = date_match.group(1)
-    else:
-        # Use file modification time
-        mtime = csv_path.stat().st_mtime
-        info['date'] = datetime.fromtimestamp(mtime).strftime('%Y-%m-%d')
-    
-    # Event type
-    info['type'] = detect_event_type(filename)
-    
-    return info
 
 
 METRIC_KEY_MAP = {
@@ -138,7 +87,7 @@ def render_template(template: str, context: dict[str, str]) -> str:
     return re.sub(r"\{\{(.*?)\}\}", repl, template)
 
 
-def format_filter_summary(metadata: dict | None) -> tuple[str, str | None]:
+def format_filter_summary(metadata: FilterMetadata | None) -> tuple[str, str | None]:
     """Return human-readable summary + note for Tukey filtering."""
     if not metadata:
         return "", None
@@ -167,9 +116,9 @@ def format_filter_summary(metadata: dict | None) -> tuple[str, str | None]:
 def create_event_page(
     event_num: int,
     week: str,
-    info: dict,
+    info: EventInfo,
     events_dir: Path,
-    telemetry_stats: dict | None = None
+    telemetry_stats: TelemetryStats | None = None
 ) -> Path:
     """Create an event markdown page."""
     
@@ -305,7 +254,7 @@ def compute_week_summary(events: list[dict]) -> str:
     )
 
 
-def update_week_readme(week: str, weeks_dir: Path, events: list[dict]):
+def update_week_readme(week: str, weeks_dir: Path, events: list[WeekEventEntry]):
     """Update or create the week README."""
     
     week_dir = weeks_dir / f"week{week}"
@@ -413,7 +362,7 @@ week: {week}
     return readme_path
 
 
-def compute_telemetry_stats(telem_df: pd.DataFrame) -> dict[str, float]:
+def compute_telemetry_stats(telem_df: pd.DataFrame) -> TelemetryStats:
     """Compute basic telemetry stats (pedal usage)."""
     pedals_cfg = pedals()
     throttle_threshold = pedals_cfg.throttle_on
@@ -481,7 +430,7 @@ def main():
     
     print(f"   Analyzing event data...")
     df = load_event_csv(args.csv_file)
-    filter_metadata = None
+    filter_metadata: FilterMetadata | None = None
     if args.tukey_filter:
         df, filter_metadata = apply_tukey_filter(df)
     
@@ -513,7 +462,7 @@ def main():
                                    filter_metadata=filter_metadata)
     
     # Handle telemetry if provided
-    telemetry_stats = None
+    telemetry_stats: TelemetryStats | None = None
     if args.telemetry and args.telemetry.exists():
         print(f"   Processing telemetry...")
         # Copy telemetry
@@ -543,7 +492,7 @@ def main():
     info['filename'] = event_path.name
     
     # Load all events for week README
-    all_events = []
+    all_events: list[WeekEventEntry] = []
     for event_file in sorted(events_dir.glob("*.md")):
         match = re.match(r'(\d+)-(\d{4}-\d{2}-\d{2})-(.+)\.md', event_file.name)
         if match:
@@ -563,7 +512,7 @@ def main():
                 best = stats.get('best', 0.0)
                 sigma = stats.get('sigma', 0.0)
 
-            entry = {
+            entry: WeekEventEntry = {
                 'num': num,
                 'date': date,
                 'type': type_slug.replace('-', ' '),

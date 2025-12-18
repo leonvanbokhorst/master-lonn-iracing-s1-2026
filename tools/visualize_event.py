@@ -21,7 +21,8 @@ import seaborn as sns
 from scipy.interpolate import make_interp_spline
 from scipy.ndimage import gaussian_filter1d
 
-from data_loader import load_event_csv
+from core.models import FilterMetadata
+from data import load_event_csv
 
 
 def build_event_title(base_title: str, times: np.ndarray, laps: np.ndarray) -> str:
@@ -206,7 +207,7 @@ def create_event_visualization(
     title: str = "Event Analysis",
     output_path: Path | None = None,
     phase_boundaries: tuple[int, int] | None = None,
-    filter_metadata: dict | None = None,
+    filter_metadata: FilterMetadata | None = None,
 ):
     """Create comprehensive session visualization from Garage 61 CSV data."""
     

@@ -17,7 +17,8 @@ from datetime import datetime
 
 # Add parent to path for config import when running as script
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from tools.config import pedals, visualization, COLORS
+from tools.config import pedals, visualization
+from tools.core import COLORS
 
 # Style configuration
 plt.style.use('seaborn-v0_8-whitegrid')

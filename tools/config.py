@@ -10,6 +10,8 @@ from dataclasses import dataclass, fields
 from typing import Optional, Any, Type, TypeVar
 from collections.abc import Mapping
 
+from core.constants import COLORS
+
 T = TypeVar("T")
 
 # Find config.toml relative to this file
@@ -56,18 +58,6 @@ class Config:
     overlap: OverlapConfig
     laps: LapsConfig
     visualization: VisualizationConfig
-
-
-# Shared color constants for consistent styling
-COLORS = {
-    'first': '#E94F37',    # Red
-    'best': '#1B998B',     # Teal
-    'latest': '#F6AE2D',   # Yellow/Gold
-    'muted': '#D1D5DB',    # Gray (non-journey events)
-    'throttle': '#1B998B',
-    'brake': '#E94F37',
-    'coasting': '#94A3B8',
-}
 
 
 def _build_section(cls: Type[T], raw: Mapping[str, Any] | None) -> T:

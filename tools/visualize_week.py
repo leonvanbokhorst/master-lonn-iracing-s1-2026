@@ -18,7 +18,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from data_loader import load_event_csv_with_metadata
+from data import load_event_csv_with_metadata
 
 # Configure seaborn style - thinner lines for readability
 sns.set_theme(style="whitegrid", palette="husl", font_scale=1.0)
