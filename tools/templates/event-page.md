@@ -14,9 +14,9 @@ type: "{{type}}"
 | Metric              | Value          |
 | ------------------- | -------------- |
 | **Laps**            | {{laps}}       |
-| **Best Lap**        | {{best}}s      |
-| **Optimal**         | {{optimal}}s   |
-| **Settled Pace**    | {{settled}}s   |
+| **Best Lap**        | {{best}}       |
+| **Optimal**         | {{optimal}}    |
+| **Settled Pace**    | {{settled}}    |
 | **Consistency (σ)** | {{sigma}}s     |
 | **Clean Laps**      | {{clean_pct}}% |
 

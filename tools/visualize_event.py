@@ -15,20 +15,21 @@ from pathlib import Path
 from datetime import datetime
 
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
 import numpy as np
 import pandas as pd
 import seaborn as sns
 from scipy.interpolate import make_interp_spline
 from scipy.ndimage import gaussian_filter1d
 
-from data_loader import load_event_csv
+from data_loader import load_event_csv, format_lap_time
 
 
 def build_event_title(base_title: str, times: np.ndarray, laps: np.ndarray) -> str:
     """Add best lap and lap count to a base title."""
     best_time = np.min(times)
     laps_count = len(laps)
-    return f"{base_title} · Best {best_time:.3f}s · Laps {laps_count}"
+    return f"{base_title} · Best {format_lap_time(best_time)} · Laps {laps_count}"
 
 
 def _plot_pace_trend(ax, laps, times, middle_end, colors):
@@ -82,14 +83,21 @@ def _plot_pace_trend(ax, laps, times, middle_end, colors):
     if middle_end < len(times):
         settled_times = times[middle_end:]
         settled_mean = np.mean(settled_times)
-        ax.axhline(settled_mean, color=colors['secondary'], linestyle='--', linewidth=1.2,
-                   alpha=0.7, label=f'Settled: {settled_mean:.2f}s')
+        ax.axhline(
+            settled_mean,
+            color=colors['secondary'],
+            linestyle='--',
+            linewidth=1.2,
+            alpha=0.7,
+            label=f'Settled: {format_lap_time(settled_mean)}',
+        )
 
     ax.set_xlabel('Lap', fontsize=11)
-    ax.set_ylabel('Lap Time (s)', fontsize=11)
+    ax.set_ylabel('Lap Time', fontsize=11)
     ax.set_title('Pace Trend', fontsize=12, fontweight='bold', pad=10)
     ax.legend(loc='upper right', fontsize=8, framealpha=0.95)
     ax.set_ylim(y_min, y_max)
+    ax.yaxis.set_major_formatter(TIME_FORMATTER)
 
 
 def _plot_smoothed_series(ax, x, series, color, label, sigma, use_spline=True,
@@ -154,6 +162,8 @@ COLORS = {
 }
 
 SECTOR_COLORS = ['#2E86AB', '#F18F01', '#1B998B', '#A23B72', '#F6AE2D']
+
+TIME_FORMATTER = FuncFormatter(lambda value, _: format_lap_time(value))
 
 
 def get_sector_columns(df: pd.DataFrame) -> list[str]:
@@ -260,8 +270,15 @@ def create_event_visualization(
              markersize=6, markerfacecolor='white', markeredgewidth=1.5, alpha=0.9)
     
     # Highlight fastest lap (subtle)
-    ax1.scatter([fastest_lap], [times[fastest_idx]], color=COLORS['fastest'], 
-               s=80, zorder=5, marker='*', label=f'Fastest: {times[fastest_idx]:.3f}s')
+    ax1.scatter(
+        [fastest_lap],
+        [times[fastest_idx]],
+        color=COLORS['fastest'],
+        s=80,
+        zorder=5,
+        marker='*',
+        label=f'Fastest: {format_lap_time(times[fastest_idx])}',
+    )
     
     # Highlight dirty/off-track laps (subtle)
     for lap in dirty_laps:
@@ -271,12 +288,13 @@ def create_event_visualization(
                        zorder=4, marker='x', linewidths=1.5, alpha=0.7)
     
     ax1.set_xlabel('Lap', fontsize=11)
-    ax1.set_ylabel('Lap Time (s)', fontsize=11)
+    ax1.set_ylabel('Lap Time', fontsize=11)
     ax1.set_title('Lap Progression', fontsize=12, fontweight='bold', pad=10)
     ax1.legend(loc='upper right', fontsize=8, framealpha=0.95)
     
     y_min, y_max = min(times) - 0.5, max(times) + 0.5
     ax1.set_ylim(y_min, y_max)
+    ax1.yaxis.set_major_formatter(TIME_FORMATTER)
     
     # ═══════════════════════════════════════════════════════════════════════════
     # PLOT 2: Pace Trend - LEFT column, row 1 (lap-based)
@@ -325,14 +343,16 @@ def create_event_visualization(
                    edgecolor='#D97706', linewidth=1, label=f'Out of band ({len(out_band_times)})')
     
     # Add all info to legend (right side, away from left peak)
+    band_range_label = f"Band: {format_lap_time(band_low)} – {format_lap_time(band_high)}"
     ax3.plot([], [], ' ', label=f'In band ({len(in_band_times)})')
-    ax3.plot([], [], ' ', label=f'Band: {band_low:.2f}s – {band_high:.2f}s')
+    ax3.plot([], [], ' ', label=band_range_label)
     ax3.plot([], [], ' ', label=f'σ {band_std:.2f}s')
     
-    ax3.set_xlabel('Lap Time (s)', fontsize=11)
+    ax3.set_xlabel('Lap Time', fontsize=11)
     ax3.set_ylabel('Density', fontsize=11)
     ax3.set_title(f'Rhythm Band ({in_band_pct:.0f}% in band)', fontsize=12, fontweight='bold', pad=10)
     ax3.legend(loc='upper right', fontsize=9, framealpha=0.95)
+    ax3.xaxis.set_major_formatter(TIME_FORMATTER)
     
     # ═══════════════════════════════════════════════════════════════════════════
     # PLOT 4: Phase comparison
@@ -362,15 +382,17 @@ def create_event_visualization(
         if len(data) > 0:
             mean = np.mean(data)
             std = np.std(data)
-            ax4.annotate(f'μ={mean:.2f}s\nσ={std:.2f}s', 
+            ax4.annotate(
+                f'μ={format_lap_time(mean)}\nσ={std:.2f}s',
                         xy=(i, max(data) + 0.5),
                         ha='center', fontsize=8, color='#2C3E50',
                         bbox=dict(boxstyle='round,pad=0.2', facecolor='white', 
                                  edgecolor='#DDD', alpha=0.9))
     
     ax4.set_xlabel('', fontsize=11)
-    ax4.set_ylabel('Lap Time (s)', fontsize=11)
+    ax4.set_ylabel('Lap Time', fontsize=11)
     ax4.set_title('Phase Comparison', fontsize=12, fontweight='bold', pad=10)
+    ax4.yaxis.set_major_formatter(TIME_FORMATTER)
     
     # ═══════════════════════════════════════════════════════════════════════════
     # PLOT 5 & 6: Sector Analysis (if available)
@@ -448,13 +470,16 @@ def create_event_visualization(
         kept = filter_metadata.get("kept_count", len(df))
         total = filter_metadata.get("total_count", len(df))
         removed = filter_metadata.get("removed_count", 0)
+        lower_fmt = format_lap_time(lower)
+        upper_fmt = format_lap_time(upper)
+        median_fmt = format_lap_time(median)
         fig.text(
             0.5,
             0.02,
             (
                 f"Tukey filter: kept {kept}/{total} laps | "
-                f"bounds {lower:.3f}s–{upper:.3f}s | "
-                f"median {median:.3f}s | removed {removed}"
+                f"bounds {lower_fmt}–{upper_fmt} | "
+                f"median {median_fmt} | removed {removed}"
             ),
             ha="center",
             va="center",
@@ -474,15 +499,21 @@ def create_event_visualization(
     print("="*60)
     print(f"Total laps: {len(laps)}")
     print(f"Clean laps: {int(clean.sum())} ({100*clean.sum()/len(clean):.0f}%)")
-    print(f"Best lap: {times[fastest_idx]:.3f}s (lap {fastest_lap})")
-    print(f"Mean: {np.mean(times):.3f}s | Median: {np.median(times):.3f}s")
+    print(f"Best lap: {format_lap_time(times[fastest_idx])} (lap {fastest_lap})")
+    print(
+        f"Mean: {format_lap_time(np.mean(times))} | "
+        f"Median: {format_lap_time(np.median(times))}"
+    )
     
     if middle_end < len(times):
         main_times = times[middle_end:]
         print(f"\nMAIN PHASE (laps {laps[middle_end]}-{laps[-1]}):")
-        print(f"  Mean: {np.mean(main_times):.3f}s")
+        print(f"  Mean: {format_lap_time(np.mean(main_times))}")
         print(f"  Std:  {np.std(main_times):.3f}s")
-        print(f"  Band: {np.min(main_times):.3f}s - {np.max(main_times):.3f}s")
+        print(
+            f"  Band: {format_lap_time(np.min(main_times))} - "
+            f"{format_lap_time(np.max(main_times))}"
+        )
     
     if has_sectors:
         print(f"\nBEST SECTORS:")
@@ -490,16 +521,17 @@ def create_event_visualization(
         for col in sector_cols:
             best = df[col].min()
             if pd.notna(best):
-                print(f"  {col}: {best:.3f}s")
+                print(f"  {col}: {format_lap_time(best)}")
                 optimal_total += best
-        print(f"  Optimal: {optimal_total:.3f}s")
+        print(f"  Optimal: {format_lap_time(optimal_total)}")
     
     if filter_metadata and filter_metadata.get("lower_bound") is not None:
+        lower = filter_metadata.get('lower_bound')
+        upper = filter_metadata.get('upper_bound')
         print(
             f"\nFILTER SUMMARY: kept {filter_metadata.get('kept_count')}/"
             f"{filter_metadata.get('total_count')} laps | "
-            f"bounds {filter_metadata.get('lower_bound'):.3f}s – "
-            f"{filter_metadata.get('upper_bound'):.3f}s | "
+            f"bounds {format_lap_time(lower)} – {format_lap_time(upper)} | "
             f"removed {filter_metadata.get('removed_count')}"
         )
 

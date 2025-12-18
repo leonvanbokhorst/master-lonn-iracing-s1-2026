@@ -24,6 +24,12 @@ The Grand Prix lap feels like a rally stage that decided to become a circuit. Fa
 
 _Track Guide: Rudskogen Motorsenter by Sambo iRacing_
 
+## Track Map
+
+<a href="images/rudskogen-motorsenter-map.png"><img src="images/rudskogen-motorsenter-map.png" alt="Rudskogen Motorsenter Track Map" width="70%"></a>
+
+> Generated from Week 02 Ray FF1600 telemetry via `tools/generate_track_map.py`. Sector colors follow the iRacing S1–S4 timing splits.
+
 ---
 
 ## Character Notes

@@ -14,11 +14,12 @@ from pathlib import Path
 from datetime import datetime
 
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
 import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from data_loader import load_event_csv_with_metadata
+from data_loader import load_event_csv_with_metadata, format_lap_time
 
 # Configure seaborn style - thinner lines for readability
 sns.set_theme(style="whitegrid", palette="husl", font_scale=1.0)
@@ -42,6 +43,8 @@ def get_sector_columns(df: pd.DataFrame) -> list[str]:
 
 # Event colors for progression
 EVENT_COLORS = ['#E94F37', '#F6AE2D', '#33A1FD', '#1B998B', '#A23B72', '#2E86AB']
+
+TIME_FORMATTER = FuncFormatter(lambda value, _: format_lap_time(value))
 
 
 def is_telemetry_file(filename: str) -> bool:
@@ -174,8 +177,14 @@ def create_week_visualization(
     for i, (bar, best) in enumerate(zip(bars, bests)):
         # Best lap time on top of bar
         fontsize = 9 if n_events <= 8 else 7
-        ax1.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.05,
-                f'{best:.3f}', ha='center', va='bottom', fontsize=fontsize)
+        ax1.text(
+            bar.get_x() + bar.get_width()/2,
+            bar.get_height() + 0.05,
+            format_lap_time(best),
+            ha='center',
+            va='bottom',
+            fontsize=fontsize,
+        )
         
         # Delta from previous event (inside bar, white text)
         if i > 0 and n_events <= 10:
@@ -188,9 +197,10 @@ def create_week_visualization(
     
     ax1.set_xticks(x_pos)
     ax1.set_xticklabels(event_labels, fontsize=8, rotation=label_rotation, ha=label_ha)
-    ax1.set_ylabel('Best Lap (s)', fontsize=11)
+    ax1.set_ylabel('Best Lap', fontsize=11)
     ax1.set_title('Best Lap Progress', fontsize=12, fontweight='bold')
     ax1.set_ylim(min(bests) - 0.6, max(bests) + 0.5)
+    ax1.yaxis.set_major_formatter(TIME_FORMATTER)
     
     # ═══════════════════════════════════════════════════════════════════════════
     # PLOT 2: Band Evolution (settled mean ± std)
@@ -224,8 +234,9 @@ def create_week_visualization(
     
     ax2.set_xticks(x_pos)
     ax2.set_xticklabels(event_labels, fontsize=8, rotation=label_rotation, ha=label_ha)
-    ax2.set_ylabel('Settled Pace (s)', fontsize=11)
+    ax2.set_ylabel('Settled Pace', fontsize=11)
     ax2.set_title('Band Evolution (Mean ± Std)', fontsize=12, fontweight='bold')
+    ax2.yaxis.set_major_formatter(TIME_FORMATTER)
     
     # ═══════════════════════════════════════════════════════════════════════════
     # PLOT 3: Rhythm Discovery (Laps to Settle) - LINE CHART
@@ -359,9 +370,10 @@ def create_week_visualization(
         
         ax6.set_xticks(x_pos)
         ax6.set_xticklabels(event_labels_short, fontsize=9)
-        ax6.set_ylabel('Lap Time (s)', fontsize=11)
+        ax6.set_ylabel('Lap Time', fontsize=11)
         ax6.set_title('Actual vs Optimal', fontsize=12, fontweight='bold')
         ax6.legend(loc='upper right', fontsize=9, framealpha=0.95)
+        ax6.yaxis.set_major_formatter(TIME_FORMATTER)
     
     else:
         # If no sectors, show consistency metrics instead
@@ -404,15 +416,23 @@ def create_week_visualization(
     
     for i, (df, info) in enumerate(sessions):
         date_str = info['start_time'].strftime('%Y-%m-%d %H:%M')
-        print(f"#{i+1:<9} {date_str:<18} {info['type']:<10} {info['laps']:<6} "
-            f"{info['best']:.3f}s | {info['settled_mean']:.3f}s | {info['settled_std']:.3f}s")
+        best_fmt = format_lap_time(info['best'])
+        settled_fmt = format_lap_time(info['settled_mean'])
+        print(
+            f"#{i+1:<9} {date_str:<18} {info['type']:<10} {info['laps']:<6} "
+            f"{best_fmt:<10} | {settled_fmt:<12} | {info['settled_std']:.3f}s"
+        )
     
     # Progress summary
     print("\n" + "-"*70)
     first_best = sessions[0][1]['best']
     last_best = sessions[-1][1]['best']
     improvement = first_best - last_best
-    print(f"Best lap improvement: {first_best:.3f}s → {last_best:.3f}s = {improvement:+.3f}s 🎯")
+    print(
+        "Best lap improvement: "
+        f"{format_lap_time(first_best)} → {format_lap_time(last_best)} "
+        f"= {improvement:+.3f}s 🎯"
+    )
     
     first_std = sessions[0][1]['settled_std']
     last_std = sessions[-1][1]['settled_std']
@@ -422,7 +442,7 @@ def create_week_visualization(
     if has_sectors and any(not np.isnan(opt) for opt in optimals):
         best_optimal = np.nanmin(optimals)
         last_optimal = optimals[-1]
-        print(f"\nBest theoretical optimal: {best_optimal:.3f}s")
+        print(f"\nBest theoretical optimal: {format_lap_time(best_optimal)}")
         if not np.isnan(last_optimal):
             print(f"Gap to optimal (last session): {bests[-1] - last_optimal:.3f}s")
     

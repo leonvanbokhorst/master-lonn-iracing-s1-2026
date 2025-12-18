@@ -24,15 +24,22 @@ import pandas as pd
 # Sector colors - vibrant and distinct
 COLORS = {
     # Match the light, friendly style of the lap/pace graphs
-    'S1': '#1f78b4',          # Blue
-    'S2': '#e38f14',          # Orange
-    'S3': '#2ca25f',          # Green
-    'start_finish': '#e74c3c',# Red accent
-    'sector_line': '#8c8c8c', # Mid-gray
-    'background': '#FFFFFF',  # White figure background
-    'track_bg': '#F5F7FA',    # Light panel background
-    'track_outline': '#d0d7e2' # Soft outline for context
+    'start_finish': '#e74c3c',   # Red accent
+    'sector_line': '#8c8c8c',    # Mid-gray
+    'background': '#FFFFFF',     # White figure background
+    'track_bg': '#F5F7FA',       # Light panel background
+    'track_outline': '#d0d7e2',  # Soft outline for context
 }
+
+# Default palette for up to 6 sectors (wraps if more are requested)
+SECTOR_COLORS = [
+    '#1f78b4',  # S1 - Blue
+    '#e38f14',  # S2 - Orange
+    '#2ca25f',  # S3 - Green
+    '#8f3f97',  # S4 - Purple
+    '#f15a24',  # S5 - Orange-red
+    '#17becf',  # S6 - Teal
+]
 
 
 def load_telemetry(csv_path: Path) -> pd.DataFrame:
@@ -85,7 +92,7 @@ def find_sector_boundaries(dist_pct: np.ndarray, sector_splits: list[float]) -> 
 
 def create_track_map(
     lat: np.ndarray,
-    lon: np.ndarray, 
+    lon: np.ndarray,
     dist_pct: np.ndarray,
     sector_splits: list[float],
     title: str = "Track Map",
@@ -106,13 +113,19 @@ def create_track_map(
     y = (lat - lat_center) * lat_scale
     
     # Find sector boundaries
-    s1_end = sector_splits[0]
-    s2_end = sector_splits[1]
+    splits = sorted({split for split in sector_splits if 0 < split < 1})
     
-    # Create masks for each sector
-    s1_mask = dist_pct < s1_end
-    s2_mask = (dist_pct >= s1_end) & (dist_pct < s2_end)
-    s3_mask = dist_pct >= s2_end
+    # Create boolean masks for each sector (n splits => n+1 sectors)
+    split_bounds = [0.0] + splits + [1.0000001]
+    sector_masks: list[np.ndarray] = []
+    for idx in range(len(split_bounds) - 1):
+        start = split_bounds[idx]
+        end = split_bounds[idx + 1]
+        if idx == len(split_bounds) - 2:
+            mask = dist_pct >= start
+        else:
+            mask = (dist_pct >= start) & (dist_pct < end)
+        sector_masks.append(mask)
     
     # Set up the figure with light theme to match other graphs
     fig, ax = plt.subplots(figsize=(12, 10), facecolor=COLORS['background'])
@@ -123,24 +136,25 @@ def create_track_map(
     
     # Plot each sector with thick colored lines
     linewidth = 5
+    legend_elements: list[mpatches.Patch] = []
     
-    # S1 - Blue
-    if np.any(s1_mask):
-        ax.plot(x[s1_mask], y[s1_mask], color=COLORS['S1'], 
-                linewidth=linewidth, solid_capstyle='round', label='S1')
-    
-    # S2 - Orange
-    if np.any(s2_mask):
-        ax.plot(x[s2_mask], y[s2_mask], color=COLORS['S2'], 
-                linewidth=linewidth, solid_capstyle='round', label='S2')
-    
-    # S3 - Green
-    if np.any(s3_mask):
-        ax.plot(x[s3_mask], y[s3_mask], color=COLORS['S3'], 
-                linewidth=linewidth, solid_capstyle='round', label='S3')
+    for idx, mask in enumerate(sector_masks):
+        if not np.any(mask):
+            continue
+        color = SECTOR_COLORS[idx % len(SECTOR_COLORS)]
+        label = f"S{idx + 1}"
+        ax.plot(
+            x[mask],
+            y[mask],
+            color=color,
+            linewidth=linewidth,
+            solid_capstyle='round',
+            label=label,
+        )
+        legend_elements.append(mpatches.Patch(facecolor=color, label=label))
     
     # Mark sector boundaries with small dots (no labels)
-    boundaries = find_sector_boundaries(dist_pct, sector_splits)
+    boundaries = find_sector_boundaries(dist_pct, splits)
     
     for idx in boundaries:
         ax.scatter([x[idx]], [y[idx]], color='white', 
@@ -177,16 +191,18 @@ def create_track_map(
         spine.set_visible(False)
     
     # Create legend - positioned at bottom, outside track (S/F already labeled on map)
-    legend_elements = [
-        mpatches.Patch(facecolor=COLORS['S1'], label='S1'),
-        mpatches.Patch(facecolor=COLORS['S2'], label='S2'),
-        mpatches.Patch(facecolor=COLORS['S3'], label='S3'),
-    ]
-    
-    ax.legend(handles=legend_elements, loc='lower center', fontsize=11,
-              facecolor='white', edgecolor='#d0d7e2',
-              labelcolor='#2C3E50', framealpha=0.95, ncol=3,
-              bbox_to_anchor=(0.5, -0.06))
+    if legend_elements:
+        ax.legend(
+            handles=legend_elements,
+            loc='lower center',
+            fontsize=11,
+            facecolor='white',
+            edgecolor='#d0d7e2',
+            labelcolor='#2C3E50',
+            framealpha=0.95,
+            ncol=min(len(legend_elements), 4),
+            bbox_to_anchor=(0.5, -0.06),
+        )
     
     plt.tight_layout()
     
@@ -209,9 +225,17 @@ def main():
     parser.add_argument("--output", "-o", type=Path, help="Output PNG path")
     parser.add_argument("--title", "-t", type=str, default=None, 
                        help="Map title (auto-detected from filename if not provided)")
-    parser.add_argument("--sectors", nargs=2, type=float, default=[0.55, 0.77],
-                       metavar=('S1_END', 'S2_END'),
-                       help="Sector split points as fractions (default: 0.55 0.77)")
+    parser.add_argument(
+        "--sectors",
+        nargs="+",
+        type=float,
+        default=[0.55, 0.77],
+        metavar="SPLIT",
+        help=(
+            "Sector split points as lap distance fractions (0-1). "
+            "Provide N values to draw N+1 sectors. Default: 0.55 0.77"
+        ),
+    )
     
     args = parser.parse_args()
     
@@ -246,7 +270,14 @@ def main():
     print(f"🗺️  Extracted {len(lat)} valid GPS coordinates")
     
     print(f"🎨 Generating track map: {args.title}")
-    print(f"   Sectors: S1 ends at {args.sectors[0]*100:.0f}%, S2 ends at {args.sectors[1]*100:.0f}%")
+    splits = sorted({split for split in args.sectors if 0 < split < 1})
+    if splits:
+        split_summary = ", ".join(
+            f"S{i+1} end {split*100:.1f}%" for i, split in enumerate(splits)
+        )
+        print(f"   Sectors: {split_summary}, S{len(splits)+1} closes the lap")
+    else:
+        print("   Sectors: single color (no valid split points provided)")
     
     create_track_map(
         lat=lat,

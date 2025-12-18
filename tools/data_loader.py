@@ -5,6 +5,7 @@ Centralized to avoid drift between visualization scripts.
 """
 
 from pathlib import Path
+import math
 import pandas as pd
 
 
@@ -124,4 +125,23 @@ def apply_tukey_filter(
     }
 
     return filtered_df, metadata
+
+
+def format_lap_time(seconds: float | int | None, missing: str = "—") -> str:
+    """Return a human-friendly lap time string (e.g., 1:30.290)."""
+    try:
+        value = float(seconds)
+    except (TypeError, ValueError):
+        return missing
+
+    if not math.isfinite(value) or value < 0:
+        return missing
+
+    minutes = int(value // 60)
+    remainder = value - minutes * 60
+
+    if minutes == 0:
+        return f"{remainder:.3f}s"
+
+    return f"{minutes}:{remainder:06.3f}"
 

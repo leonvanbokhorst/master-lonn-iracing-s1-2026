@@ -22,6 +22,7 @@ import pandas as pd
 
 # Import from our other tools
 from visualize_week import load_week_events, create_week_visualization
+from data_loader import format_lap_time
 
 
 def format_event_row(event_num: int, df: pd.DataFrame, info: dict) -> str:
@@ -42,10 +43,10 @@ def format_event_row(event_num: int, df: pd.DataFrame, info: dict) -> str:
     # Build notes
     notes_parts = []
     notes_parts.append(f"{info['laps']} laps")
-    notes_parts.append(f"best **{info['best']:.3f}**")
+    notes_parts.append(f"best **{format_lap_time(info['best'])}**")
     
     if 'optimal' in info:
-        notes_parts.append(f"optimal {info['optimal']:.3f}")
+        notes_parts.append(f"optimal {format_lap_time(info['optimal'])}")
     
     # Add band info
     notes_parts.append(f"σ={info['settled_std']:.2f}s")
@@ -90,9 +91,11 @@ def generate_progress_summary(events: list[tuple[pd.DataFrame, dict]]) -> str:
     for i, (df, info) in enumerate(events):
         date_str = info['start_time'].strftime('%m/%d %H:%M')
         type_str = "AI" if info['type'] == 'Race' else "Practice"
+        best_fmt = format_lap_time(info['best'])
+        settled_fmt = format_lap_time(info['settled_mean'])
         lines.append(
             f"| {i+1}   | {date_str} | {type_str:<8} | {info['laps']:<4} | "
-            f"{info['best']:.3f}s | {info['settled_mean']:.3f}s | {info['settled_std']:.2f}s |"
+            f"{best_fmt} | {settled_fmt} | {info['settled_std']:.2f}s |"
         )
     
     # Add improvement summary
@@ -102,11 +105,13 @@ def generate_progress_summary(events: list[tuple[pd.DataFrame, dict]]) -> str:
     best_improvement = first['best'] - last['best']
     std_improvement = first['settled_std'] - last['settled_std']
     
+    first_best_fmt = format_lap_time(first['best'])
+    last_best_fmt = format_lap_time(last['best'])
     lines.extend([
         "",
         "**Progress:**",
         "",
-        f"- Best lap: {first['best']:.3f}s → {last['best']:.3f}s ({best_improvement:+.3f}s)",
+        f"- Best lap: {first_best_fmt} → {last_best_fmt} ({best_improvement:+.3f}s)",
         f"- Consistency: σ {first['settled_std']:.2f}s → σ {last['settled_std']:.2f}s ({std_improvement:+.2f}s tighter)",
     ])
     
@@ -196,7 +201,8 @@ def update_week_file(
     print("WEEK UPDATE COMPLETE")
     print("="*60)
     print(f"Events: {len(events)}")
-    print(f"Best lap: {min(info['best'] for _, info in events):.3f}s")
+    best_overall = min(info['best'] for _, info in events)
+    print(f"Best lap: {format_lap_time(best_overall)}")
     print(f"Latest σ: {events[-1][1]['settled_std']:.2f}s")
 
 

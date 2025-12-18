@@ -21,7 +21,7 @@ import re
 from visualize_event import load_event_csv, create_event_visualization
 from visualize_week import load_week_events, create_week_visualization
 from visualize_telemetry import load_telemetry, create_telemetry_visualization
-from data_loader import apply_tukey_filter
+from data_loader import apply_tukey_filter, format_lap_time
 from config import pedals
 
 
@@ -152,14 +152,18 @@ def format_filter_summary(metadata: dict | None) -> tuple[str, str | None]:
     if lower is None or upper is None or median is None:
         return "", None
 
+    lower_fmt = format_lap_time(lower)
+    upper_fmt = format_lap_time(upper)
+    median_fmt = format_lap_time(median)
+
     summary = (
         f"> Tukey filter applied: kept {kept}/{total} laps "
-        f"(median {median:.3f}s, bounds {lower:.3f}s–{upper:.3f}s, "
+        f"(median {median_fmt}, bounds {lower_fmt}–{upper_fmt}, "
         f"removed {removed}).\n"
     )
     note = (
-        f"Tukey filter {lower:.3f}s–{upper:.3f}s "
-        f"(median {median:.3f}s, removed {removed})"
+        f"Tukey filter {lower_fmt}–{upper_fmt} "
+        f"(median {median_fmt}, removed {removed})"
     )
     return summary, note
 
@@ -236,9 +240,9 @@ type: "{{type}}"
         "date": info['date'],
         "type": info['type'],
         "laps": str(info['laps']),
-        "best": f"{info['best']:.3f}",
-        "optimal": f"{info['optimal']:.3f}",
-        "settled": f"{info['settled']:.3f}",
+        "best": format_lap_time(info['best']),
+        "optimal": format_lap_time(info['optimal']),
+        "settled": format_lap_time(info['settled']),
         "sigma": f"{info['sigma']:.2f}",
         "clean_pct": f"{info['clean_pct']:.0f}",
         "filter_summary": info.get("filter_summary", ""),
@@ -299,8 +303,8 @@ def compute_week_summary(events: list[dict]) -> str:
 
     return (
         f"- **Events:** {len(events)}\n"
-        f"- **Best Lap:** {best_lap:.3f}s\n"
-        f"- **Improvement:** {improvement:+.3f}s (from {first_lap:.3f}s)\n"
+        f"- **Best Lap:** {format_lap_time(best_lap)}\n"
+        f"- **Improvement:** {improvement:+.3f}s (from {format_lap_time(first_lap)})\n"
         f"- **Latest σ:** {last_sigma:.2f}s"
     )
 
@@ -317,9 +321,10 @@ def update_week_readme(week: str, weeks_dir: Path, events: list[dict]):
         notes = "_Add notes..._" if not e.get('notes') else e['notes']
         details_link = f"[→](events/{e['filename']})"
         
+        best_fmt = format_lap_time(e['best'])
         table_rows.append(
             f"| {e['num']} | {e['date']} | {e['type']} | {e['laps']} | "
-            f"{e['best']:.3f}s | {e['sigma']:.2f}s | {notes} | {details_link} |"
+            f"{best_fmt} | {e['sigma']:.2f}s | {notes} | {details_link} |"
         )
     
     events_table = '\n'.join(table_rows)
@@ -339,9 +344,10 @@ def update_week_readme(week: str, weeks_dir: Path, events: list[dict]):
             )
             if row_match and not e.get('notes'):
                 e['notes'] = row_match.group(1).strip()
+            best_fmt = format_lap_time(e['best'])
             table_rows[events.index(e)] = (
                 f"| {e['num']} | {e['date']} | {e['type']} | {e['laps']} | "
-                f"{e['best']:.3f}s | {e['sigma']:.2f}s | "
+                f"{best_fmt} | {e['sigma']:.2f}s | "
                 f"{e.get('notes', '_Add notes..._')} | [→](events/{e['filename']}) |"
             )
         events_table = '\n'.join(table_rows)

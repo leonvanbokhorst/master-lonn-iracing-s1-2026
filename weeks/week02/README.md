@@ -21,21 +21,21 @@ schedule:
 
 ## Events
 
-| #   | Date       | Type | Laps | Best    | σ     | Notes                                                    | Details                           |
-| --- | ---------- | ---- | ---- | ------- | ----- | -------------------------------------------------------- | --------------------------------- |
-| 1   | 2025-12-18 | solo | 18   | 90.290s | 1.14s | Tukey filter 87.878s–94.658s (median 91.345s, removed 3) | [→](events/01-2025-12-18-solo.md) |
+| #   | Date       | Type | Laps | Best     | σ     | Notes                                                       | Details                           |
+| --- | ---------- | ---- | ---- | -------- | ----- | ----------------------------------------------------------- | --------------------------------- |
+| 1   | 2025-12-18 | solo | 18   | 1:30.290 | 1.14s | Tukey filter 1:27.878–1:34.658 (median 1:31.345, removed 3) | [→](events/01-2025-12-18-solo.md) |
 
 ## Week Progress
 
 ![Week Progress](images/week-progress.png)
 
-> Filtered laps: kept 18/21 between 87.878s–94.658s (median 91.345s).
+> Filtered laps: kept 18/21 between 1:27.878–1:34.658 (median 1:31.345).
 
 ## Summary
 
 - **Events:** 1
-- **Best Lap:** 90.290s
-- **Improvement:** +0.000s (from 90.290s)
+- **Best Lap:** 1:30.290
+- **Improvement:** +0.000s (from 1:30.290)
 - **Latest σ:** 1.14s
 
 ## Reflection
