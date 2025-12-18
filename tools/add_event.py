@@ -21,6 +21,8 @@ import re
 from visualize_event import load_event_csv, create_event_visualization
 from visualize_week import load_week_events, create_week_visualization
 from visualize_telemetry import load_telemetry, create_telemetry_visualization
+from data_loader import apply_tukey_filter
+from config import pedals
 
 
 def detect_event_type(filename: str) -> str:
@@ -68,6 +70,9 @@ def extract_event_info(df: pd.DataFrame, csv_path: Path) -> dict:
     # Clean laps
     if 'Valid' in df.columns:
         info['clean_pct'] = (df['Valid'] == True).sum() / len(df) * 100
+    elif 'Clean' in df.columns:
+        clean_series = pd.to_numeric(df['Clean'], errors='coerce').fillna(0)
+        info['clean_pct'] = (clean_series > 0).sum() / len(df) * 100
     else:
         info['clean_pct'] = 100.0
     
@@ -131,6 +136,32 @@ def render_template(template: str, context: dict[str, str]) -> str:
         return str(context.get(name, match.group(0)))
     
     return re.sub(r"\{\{(.*?)\}\}", repl, template)
+
+
+def format_filter_summary(metadata: dict | None) -> tuple[str, str | None]:
+    """Return human-readable summary + note for Tukey filtering."""
+    if not metadata:
+        return "", None
+
+    lower = metadata.get("lower_bound")
+    upper = metadata.get("upper_bound")
+    median = metadata.get("median")
+    removed = metadata.get("removed_count", 0)
+    total = metadata.get("total_count", 0)
+    kept = metadata.get("kept_count", 0)
+    if lower is None or upper is None or median is None:
+        return "", None
+
+    summary = (
+        f"> Tukey filter applied: kept {kept}/{total} laps "
+        f"(median {median:.3f}s, bounds {lower:.3f}s–{upper:.3f}s, "
+        f"removed {removed}).\n"
+    )
+    note = (
+        f"Tukey filter {lower:.3f}s–{upper:.3f}s "
+        f"(median {median:.3f}s, removed {removed})"
+    )
+    return summary, note
 
 
 def create_event_page(
@@ -210,7 +241,20 @@ type: "{{type}}"
         "settled": f"{info['settled']:.3f}",
         "sigma": f"{info['sigma']:.2f}",
         "clean_pct": f"{info['clean_pct']:.0f}",
+        "filter_summary": info.get("filter_summary", ""),
+        "garage_link": "",
+        "next_event_nav": "",
     }
+
+    garage_event_id = info.get("garage_event_id")
+    if garage_event_id:
+        ctx["garage_link"] = (
+            f" | **[Garage 61 Event Page](https://garage61.net/app/event/{garage_event_id})**"
+        )
+
+    next_event = info.get("next_event")
+    if next_event:
+        ctx["next_event_nav"] = f" | [Next Event →](./{next_event}.md)"
     
     # Handle conditional telemetry section
     if telemetry_stats:
@@ -289,15 +333,17 @@ def update_week_readme(week: str, weeks_dir: Path, events: list[dict]):
         
         # 1. Preserve Notes from existing table
         for e in events:
-             # Look for | N | ... | ... | ... | ... | ... | NOTES | ... |
-             row_match = re.search(r'\|\s*' + str(e['num']) + r'\s*\|.*?\|.*?\|.*?\|.*?\|.*?\|\s*(.*?)\s*\|', content)
-             if row_match:
-                 e['notes'] = row_match.group(1).strip()
-                 # Rebuild the row with preserved notes
-                 table_rows[events.index(e)] = (
-                    f"| {e['num']} | {e['date']} | {e['type']} | {e['laps']} | "
-                    f"{e['best']:.3f}s | {e['sigma']:.2f}s | {e['notes']} | [→](events/{e['filename']}) |"
-                 )
+            row_match = re.search(
+                r'\|\s*' + str(e['num']) + r'\s*\|.*?\|.*?\|.*?\|.*?\|.*?\|\s*(.*?)\s*\|',
+                content,
+            )
+            if row_match and not e.get('notes'):
+                e['notes'] = row_match.group(1).strip()
+            table_rows[events.index(e)] = (
+                f"| {e['num']} | {e['date']} | {e['type']} | {e['laps']} | "
+                f"{e['best']:.3f}s | {e['sigma']:.2f}s | "
+                f"{e.get('notes', '_Add notes..._')} | [→](events/{e['filename']}) |"
+            )
         events_table = '\n'.join(table_rows)
         
         # 2. Update the Events table in place
@@ -369,14 +415,22 @@ week: {week}
 
 def compute_telemetry_stats(telem_df: pd.DataFrame) -> dict[str, float]:
     """Compute basic telemetry stats (pedal usage)."""
-    throttle_threshold = 0.05
-    brake_threshold = 0.01
-    full_throttle_pct = (telem_df["Throttle"] > 0.95).sum() / len(telem_df) * 100
-    braking_pct = (telem_df["Brake"] > brake_threshold).sum() / len(telem_df) * 100
-    coasting_pct = (
-        (telem_df["Throttle"] < throttle_threshold)
-        & (telem_df["Brake"] < brake_threshold)
-    ).sum() / len(telem_df) * 100
+    pedals_cfg = pedals()
+    throttle_threshold = pedals_cfg.throttle_on
+    brake_inactive_threshold = pedals_cfg.brake_on
+    coast_accel_threshold = pedals_cfg.coast_long_accel
+
+    throttle = telem_df["Throttle"]
+    brake = telem_df["Brake"]
+
+    full_throttle_pct = (throttle > pedals_cfg.throttle_full).sum() / len(throttle) * 100
+    braking_pct = (brake > brake_inactive_threshold).sum() / len(brake) * 100
+
+    coast_mask = (throttle < throttle_threshold) & (brake < brake_inactive_threshold)
+    if "LongAccel" in telem_df.columns:
+        coast_mask &= telem_df["LongAccel"].abs() < coast_accel_threshold
+
+    coasting_pct = coast_mask.sum() / len(telem_df) * 100
     return {
         "throttle_pct": full_throttle_pct,
         "brake_pct": braking_pct,
@@ -390,6 +444,17 @@ def main():
     parser.add_argument("csv_file", type=Path, help="Path to Garage61 CSV export")
     parser.add_argument("--telemetry", "-t", type=Path, help="Optional single-lap telemetry CSV")
     parser.add_argument("--no-viz", action="store_true", help="Skip visualization generation")
+    parser.add_argument(
+        "--tukey-filter",
+        action="store_true",
+        help="Drop lap-time outliers using Tukey (IQR) bounds before analysis",
+    )
+    parser.add_argument(
+        "--garage-event-id",
+        "-g",
+        type=str,
+        help="Garage 61 event ID for backlinking the session page",
+    )
     
     args = parser.parse_args()
     
@@ -412,19 +477,20 @@ def main():
     
     print(f"📁 Adding event to week {args.week}...")
     
-    # Copy CSV to data/
     dest_csv = data_dir / args.csv_file.name
-    if not dest_csv.exists():
-        shutil.copy(args.csv_file, dest_csv)
-        print(f"   Copied CSV to data/{dest_csv.name}")
-    else:
-        # If file exists, we still want to process it, maybe it was updated
-        pass
     
-    # Load and analyze event
     print(f"   Analyzing event data...")
     df = load_event_csv(args.csv_file)
+    filter_metadata = None
+    if args.tukey_filter:
+        df, filter_metadata = apply_tukey_filter(df)
+    
+    # Persist the processed (possibly filtered) data for downstream tools
+    df.to_csv(dest_csv, index=False)
+    print(f"   Saved processed CSV to data/{dest_csv.name}")
     info = extract_event_info(df, args.csv_file)
+    if args.garage_event_id:
+        info["garage_event_id"] = args.garage_event_id
     
     # Determine event number
     event_num = get_next_event_number(events_dir)
@@ -432,12 +498,19 @@ def main():
     
     print(f"   Event #{event_num}: {info['laps']} laps, best {info['best']:.3f}s")
     
+    # Format filter summary for downstream consumers
+    filter_summary, filter_note = format_filter_summary(filter_metadata)
+    info["filter_summary"] = filter_summary
+    if filter_note:
+        info["notes"] = filter_note
+
     # Generate event visualization
     if not args.no_viz:
         print(f"   Generating event visualization...")
         event_viz_path = images_dir / f"event-{event_num:02d}-laptimes.png"
         create_event_visualization(df, title=f"Event #{event_num} – {info['date']}", 
-                                   output_path=event_viz_path)
+                                   output_path=event_viz_path,
+                                   filter_metadata=filter_metadata)
     
     # Handle telemetry if provided
     telemetry_stats = None
@@ -465,6 +538,7 @@ def main():
     
     # Create event page
     print(f"   Creating event page...")
+    info["filter_metadata"] = filter_metadata
     event_path = create_event_page(event_num, args.week, info, events_dir, telemetry_stats)
     info['filename'] = event_path.name
     
@@ -489,7 +563,7 @@ def main():
                 best = stats.get('best', 0.0)
                 sigma = stats.get('sigma', 0.0)
 
-            all_events.append({
+            entry = {
                 'num': num,
                 'date': date,
                 'type': type_slug.replace('-', ' '),
@@ -497,7 +571,10 @@ def main():
                 'best': best,
                 'sigma': sigma,
                 'filename': event_file.name,
-            })
+            }
+            if num == event_num and info.get("notes"):
+                entry["notes"] = info["notes"]
+            all_events.append(entry)
     
     # Re-sort by number
     all_events.sort(key=lambda x: x['num'])

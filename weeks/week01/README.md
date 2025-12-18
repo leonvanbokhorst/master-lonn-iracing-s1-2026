@@ -1,12 +1,8 @@
----
-week: 01
----
-
 # Week 01 – Summit Point Raceway – Jefferson Circuit
 
 > Track dossier: [Summit Point Jefferson Circuit](../../tracks/track-summit-point-jefferson-circuit.md)
 
-> **Intent:** _Write your intent here..._
+> **Intent:** Establish a solid baseline with the Ray FF1600. Focus on consistency over raw pace, validate the "Survival Protocol" in traffic, and complete official races with positive iRating gains.
 
 ## Events
 
@@ -25,12 +21,6 @@ week: 01
 | 11  | 2025-12-15 | ai race | 13   | 51.255s | 0.24s | **Metronome** 🤖        | [→](events/11-2025-12-15-ai-race.md) |
 | 12  | 2025-12-16 | race    | 12   | 50.913s | 0.38s | **Official win!** 🏆    | [→](events/12-2025-12-16-race.md)    |
 | 13  | 2025-12-17 | race    | 13   | 50.592s | 3.51s | Pole spin, P4 salvage   | [→](events/13-2025-12-17-race.md)    |
-
-## Time Trials
-
-| Date (UTC)       | Track & Config                   | Best / TT Avg     | Laps Used | Inc | TT Rating         | Details                                      |
-| ---------------- | -------------------------------- | ----------------- | --------- | --- | ----------------- | -------------------------------------------- |
-| 2025-12-16 13:04 | Summit Point – Jefferson Circuit | 50.685s / 50.815s | 8 (26–33) | 1x  | 1283 → 1332 (+49) | [TT report](time-trials/tt-20251216-1304.md) |
 
 ## Week Progress
 
@@ -74,11 +64,19 @@ week: 01
 
 ---
 
-[← Back to Season](../../README.md)
-
 ## Official Race Reports
 
 | Date (UTC)           | Track                | SOF  | Start->Finish | Laps led | Inc | Best / Avg        | Pts | Report                                                 |
 | -------------------- | -------------------- | ---- | ------------- | -------- | --- | ----------------- | --- | ------------------------------------------------------ |
 | 2025-12-16 06:45 UTC | Summit Point Raceway | 1371 | P3->P1        | 12/14    | 2x  | 50.913s / 51.622s | 80  | [Event #12](weeks/week01/events/12-2025-12-16-race.md) |
 | 2025-12-17 17:45 UTC | Summit Point Raceway | 1368 | P1->P4        | 3/14     | 5x  | 50.592s / 52.838s | 58  | [Event #13](weeks/week01/events/13-2025-12-17-race.md) |
+
+## Time Trials
+
+| Date (UTC)       | Track & Config                   | Best / TT Avg     | Laps Used | Inc | TT Rating         | Details                                      |
+| ---------------- | -------------------------------- | ----------------- | --------- | --- | ----------------- | -------------------------------------------- |
+| 2025-12-16 13:04 | Summit Point – Jefferson Circuit | 50.685s / 50.815s | 8 (26–33) | 1x  | 1283 → 1332 (+49) | [TT report](time-trials/tt-20251216-1304.md) |
+
+---
+
+[← Back to Season](../../README.md) | [Next Week: Rudskogen →](../week02/README.md)

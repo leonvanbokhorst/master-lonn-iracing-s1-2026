@@ -32,10 +32,13 @@ COLORS = {
     'fastest': '#1B998B',
     'dirty': '#E94F37',
     'band_fill': '#86BA90',
-    's1': '#2E86AB',
-    's2': '#F18F01', 
-    's3': '#1B998B',
 }
+
+SECTOR_COLORS = ['#2E86AB', '#F18F01', '#1B998B', '#A23B72', '#F6AE2D']
+
+
+def get_sector_columns(df: pd.DataFrame) -> list[str]:
+    return [col for col in df.columns if col.lower().startswith("sector ")]
 
 # Event colors for progression
 EVENT_COLORS = ['#E94F37', '#F6AE2D', '#33A1FD', '#1B998B', '#A23B72', '#2E86AB']
@@ -82,6 +85,9 @@ def load_week_events(week_dir: Path, exclude_first_lap: bool = True) -> list[tup
             'clean_pct': df['Clean'].mean() * 100 if 'Clean' in df.columns else 100,
         }
         
+        sector_cols = get_sector_columns(df)
+        info['sector_cols'] = sector_cols
+        
         # Calculate "settled" stats (last 60% of laps)
         settled_start = int(len(df) * 0.4)
         settled_df = df.iloc[settled_start:]
@@ -89,11 +95,13 @@ def load_week_events(week_dir: Path, exclude_first_lap: bool = True) -> list[tup
         info['settled_std'] = settled_df['Lap time'].std()
         
         # Sector bests if available
-        if all(col in df.columns for col in ['Sector 1', 'Sector 2', 'Sector 3']):
-            info['s1_best'] = df['Sector 1'].min()
-            info['s2_best'] = df['Sector 2'].min()
-            info['s3_best'] = df['Sector 3'].min()
-            info['optimal'] = info['s1_best'] + info['s2_best'] + info['s3_best']
+        if sector_cols:
+            sector_bests = {col: df[col].min() for col in sector_cols}
+            info['sector_bests'] = sector_bests
+            info['optimal'] = sum(val for val in sector_bests.values() if pd.notna(val))
+        else:
+            info['sector_bests'] = {}
+            info['optimal'] = np.nan
         
         sessions.append((df, info))
     
@@ -293,7 +301,8 @@ def create_week_visualization(
     # ═══════════════════════════════════════════════════════════════════════════
     # PLOT 5: Sector Progress (if available)
     # ═══════════════════════════════════════════════════════════════════════════
-    has_sectors = all('s1_best' in info for _, info in sessions)
+    last_sector_cols = sessions[-1][1].get('sector_cols', [])
+    has_sectors = len(last_sector_cols) > 0
     
     if has_sectors:
         ax5 = fig.add_subplot(gs[2, 0])
@@ -302,26 +311,23 @@ def create_week_visualization(
         # Calculate sector consistency (σ) for the last/most recent session
         # This tells driver WHERE to focus
         last_df = sessions[-1][0]
-        s1_std = last_df['Sector 1'].std()
-        s2_std = last_df['Sector 2'].std()
-        s3_std = last_df['Sector 3'].std()
+        sector_cols_last = last_sector_cols
         
-        s1_mean = last_df['Sector 1'].mean()
-        s2_mean = last_df['Sector 2'].mean()
-        s3_mean = last_df['Sector 3'].mean()
+        sector_stds = []
+        sector_means = []
+        sector_bests = []
+        sector_labels = []
+        sector_colors = []
         
-        s1_best = last_df['Sector 1'].min()
-        s2_best = last_df['Sector 2'].min()
-        s3_best = last_df['Sector 3'].min()
-        
-        sectors = ['S1\n(T1-esses)', 'S2\n(T6 pinch)', 'S3\n(carousel)']
-        sector_stds = [s1_std, s2_std, s3_std]
-        sector_means = [s1_mean, s2_mean, s3_mean]
-        sector_bests = [s1_best, s2_best, s3_best]
-        sector_colors = [COLORS['s1'], COLORS['s2'], COLORS['s3']]
+        for idx, col in enumerate(sector_cols_last):
+            sector_labels.append(col.replace('Sector ', 'S'))
+            sector_stds.append(last_df[col].std())
+            sector_means.append(last_df[col].mean())
+            sector_bests.append(last_df[col].min())
+            sector_colors.append(SECTOR_COLORS[idx % len(SECTOR_COLORS)])
         
         # Bar chart of sector σ (consistency)
-        bars = ax5.bar(sectors, sector_stds, color=sector_colors, alpha=0.7, edgecolor='white', linewidth=1.5)
+        bars = ax5.bar(sector_labels, sector_stds, color=sector_colors, alpha=0.7, edgecolor='white', linewidth=1.5)
         
         # Add annotations
         for i, (bar, std, mean, best) in enumerate(zip(bars, sector_stds, sector_means, sector_bests)):
@@ -337,7 +343,7 @@ def create_week_visualization(
         ax6 = fig.add_subplot(gs[2, 1])
         ax6.set_facecolor('#FFFFFF')
         
-        optimals = [info['optimal'] for _, info in sessions]
+        optimals = [info.get('optimal', np.nan) for _, info in sessions]
         
         ax6.plot(x_pos, bests, 'o-', color=COLORS['primary'], linewidth=1.2, 
                 markersize=7, label='Actual Best')
@@ -413,9 +419,12 @@ def create_week_visualization(
     std_change = first_std - last_std
     print(f"Consistency improvement: σ {first_std:.3f}s → σ {last_std:.3f}s = {std_change:+.3f}s tighter")
     
-    if has_sectors:
-        print(f"\nBest theoretical optimal: {min(optimals):.3f}s")
-        print(f"Gap to optimal (last session): {bests[-1] - optimals[-1]:.3f}s")
+    if has_sectors and any(not np.isnan(opt) for opt in optimals):
+        best_optimal = np.nanmin(optimals)
+        last_optimal = optimals[-1]
+        print(f"\nBest theoretical optimal: {best_optimal:.3f}s")
+        if not np.isnan(last_optimal):
+            print(f"Gap to optimal (last session): {bests[-1] - last_optimal:.3f}s")
     
     return fig
 

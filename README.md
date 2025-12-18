@@ -6,11 +6,11 @@ This is the training-dojo journal for Lonn's Ray FF1600 Rookie Fixed campaign. I
 
 iRacing 2026 Season 1 runs **December 16, 2025 → March 9, 2026** (12 weeks). Build 2025.12.08.03 launched December 9, 2025.
 
-- **Week:** Actively racing [Week 01](weeks/week01/) (Summit Point Jefferson)
+- **Week:** Actively racing [Week 02](weeks/week02/) (Rudskogen Motorsenter)
 - **Car:** [Ray FF1600](cars/car-ray-ff1600.md)
-- **Track:** [Summit Point Jefferson Circuit](tracks/track-summit-point-jefferson-circuit.md)
-- **Official race schedule:** Tuesday 2025-12-16 → 2025-12-22
-- **Status:** 13 logged events (451 flying laps) with a P1 official win and a P4 salvage already banked. 🏁
+- **Track:** [Rudskogen Motorsenter](tracks/track-rudskogen-motorsenter.md)
+- **Official race schedule:** Tuesday 2025-12-23 → 2025-12-29
+- **Status:** Week 01 complete (Win + P4). Week 02 begins now. 🇳🇴
 
 ## Week 01 Summary
 
@@ -57,8 +57,8 @@ Need track context before a session? Start by skimming the track profile, then j
 
 | Week | Dates                   | Track & Layout                         | Track Profile                                                       | Week Log                        |
 | ---- | ----------------------- | -------------------------------------- | ------------------------------------------------------------------- | ------------------------------- |
-| 01   | 2025-12-16 → 2025-12-22 | Summit Point – Jefferson Circuit       | [dossier](tracks/track-summit-point-jefferson-circuit.md)           | [**week01/**](weeks/week01/) ✅ |
-| 02   | 2025-12-23 → 2025-12-29 | Rudskogen Motorsenter                  | [dossier](tracks/track-rudskogen-motorsenter.md)                    | [week02/](weeks/week02/)        |
+| 01   | 2025-12-16 → 2025-12-22 | Summit Point – Jefferson Circuit       | [dossier](tracks/track-summit-point-jefferson-circuit.md)           | [week01/](weeks/week01/) ✅     |
+| 02   | 2025-12-23 → 2025-12-29 | Rudskogen Motorsenter                  | [dossier](tracks/track-rudskogen-motorsenter.md)                    | [**week02/**](weeks/week02/) 👈 |
 | 03   | 2025-12-30 → 2026-01-05 | Winton Motor Raceway – Grand Prix      | [dossier](tracks/track-winton-motor-raceway-natl-md.md)             | [week03/](weeks/week03/)        |
 | 04   | 2026-01-06 → 2026-01-12 | Lime Rock Park – Grand Prix            | [dossier](tracks/track-lime-rock-park-grand-prix.md)                | [week04/](weeks/week04/)        |
 | 05   | 2026-01-13 → 2026-01-19 | Motorsport Arena Oschersleben – GP     | [dossier](tracks/track-motorsport-arena-oschersleben-grand-prix.md) | [week05/](weeks/week05/)        |

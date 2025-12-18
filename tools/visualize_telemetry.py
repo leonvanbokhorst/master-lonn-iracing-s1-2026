@@ -16,6 +16,8 @@ from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
 import numpy as np
 
+from config import pedals
+
 # Style configuration
 plt.style.use('seaborn-v0_8-whitegrid')
 
@@ -28,6 +30,8 @@ COLORS = {
     'track_start': '#E94F37',
 }
 
+COAST_DISPLAY_THRESHOLD = 0.1  # %
+
 
 def load_telemetry(csv_path: Path) -> pd.DataFrame:
     """Load telemetry CSV from Garage61."""
@@ -39,7 +43,12 @@ def load_telemetry(csv_path: Path) -> pd.DataFrame:
     return df
 
 
-def compute_coasting_zones(df: pd.DataFrame, throttle_threshold: float, brake_threshold: float):
+def compute_coasting_zones(
+    df: pd.DataFrame,
+    throttle_threshold: float,
+    brake_threshold: float,
+    long_accel_threshold: float | None = None,
+):
     """Compute coasting zones from pedal data.
     
     Returns:
@@ -49,6 +58,8 @@ def compute_coasting_zones(df: pd.DataFrame, throttle_threshold: float, brake_th
         coasting_pct: Percentage of lap spent coasting
     """
     coasting_mask = (df['Throttle'] < throttle_threshold) & (df['Brake'] < brake_threshold)
+    if long_accel_threshold is not None and 'LongAccel' in df.columns:
+        coasting_mask &= df['LongAccel'].abs() < long_accel_threshold
     coasting_starts = []
     coasting_ends = []
     in_coast = False
@@ -94,10 +105,10 @@ def create_telemetry_visualization(
     ax1 = fig.add_subplot(gs[0])
     ax1.set_facecolor('#FAFAFA')
     
-    # Classify each point by pedal state
-    # Brake threshold must be very low - even 2 bar (5% of 40 bar) is real trail braking!
-    throttle_threshold = 0.05  # 5% throttle = "on throttle"
-    brake_threshold = 0.01     # 1% brake = truly off brake (0.4 bar of 40 bar max)
+    # Classify each point by pedal state (match event stats thresholds)
+    throttle_threshold = 0.05  # 5% throttle treated as on-throttle
+    brake_threshold = 0.01     # 2% brake ≈ light trail braking
+    coast_accel_threshold = 0.5  # |LongAccel| < 0.5 m/s² counts as true coasting
     
     x = df['TrackPct'].values
     y = df['Speed'].values * 3.6  # Convert m/s to km/h
@@ -106,26 +117,33 @@ def create_telemetry_visualization(
     
     # Compute coasting zones once (used by speed trace, track map, and pedal graph)
     coasting_mask, coasting_starts, coasting_ends, coasting_pct = compute_coasting_zones(
-        df, throttle_threshold, brake_threshold
+        df, throttle_threshold, brake_threshold, coast_accel_threshold
     )
     
     # Draw coasting zones behind everything
-    for start, end in zip(coasting_starts, coasting_ends):
-        ax1.axvspan(start, end, alpha=0.25, color='#38BDF8', zorder=0)
+    show_coast = coasting_pct >= COAST_DISPLAY_THRESHOLD
+
+    if show_coast:
+        for start, end in zip(coasting_starts, coasting_ends):
+            ax1.axvspan(start, end, alpha=0.25, color='#38BDF8', zorder=0)
     
     # Plot speed trace colored by pedal state using vectorized masks (performance)
     # Brake has precedence over throttle
     brake_mask = brake > brake_threshold
     throttle_mask = (throttle > throttle_threshold) & ~brake_mask
-    coast_mask = ~(brake_mask | throttle_mask)
+    coast_mask = coasting_mask
     
     # Use NaNs to break lines between segments of different states
     y_brake = np.where(brake_mask, y, np.nan)
     y_throttle = np.where(throttle_mask, y, np.nan)
     y_coast = np.where(coast_mask, y, np.nan)
     
-    # Coasting = thin, light, dashed - "nothing happening here"
-    ax1.plot(x, y_coast, color='#D1D5DB', linewidth=1.5, alpha=0.6, linestyle='--')
+    # Base speed trace for continuity
+    ax1.plot(x, y, color='#CBD5F5', linewidth=1.2, alpha=0.5, zorder=0.5)
+
+    # Coasting = thin, light, dashed - only when significant
+    if show_coast:
+        ax1.plot(x, y_coast, color='#D1D5DB', linewidth=1.5, alpha=0.6, linestyle='--')
     # Throttle = green
     ax1.plot(x, y_throttle, color=COLORS['throttle'], linewidth=2.5, alpha=0.9, solid_capstyle='round')
     # Braking = red
@@ -157,8 +175,9 @@ def create_telemetry_visualization(
     legend_elements = [
         Line2D([0], [0], color=COLORS['throttle'], linewidth=3, label='Throttle'),
         Line2D([0], [0], color=COLORS['brake'], linewidth=3, label='Braking'),
-        Line2D([0], [0], color='#D1D5DB', linewidth=1.5, linestyle='--', label='Coasting'),
     ]
+    if show_coast:
+        legend_elements.append(Line2D([0], [0], color='#D1D5DB', linewidth=1.5, linestyle='--', label='Coasting'))
     ax1.legend(handles=legend_elements, loc='upper right', fontsize=9, framealpha=0.95)
     
     ax1.set_xlabel('Track Position (%)', fontsize=11)
@@ -171,14 +190,14 @@ def create_telemetry_visualization(
     ax3 = fig.add_subplot(gs[2])  # Full width, bottom row
     ax3.set_facecolor('#FAFAFA')
     
-    # Plot track by pedal state - coasting as gaps (very faint)
+    # Plot track by pedal state - coasting only when above threshold
     throttle_mask = df['Throttle'] > throttle_threshold
     brake_mask = df['Brake'] > brake_threshold
-    coast_mask = ~throttle_mask & ~brake_mask
+    coast_mask = coasting_mask if show_coast else None
     
-    # Coasting = tiny, faint dots (gaps in the action)
-    ax3.scatter(df.loc[coast_mask, 'Lon'], df.loc[coast_mask, 'Lat'], 
-               c='#D1D5DB', s=2, alpha=0.3)
+    if show_coast:
+        ax3.scatter(df.loc[coast_mask, 'Lon'], df.loc[coast_mask, 'Lat'], 
+                   c='#D1D5DB', s=2, alpha=0.3)
     
     # Throttle = bold green
     ax3.scatter(df.loc[throttle_mask, 'Lon'], df.loc[throttle_mask, 'Lat'], 
@@ -197,7 +216,10 @@ def create_telemetry_visualization(
                 fontweight='bold', color=COLORS['track_start'])
     
     ax3.set_aspect('equal')
-    ax3.set_title(f'Track Map (colored by pedal input) – Coasting: {coasting_pct:.1f}%', fontsize=12, fontweight='bold')
+    title_suffix = f"Coasting: {coasting_pct:.1f}%"
+    if not show_coast:
+        title_suffix += " (hidden)"
+    ax3.set_title(f'Track Map (colored by pedal input) – {title_suffix}', fontsize=12, fontweight='bold')
     ax3.set_xlabel('')
     ax3.set_ylabel('')
     ax3.set_xticks([])
@@ -207,8 +229,9 @@ def create_telemetry_visualization(
     legend_elements = [
         Patch(facecolor=COLORS['throttle'], label='Throttle'),
         Patch(facecolor=COLORS['brake'], label='Braking'),
-        Patch(facecolor='#D1D5DB', alpha=0.3, label='Coasting (gaps)'),
     ]
+    if show_coast:
+        legend_elements.append(Patch(facecolor='#D1D5DB', alpha=0.3, label='Coasting (gaps)'))
     ax3.legend(handles=legend_elements, loc='lower left', fontsize=9, framealpha=0.95)
     
     # ========== 4. PEDALS (trail braking view) ==========
@@ -220,8 +243,9 @@ def create_telemetry_visualization(
     ax4.spines['bottom'].set_visible(False)
     
     # Draw coasting zones
-    for start, end in zip(coasting_starts, coasting_ends):
-        ax4.axvspan(start, end, alpha=0.2, color='#38BDF8', zorder=0)
+    if show_coast:
+        for start, end in zip(coasting_starts, coasting_ends):
+            ax4.axvspan(start, end, alpha=0.2, color='#38BDF8', zorder=0)
     
     # Detect and highlight OVERLAP zones (any throttle while braking = not fully lifting!)
     # Even 3% throttle while braking is feedback: "lift your foot!"
@@ -314,12 +338,16 @@ def print_telemetry_summary(df: pd.DataFrame):
     
     print(f"\n⚙️  Gears used: {int(df['Gear'].min())} - {int(df['Gear'].max())}")
     
-    # Throttle/brake time - use same thresholds as visualization (5%/1%)
-    throttle_threshold = 0.05
-    brake_threshold = 0.01
+    pedals_cfg = pedals()
+    throttle_threshold = pedals_cfg.throttle_on
+    brake_threshold = pedals_cfg.brake_on
+    coast_accel_threshold = pedals_cfg.coast_long_accel
     full_throttle_pct = (df['Throttle'] > 0.95).sum() / len(df) * 100
     braking_pct = (df['Brake'] > brake_threshold).sum() / len(df) * 100
-    coasting_pct = ((df['Throttle'] < throttle_threshold) & (df['Brake'] < brake_threshold)).sum() / len(df) * 100
+    coast_mask = (df['Throttle'] < throttle_threshold) & (df['Brake'] < brake_threshold)
+    if 'LongAccel' in df.columns:
+        coast_mask &= df['LongAccel'].abs() < coast_accel_threshold
+    coasting_pct = coast_mask.sum() / len(df) * 100
     
     print(f"\n🦶 Pedal usage:")
     print(f"   Full throttle: {full_throttle_pct:.1f}%")
