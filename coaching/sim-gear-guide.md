@@ -154,3 +154,4 @@ Master Lonn, this rig is not just a simulator; it is a time machine. You have:
 - **Intelligence** (Garage 61 / Crew Chief)
 
 _No excuses left. The only variable now is the organic component behind the wheel._ 😉
+
