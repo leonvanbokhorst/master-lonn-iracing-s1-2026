@@ -301,7 +301,8 @@ def create_week_visualization(
     # ═══════════════════════════════════════════════════════════════════════════
     # PLOT 5: Sector Progress (if available)
     # ═══════════════════════════════════════════════════════════════════════════
-    has_sectors = any(len(info.get('sector_cols', [])) > 0 for _, info in sessions)
+    last_sector_cols = sessions[-1][1].get('sector_cols', [])
+    has_sectors = len(last_sector_cols) > 0
     
     if has_sectors:
         ax5 = fig.add_subplot(gs[2, 0])
@@ -310,9 +311,7 @@ def create_week_visualization(
         # Calculate sector consistency (σ) for the last/most recent session
         # This tells driver WHERE to focus
         last_df = sessions[-1][0]
-        sector_cols_last = sessions[-1][1].get('sector_cols', [])
-        if not sector_cols_last:
-            sector_cols_last = get_sector_columns(last_df)
+        sector_cols_last = last_sector_cols
         
         sector_stds = []
         sector_means = []

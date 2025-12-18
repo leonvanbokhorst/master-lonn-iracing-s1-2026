@@ -16,6 +16,8 @@ from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
 import numpy as np
 
+from config import pedals
+
 # Style configuration
 plt.style.use('seaborn-v0_8-whitegrid')
 
@@ -336,10 +338,10 @@ def print_telemetry_summary(df: pd.DataFrame):
     
     print(f"\n⚙️  Gears used: {int(df['Gear'].min())} - {int(df['Gear'].max())}")
     
-    # Throttle/brake time - use same thresholds as visualization (10%/2%)
-    throttle_threshold = 0.10
-    brake_threshold = 0.02
-    coast_accel_threshold = 0.001
+    pedals_cfg = pedals()
+    throttle_threshold = pedals_cfg.throttle_on
+    brake_threshold = pedals_cfg.brake_on
+    coast_accel_threshold = pedals_cfg.coast_long_accel
     full_throttle_pct = (df['Throttle'] > 0.95).sum() / len(df) * 100
     braking_pct = (df['Brake'] > brake_threshold).sum() / len(df) * 100
     coast_mask = (df['Throttle'] < throttle_threshold) & (df['Brake'] < brake_threshold)

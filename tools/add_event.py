@@ -22,6 +22,7 @@ from visualize_event import load_event_csv, create_event_visualization
 from visualize_week import load_week_events, create_week_visualization
 from visualize_telemetry import load_telemetry, create_telemetry_visualization
 from data_loader import apply_tukey_filter
+from config import pedals
 
 
 def detect_event_type(filename: str) -> str:
@@ -148,19 +149,13 @@ def format_filter_summary(metadata: dict | None) -> tuple[str, str | None]:
     removed = metadata.get("removed_count", 0)
     total = metadata.get("total_count", 0)
     kept = metadata.get("kept_count", 0)
-    removed_laps = metadata.get("removed_laps") or []
-
     if lower is None or upper is None or median is None:
         return "", None
-
-    lap_suffix = ""
-    if removed and removed_laps:
-        lap_suffix = f" (dropped laps: {', '.join(str(l) for l in removed_laps)})"
 
     summary = (
         f"> Tukey filter applied: kept {kept}/{total} laps "
         f"(median {median:.3f}s, bounds {lower:.3f}s–{upper:.3f}s, "
-        f"removed {removed}).{lap_suffix}\n"
+        f"removed {removed}).\n"
     )
     note = (
         f"Tukey filter {lower:.3f}s–{upper:.3f}s "
@@ -420,14 +415,15 @@ week: {week}
 
 def compute_telemetry_stats(telem_df: pd.DataFrame) -> dict[str, float]:
     """Compute basic telemetry stats (pedal usage)."""
-    throttle_threshold = 0.1
-    brake_inactive_threshold = 0.02
-    coast_accel_threshold = 0.5  # |LongAccel| below this means we're not really braking
+    pedals_cfg = pedals()
+    throttle_threshold = pedals_cfg.throttle_on
+    brake_inactive_threshold = pedals_cfg.brake_on
+    coast_accel_threshold = pedals_cfg.coast_long_accel
 
     throttle = telem_df["Throttle"]
     brake = telem_df["Brake"]
 
-    full_throttle_pct = (throttle > 0.95).sum() / len(throttle) * 100
+    full_throttle_pct = (throttle > pedals_cfg.throttle_full).sum() / len(throttle) * 100
     braking_pct = (brake > brake_inactive_threshold).sum() / len(brake) * 100
 
     coast_mask = (throttle < throttle_threshold) & (brake < brake_inactive_threshold)

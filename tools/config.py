@@ -18,9 +18,11 @@ CONFIG_PATH = Path(__file__).parent.parent / "config.toml"
 
 @dataclass
 class PedalsConfig:
-    throttle_on: float = 0.05
+    throttle_on: float = 0.10
     throttle_full: float = 0.95
-    brake_on: float = 0.01
+    brake_on: float = 0.02
+    coast_long_accel: float = 0.5
+    coast_display_min_pct: float = 0.5
 
 
 @dataclass

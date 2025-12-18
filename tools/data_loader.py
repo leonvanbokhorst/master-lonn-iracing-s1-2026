@@ -103,18 +103,20 @@ def apply_tukey_filter(
     removed_df = df[~in_bounds].copy()
 
     # Guard against over-filtering (e.g., identical lap times)
+    filter_applied = True
     if filtered_df.empty:
         filtered_df = df.copy()
         removed_df = df.iloc[0:0]
+        filter_applied = False
 
     metadata: dict[str, float | int | list] = {
-        "applied": True,
+        "applied": filter_applied,
         "median": float(median),
         "q1": float(q1),
         "q3": float(q3),
         "iqr": float(iqr),
-        "lower_bound": float(lower_bound),
-        "upper_bound": float(upper_bound),
+        "lower_bound": float(lower_bound) if filter_applied else None,
+        "upper_bound": float(upper_bound) if filter_applied else None,
         "total_count": int(len(df)),
         "kept_count": int(len(filtered_df)),
         "removed_count": int(len(removed_df)),

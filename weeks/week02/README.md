@@ -21,13 +21,9 @@ schedule:
 
 ## Events
 
-| # | Date | Type | Laps | Best | σ | Notes | Details |
-|---|------|------|------|------|---|-------|---------|
-| 1 | 2025-12-18 | solo | 18 | 90.290s | 1.14s | Tukey filter 87.878s–94.658s (median 91.345s, removed 3) | [→](events/01-2025-12-18-solo.md) |
-| 2 | 2025-12-18 | solo | 18 | 90.290s | 1.14s | Tukey filter 87.878s–94.658s (median 91.345s, removed 3) | [→](events/02-2025-12-18-solo.md) |
-| 3 | 2025-12-18 | solo | 18 | 90.290s | 1.14s | Tukey filter 87.878s–94.658s (median 91.345s, removed 3) | [→](events/03-2025-12-18-solo.md) |
-| 4 | 2025-12-18 | solo | 18 | 90.290s | 1.14s | Tukey filter 87.878s–94.658s (median 91.345s, removed 3) | [→](events/04-2025-12-18-solo.md) |
-| 5 | 2025-12-18 | solo | 18 | 90.290s | 1.14s | Tukey filter 87.878s–94.658s (median 91.345s, removed 3) | [→](events/05-2025-12-18-solo.md) |
+| #   | Date       | Type | Laps | Best    | σ     | Notes                                                    | Details                           |
+| --- | ---------- | ---- | ---- | ------- | ----- | -------------------------------------------------------- | --------------------------------- |
+| 1   | 2025-12-18 | solo | 18   | 90.290s | 1.14s | Tukey filter 87.878s–94.658s (median 91.345s, removed 3) | [→](events/01-2025-12-18-solo.md) |
 
 ## Week Progress
 
@@ -37,7 +33,7 @@ schedule:
 
 ## Summary
 
-- **Events:** 5
+- **Events:** 1
 - **Best Lap:** 90.290s
 - **Improvement:** +0.000s (from 90.290s)
 - **Latest σ:** 1.14s
