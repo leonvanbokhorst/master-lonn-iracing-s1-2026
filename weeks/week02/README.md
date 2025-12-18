@@ -9,14 +9,21 @@ schedule:
 
 # Week 02 – Rudskogen Motorsenter
 
-> [Track Dossier](../../tracks/track-rudskogen-motorsenter.md)
+> Track Dossier: [Rudskogen Motorsenter](../../tracks/track-rudskogen-motorsenter.md)
 
-> **Intent:** _TBD_
+> **Intent:** Revisit a known track with the Ray. Leverage past experience to focus on details, handle the extreme elevation changes ("Angst" hill), and refine car control on a technical circuit.
+
+## Goals
+
+1.  **Survive the Rollercoaster:** Master the blind crests and the plunge down the "Angst" hill without upsetting the car.
+2.  **Brake Bias Check:** Test if the "pointy" 56% BB (which was too much for Jefferson) works here to help rotate the car on the hills, or if stability (57%) is king.
+3.  **Details & Precision:** Since the track is known, skip the "learning" phase and go straight to refining lines and exit speeds.
 
 ## Events
 
-| #   | Date | Type | Focus | Laps | Best | σ | Details |
-| --- | ---- | ---- | ----- | ---- | ---- | - | ------- |
+| #   | Date | Type | Laps | Best | σ   | Notes | Details |
+| --- | ---- | ---- | ---- | ---- | --- | ----- | ------- |
+|     |      |      |      |      |     |       |         |
 
 ## Week Progress
 
@@ -28,11 +35,10 @@ _Week not started._
 
 ## Reflection
 
-- Track craft takeaways: ...
-- Brake bias learnings: ...
-- Driver mindset notes: ...
+- **Track craft:**
+- **Brake bias:**
+- **Mindset:**
 
 ---
 
-[← Back to Season](../../README.md)
-
+[← Back to Season](../../README.md) | [Previous Week: Summit Point](../week01/README.md)

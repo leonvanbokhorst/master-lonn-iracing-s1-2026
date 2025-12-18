@@ -1,14 +1,3 @@
----
-week: {{week}}
-track: "{{track}}"
-layout: "{{layout}}"
-season: "2026 Season 1"
-series: "Ray FF1600 Rookie Fixed"
-schedule:
-  start: "{{start_date}}"
-  end: "{{end_date}}"
----
-
 # Week {{week}} – {{track}} – {{layout}}
 
 - **Season:** {{season}}
@@ -47,6 +36,18 @@ schedule:
 ### Next Week Intent
 
 - _Seed a sentence for next week..._
+
+---
+
+## Race Report
+
+| Date (UTC) | Track & Config                   | Best / Avg Lap     | Laps Used | Inc | Rating         | Details                                      |
+| ---------------- | -------------------------------- | ----------------- | --------- | --- | ----------------- | -------------------------------------------- |
+
+## Time Trials
+
+| Date (UTC) | Track & Config                   | Best / TT Avg     | Laps Used | Inc | TT Rating         | Details                                      |
+| ---------------- | -------------------------------- | ----------------- | --------- | --- | ----------------- | -------------------------------------------- |
 
 ---
 

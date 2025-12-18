@@ -14,9 +14,15 @@ Rudskogen opened in 1990 as Norway’s first permanent asphalt circuit, cut into
 
 Today the same strip of tarmac hosts STCC and GT weekends, superkarts, drift events and police driver training. It’s very Scandinavian: one part high-speed theatre, one part very serious classroom.
 
+[![Lap on Rudskogen by Joakim Ottersen (OttersenRacing)](https://img.youtube.com/vi/hpA7QlArfBE/0.jpg)](https://www.youtube.com/watch?v=hpA7QlArfBE)
+
+_Lap on Rudskogen by Joakim Ottersen (OttersenRacing)_
+
 The Grand Prix lap feels like a rally stage that decided to become a circuit. Fast, loaded arcs that climb and plunge through the trees, awkwardly late apexes that only make sense once you’ve overshot them a few times, and braking zones that tilt _just_ enough to keep your ABS foot honest. The forest walls close in, turning the whole thing into a tunnel of rock, bark and Armco.
 
 [![Track Guide: Rudskogen Motorsenter](https://img.youtube.com/vi/oOFBW2rcdZw/0.jpg)](https://www.youtube.com/watch?v=oOFBW2rcdZw)
+
+_Track Guide: Rudskogen Motorsenter by Sambo iRacing_
 
 ---
 
