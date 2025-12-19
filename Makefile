@@ -2,7 +2,7 @@
 # =================================
 # Workflow shortcuts for the AI dojo 🥋
 
-.PHONY: help update-week add-event viz-event viz-week viz-telemetry compare-laps official-report clean
+.PHONY: help update-week add-event viz-event viz-week viz-telemetry compare-laps official-report rehearsal-pre rehearsal-post rehearsal-view rehearsal-viz clean
 
 # Default target
 help:
@@ -13,6 +13,11 @@ help:
 	@echo "  make update-week WEEK=01                          Regenerate week visualizations + summary"
 	@echo "  make compare-laps WEEK=01                         Compare best laps (needs telemetry CSVs)"
 	@echo "  make official-report WEEK=01 EVENT=12 JSON=...    Write official race report + summary"
+	@echo ""
+	@echo "  make rehearsal-pre EVENT=...                      Record pre-session mental rehearsal"
+	@echo "  make rehearsal-post EVENT=...                     Record post-session mental replay"
+	@echo "  make rehearsal-view EVENT=...                     View mental rehearsal data"
+	@echo "  make rehearsal-viz WEEK=01                        Visualize rehearsal impact"
 	@echo ""
 	@echo "  make viz-event FILE=...           Visualize a single event CSV (lap times)"
 	@echo "  make viz-week WEEK=01             Generate week progress visualization only"
@@ -86,6 +91,33 @@ track-map:
 	@if [ -z "$(FILE)" ]; then echo "❌ Usage: make track-map FILE=path/to/telemetry.csv"; exit 1; fi
 	@echo "🗺️  Generating track map from $(FILE)..."
 	uv run python tools/generate_track_map.py "$(FILE)" $(if $(SECTORS),--sectors $(SECTORS),)
+
+# Mental Rehearsal Protocol
+# Usage: make rehearsal-pre EVENT=weeks/week02/events/01-2025-12-20-solo.md
+rehearsal-pre:
+	@if [ -z "$(EVENT)" ]; then echo "❌ Usage: make rehearsal-pre EVENT=weeks/weekXX/events/XX-date-type.md"; exit 1; fi
+	@echo "🧠 Recording pre-session mental rehearsal..."
+	uv run python tools/mental_rehearsal.py pre "$(EVENT)"
+
+# Record post-session mental replay
+# Usage: make rehearsal-post EVENT=weeks/week02/events/01-2025-12-20-solo.md
+rehearsal-post:
+	@if [ -z "$(EVENT)" ]; then echo "❌ Usage: make rehearsal-post EVENT=weeks/weekXX/events/XX-date-type.md"; exit 1; fi
+	@echo "🧠 Recording post-session mental replay..."
+	uv run python tools/mental_rehearsal.py post "$(EVENT)"
+
+# View mental rehearsal data for an event
+# Usage: make rehearsal-view EVENT=weeks/week02/events/01-2025-12-20-solo.md
+rehearsal-view:
+	@if [ -z "$(EVENT)" ]; then echo "❌ Usage: make rehearsal-view EVENT=weeks/weekXX/events/XX-date-type.md"; exit 1; fi
+	uv run python tools/mental_rehearsal.py view "$(EVENT)"
+
+# Visualize mental rehearsal impact for a week
+# Usage: make rehearsal-viz WEEK=02
+rehearsal-viz:
+	@if [ -z "$(WEEK)" ]; then echo "❌ Usage: make rehearsal-viz WEEK=02"; exit 1; fi
+	@echo "📊 Visualizing mental rehearsal impact for week$(WEEK)..."
+	uv run python tools/visualize_rehearsal_impact.py weeks/week$(WEEK)
 
 # Clean generated images (careful!)
 clean:
