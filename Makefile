@@ -2,7 +2,7 @@
 # =================================
 # Workflow shortcuts for the AI dojo 🥋
 
-.PHONY: help update-week add-event viz-event viz-week viz-telemetry compare-laps official-report rehearsal-pre rehearsal-post rehearsal-view rehearsal-viz clean
+.PHONY: help update-week add-event viz-event viz-week viz-telemetry compare-laps official-report rehearsal-pre rehearsal-post rehearsal-view rehearsal-viz srs-add srs-review srs-list srs-stats srs-viz clean
 
 # Default target
 help:
@@ -18,6 +18,12 @@ help:
 	@echo "  make rehearsal-post EVENT=...                     Record post-session mental replay"
 	@echo "  make rehearsal-view EVENT=...                     View mental rehearsal data"
 	@echo "  make rehearsal-viz WEEK=01                        Visualize rehearsal impact"
+	@echo ""
+	@echo "  make srs-add                                      Add knowledge card"
+	@echo "  make srs-review                                   Review due cards"
+	@echo "  make srs-list [TRACK=...] [DUE=yes]              List knowledge cards"
+	@echo "  make srs-stats                                    Show SRS statistics"
+	@echo "  make srs-viz                                      Visualize SRS data"
 	@echo ""
 	@echo "  make viz-event FILE=...           Visualize a single event CSV (lap times)"
 	@echo "  make viz-week WEEK=01             Generate week progress visualization only"
@@ -126,3 +132,39 @@ clean:
 	find images/ -name "*.png" -type f -delete
 	@echo "✅ Cleaned"
 
+
+# Spaced Repetition System (SRS)
+# Usage: make srs-add
+srs-add:
+	@echo "📇 Adding new knowledge card..."
+	uv run python tools/spaced_repetition.py add
+
+# Review due cards
+# Usage: make srs-review
+srs-review:
+	@echo "🧠 Starting review session..."
+	uv run python tools/spaced_repetition.py review
+
+# List knowledge cards
+# Usage: make srs-list [TRACK="Summit Point"] [DUE=yes]
+srs-list:
+	@if [ -n "$(TRACK)" ] && [ -n "$(DUE)" ]; then \
+		uv run python tools/spaced_repetition.py list --track "$(TRACK)" --due; \
+	elif [ -n "$(TRACK)" ]; then \
+		uv run python tools/spaced_repetition.py list --track "$(TRACK)"; \
+	elif [ -n "$(DUE)" ]; then \
+		uv run python tools/spaced_repetition.py list --due; \
+	else \
+		uv run python tools/spaced_repetition.py list; \
+	fi
+
+# Show SRS statistics
+# Usage: make srs-stats
+srs-stats:
+	uv run python tools/spaced_repetition.py stats
+
+# Visualize SRS data
+# Usage: make srs-viz
+srs-viz:
+	@echo "📊 Visualizing spaced repetition data..."
+	uv run python tools/visualize_srs.py
