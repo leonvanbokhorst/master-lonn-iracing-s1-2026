@@ -2,7 +2,7 @@
 # =================================
 # Workflow shortcuts for the AI dojo 🥋
 
-.PHONY: help update-week add-event viz-event viz-week viz-telemetry compare-laps official-report rehearsal-pre rehearsal-post rehearsal-view rehearsal-viz clean
+.PHONY: help update-week add-event viz-event viz-week viz-telemetry compare-laps official-report rehearsal-pre rehearsal-post rehearsal-view rehearsal-viz hypothesis-create hypothesis-test hypothesis-conclude hypothesis-list hypothesis-view hypothesis-viz clean
 
 # Default target
 help:
@@ -18,6 +18,13 @@ help:
 	@echo "  make rehearsal-post EVENT=...                     Record post-session mental replay"
 	@echo "  make rehearsal-view EVENT=...                     View mental rehearsal data"
 	@echo "  make rehearsal-viz WEEK=01                        Visualize rehearsal impact"
+	@echo ""
+	@echo "  make hypothesis-create                            Create new hypothesis"
+	@echo "  make hypothesis-test ID=1 EVENT=...               Test hypothesis in event"
+	@echo "  make hypothesis-conclude ID=1                     Conclude hypothesis"
+	@echo "  make hypothesis-list [STATUS=active]              List hypotheses"
+	@echo "  make hypothesis-view ID=1                         View hypothesis details"
+	@echo "  make hypothesis-viz                               Visualize hypothesis data"
 	@echo ""
 	@echo "  make viz-event FILE=...           Visualize a single event CSV (lap times)"
 	@echo "  make viz-week WEEK=01             Generate week progress visualization only"
@@ -91,6 +98,48 @@ track-map:
 	@if [ -z "$(FILE)" ]; then echo "❌ Usage: make track-map FILE=path/to/telemetry.csv"; exit 1; fi
 	@echo "🗺️  Generating track map from $(FILE)..."
 	uv run python tools/generate_track_map.py "$(FILE)" $(if $(SECTORS),--sectors $(SECTORS),)
+
+# Hypothesis Testing Framework
+# Usage: make hypothesis-create
+hypothesis-create:
+	@echo "🔬 Creating new hypothesis..."
+	uv run python tools/hypothesis_testing.py create
+
+# Test hypothesis in an event
+# Usage: make hypothesis-test ID=1 EVENT=weeks/week02/events/01-2025-12-20-solo.md
+hypothesis-test:
+	@if [ -z "$(ID)" ]; then echo "❌ Usage: make hypothesis-test ID=1 EVENT=weeks/weekXX/events/XX-date-type.md"; exit 1; fi
+	@if [ -z "$(EVENT)" ]; then echo "❌ Usage: make hypothesis-test ID=1 EVENT=weeks/weekXX/events/XX-date-type.md"; exit 1; fi
+	@echo "🔬 Testing hypothesis #$(ID)..."
+	uv run python tools/hypothesis_testing.py test $(ID) "$(EVENT)"
+
+# Conclude a hypothesis
+# Usage: make hypothesis-conclude ID=1
+hypothesis-conclude:
+	@if [ -z "$(ID)" ]; then echo "❌ Usage: make hypothesis-conclude ID=1"; exit 1; fi
+	@echo "🔬 Concluding hypothesis #$(ID)..."
+	uv run python tools/hypothesis_testing.py conclude $(ID)
+
+# List hypotheses
+# Usage: make hypothesis-list [STATUS=active]
+hypothesis-list:
+	@if [ -n "$(STATUS)" ]; then \
+		uv run python tools/hypothesis_testing.py list --status $(STATUS); \
+	else \
+		uv run python tools/hypothesis_testing.py list; \
+	fi
+
+# View hypothesis details
+# Usage: make hypothesis-view ID=1
+hypothesis-view:
+	@if [ -z "$(ID)" ]; then echo "❌ Usage: make hypothesis-view ID=1"; exit 1; fi
+	uv run python tools/hypothesis_testing.py view $(ID)
+
+# Visualize hypothesis data
+# Usage: make hypothesis-viz
+hypothesis-viz:
+	@echo "📊 Visualizing hypothesis data..."
+	uv run python tools/visualize_hypotheses.py
 
 # Mental Rehearsal Protocol
 # Usage: make rehearsal-pre EVENT=weeks/week02/events/01-2025-12-20-solo.md
