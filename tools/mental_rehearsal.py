@@ -229,9 +229,13 @@ def add_pre_session_rehearsal(event_file: Path) -> None:
     # Prompt for data
     data = prompt_pre_session_rehearsal()
     
+    # Merge with any existing mental_rehearsal data to preserve post-session fields
+    existing_mental_rehearsal = get_frontmatter_field(event_file, "mental_rehearsal") or {}
+    merged_mental_rehearsal = {**existing_mental_rehearsal, **data}
+    
     # Update frontmatter
     update_event_frontmatter(event_file, {
-        "mental_rehearsal": data
+        "mental_rehearsal": merged_mental_rehearsal
     })
     
     print(f"\n✅ Mental rehearsal data added to {event_file.name}")

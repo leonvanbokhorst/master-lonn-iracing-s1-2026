@@ -123,7 +123,7 @@ How long did you spend on mental replay? (minutes)
   Recommended: 2-5 minutes
 Duration (minutes): 3
 
-What corrections did you mentally rehearsed?
+What corrections did you mentally rehearse?
   Examples:
     - 'Earlier braking in T1, smoother turn-in'
     - 'Higher apex speed in T3 with better line'

@@ -25,6 +25,7 @@ License: MIT
 """
 
 import sys
+import re
 from pathlib import Path
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -35,6 +36,55 @@ from datetime import datetime
 sys.path.insert(0, str(Path(__file__).parent))
 
 from frontmatter_utils import list_event_files, parse_event_file
+
+# Regex patterns for parsing performance data
+LAP_TIME_RE = re.compile(r'(\d+):(\d+\.\d+)')
+INT_RE = re.compile(r'(\d+)')
+
+
+def _parse_lap_time(line: str) -> float | None:
+    """
+    Parse lap time from a line of text.
+    
+    Args:
+        line: Text line potentially containing lap time (format: M:SS.mmm)
+    
+    Returns:
+        Lap time in seconds, or None if not found
+    """
+    match = LAP_TIME_RE.search(line)
+    if not match:
+        return None
+    minutes = int(match.group(1))
+    seconds = float(match.group(2))
+    return minutes * 60 + seconds
+
+
+def _parse_incidents(line: str) -> int | None:
+    """
+    Parse incident count from a line of text.
+    
+    Args:
+        line: Text line potentially containing incident count
+    
+    Returns:
+        Incident count, or None if not found
+    """
+    match = INT_RE.search(line)
+    return int(match.group(1)) if match else None
+
+
+def _plot_insufficient_data(ax, title: str, message: str) -> None:
+    """
+    Display "insufficient data" message on a subplot.
+    
+    Args:
+        ax: Matplotlib axis object
+        title: Title for the subplot
+        message: Message to display
+    """
+    ax.text(0.5, 0.5, message, ha='center', va='center', transform=ax.transAxes)
+    ax.set_title(title)
 
 
 def extract_rehearsal_data(week_dir: Path) -> dict:
@@ -107,7 +157,7 @@ def extract_rehearsal_data(week_dir: Path) -> dict:
     return data
 
 
-def extract_performance_from_body(body: str) -> tuple:
+def extract_performance_from_body(body: str) -> tuple[float | None, float | None, int | None]:
     """
     Extract performance metrics from event body text.
     
@@ -117,54 +167,35 @@ def extract_performance_from_body(body: str) -> tuple:
     Returns:
         Tuple of (best_lap, avg_lap, incidents)
     """
-    # Simple extraction - look for common patterns
-    # This is a basic implementation; could be enhanced
-    
     best_lap = None
     avg_lap = None
     incidents = None
     
-    lines = body.split("\n")
-    
-    for line in lines:
+    for line in body.splitlines():
         line_lower = line.lower()
         
         # Look for best lap
         if "best lap" in line_lower or "fastest lap" in line_lower:
-            # Try to extract time (format: 1:23.456)
-            import re
-            match = re.search(r'(\d+):(\d+\.\d+)', line)
-            if match:
-                minutes = int(match.group(1))
-                seconds = float(match.group(2))
-                best_lap = minutes * 60 + seconds
+            best_lap = _parse_lap_time(line) or best_lap
         
         # Look for average lap
         if "average lap" in line_lower or "avg lap" in line_lower:
-            import re
-            match = re.search(r'(\d+):(\d+\.\d+)', line)
-            if match:
-                minutes = int(match.group(1))
-                seconds = float(match.group(2))
-                avg_lap = minutes * 60 + seconds
+            avg_lap = _parse_lap_time(line) or avg_lap
         
         # Look for incidents
         if "incident" in line_lower:
-            import re
-            match = re.search(r'(\d+)', line)
-            if match:
-                incidents = int(match.group(1))
+            incidents = _parse_incidents(line) or incidents
     
     return best_lap, avg_lap, incidents
 
 
-def visualize_rehearsal_impact(data: dict, output_file: Path = None):
+def visualize_rehearsal_impact(data: dict, output_file: Path):
     """
     Create comprehensive visualization of mental rehearsal impact.
     
     Args:
         data: Extracted rehearsal and performance data
-        output_file: Optional path to save figure
+        output_file: Path to save figure
     """
     # Set style
     sns.set_style("whitegrid")
@@ -227,9 +258,11 @@ def visualize_rehearsal_impact(data: dict, output_file: Path = None):
         ax3.axvline(mean_conf, color='red', linestyle='--', linewidth=2, label=f'Mean: {mean_conf:.2f}')
         ax3.legend()
     else:
-        ax3.text(0.5, 0.5, "No confidence data available", 
-                ha='center', va='center', transform=ax3.transAxes)
-        ax3.set_title("Pre-Session Confidence Distribution")
+        _plot_insufficient_data(
+            ax3,
+            "Pre-Session Confidence Distribution",
+            "No confidence data available"
+        )
     
     # 4. Performance comparison: rehearsal vs. no rehearsal
     ax4 = axes[1, 0]
@@ -271,9 +304,11 @@ def visualize_rehearsal_impact(data: dict, output_file: Path = None):
                 transform=ax4.transAxes, ha='center',
                 bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
     else:
-        ax4.text(0.5, 0.5, "Insufficient data for comparison\n(need events with and without rehearsal)",
-                ha='center', va='center', transform=ax4.transAxes)
-        ax4.set_title("Performance: Rehearsal vs. No Rehearsal")
+        _plot_insufficient_data(
+            ax4,
+            "Performance: Rehearsal vs. No Rehearsal",
+            "Insufficient data for comparison\n(need events with and without rehearsal)"
+        )
     
     # 5. Confidence vs. Performance correlation
     ax5 = axes[1, 1]
@@ -307,9 +342,11 @@ def visualize_rehearsal_impact(data: dict, output_file: Path = None):
                 transform=ax5.transAxes, va='top',
                 bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.5))
     else:
-        ax5.text(0.5, 0.5, "Insufficient data for correlation\n(need 3+ events with confidence and performance)",
-                ha='center', va='center', transform=ax5.transAxes)
-        ax5.set_title("Confidence vs. Performance")
+        _plot_insufficient_data(
+            ax5,
+            "Confidence vs. Performance",
+            "Insufficient data for correlation\n(need 3+ events with confidence and performance)"
+        )
     
     # 6. Rehearsal duration distribution
     ax6 = axes[1, 2]
@@ -330,19 +367,16 @@ def visualize_rehearsal_impact(data: dict, output_file: Path = None):
                    label=f'Mean: {mean_dur:.1f} min')
         ax6.legend()
     else:
-        ax6.text(0.5, 0.5, "No duration data available",
-                ha='center', va='center', transform=ax6.transAxes)
-        ax6.set_title("Mental Rehearsal Duration Distribution")
+        _plot_insufficient_data(
+            ax6,
+            "Mental Rehearsal Duration Distribution",
+            "No duration data available"
+        )
     
     plt.tight_layout()
     
-    if output_file:
-        plt.savefig(output_file, dpi=300, bbox_inches='tight')
-        print(f"\n✅ Visualization saved to {output_file}")
-    else:
-        plt.savefig(week_dir / "images" / "mental_rehearsal_impact.png", dpi=300, bbox_inches='tight')
-        print(f"\n✅ Visualization saved to {week_dir / 'images' / 'mental_rehearsal_impact.png'}")
-    
+    plt.savefig(output_file, dpi=300, bbox_inches='tight')
+    print(f"\n✅ Visualization saved to {output_file}")
     plt.close()
 
 
@@ -424,7 +458,6 @@ Examples:
         sys.exit(1)
     
     week_dir = Path(sys.argv[1])
-    output_file = Path(sys.argv[2]) if len(sys.argv) > 2 else None
     
     if not week_dir.exists():
         print(f"❌ Error: Week directory not found: {week_dir}")
@@ -433,6 +466,10 @@ Examples:
     # Ensure images directory exists
     images_dir = week_dir / "images"
     images_dir.mkdir(exist_ok=True)
+    
+    # Determine output file path
+    default_output = images_dir / "mental_rehearsal_impact.png"
+    output_file = Path(sys.argv[2]) if len(sys.argv) > 2 else default_output
     
     print(f"\n📊 Analyzing mental rehearsal data from {week_dir}...")
     
