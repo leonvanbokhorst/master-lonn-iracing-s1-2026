@@ -2,7 +2,7 @@
 # =================================
 # Workflow shortcuts for the AI dojo 🥋
 
-.PHONY: help update-week add-event viz-event viz-week viz-telemetry compare-laps official-report rehearsal-pre rehearsal-post rehearsal-view rehearsal-viz hypothesis-create hypothesis-test hypothesis-conclude hypothesis-list hypothesis-view hypothesis-viz srs-add srs-review srs-list srs-stats srs-viz clean
+.PHONY: help update-week add-event viz-event viz-week viz-telemetry compare-laps official-report rehearsal-pre rehearsal-post rehearsal-view rehearsal-viz srs-add srs-review srs-list srs-stats srs-viz analyze-coasting viz-coasting-impact cleande hypothesis-list hypothesis-view hypothesis-viz srs-add srs-review srs-list srs-stats srs-viz clean
 
 # Default target
 help:
@@ -30,6 +30,9 @@ help:
 	@echo "  make hypothesis-list [STATUS=active]              List hypotheses"
 	@echo "  make hypothesis-view ID=1                         View hypothesis details"
 	@echo "  make hypothesis-viz                               Visualize hypothesis data"
+	@echo ""
+	@echo "  make analyze-coasting FILE=...                    Deep coasting analysis"
+	@echo "  make viz-coasting-impact FILE=...                 Visualize coasting impact"
 	@echo ""
 	@echo "  make viz-event FILE=...           Visualize a single event CSV (lap times)"
 	@echo "  make viz-week WEEK=01             Generate week progress visualization only"
@@ -216,3 +219,17 @@ srs-stats:
 srs-viz:
 	@echo "📊 Visualizing spaced repetition data..."
 	uv run python tools/visualize_srs.py
+
+# Coasting Analysis
+# Usage: make analyze-coasting FILE=path/to/telemetry.csv
+analyze-coasting:
+	@if [ -z "$(FILE)" ]; then echo "❌ Usage: make analyze-coasting FILE=path/to/telemetry.csv"; exit 1; fi
+	@echo "📊 Analyzing coasting in $(FILE)..."
+	uv run python tools/analyze_coasting.py "$(FILE)"
+
+# Visualize Coasting Impact
+# Usage: make viz-coasting-impact FILE=path/to/telemetry.csv
+viz-coasting-impact:
+	@if [ -z "$(FILE)" ]; then echo "❌ Usage: make viz-coasting-impact FILE=path/to/telemetry.csv"; exit 1; fi
+	@echo "📊 Creating coasting impact visualization..."
+	uv run python tools/visualize_coasting_impact.py "$(FILE)"
