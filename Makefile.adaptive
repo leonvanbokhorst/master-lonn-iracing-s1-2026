@@ -1,0 +1,152 @@
+# Adaptive Coaching System - Makefile Commands
+# ==============================================
+# New commands for the Cursor-driven adaptive coaching workflow
+
+.PHONY: analyze-event analyze-week viz-lap-progression viz-sector-loss viz-pace-trend help-adaptive
+
+# ═══════════════════════════════════════════════════════════════════════════
+# ADAPTIVE COACHING COMMANDS
+# ═══════════════════════════════════════════════════════════════════════════
+
+help-adaptive:
+	@echo "🤖 Adaptive Coaching System Commands"
+	@echo "======================================"
+	@echo ""
+	@echo "Analysis Tools (return JSON for Cursor):"
+	@echo "  make analyze-event FILE=path/to/event.csv              Analyze single event"
+	@echo "  make analyze-event FILE=... FASTEST=path/to/fastest.csv  With fastest lap comparison"
+	@echo "  make analyze-week WEEK=02                              Analyze week context"
+	@echo ""
+	@echo "Modular Visualization Tools (Cursor selects which to run):"
+	@echo "  make viz-lap-progression FILE=... OUTPUT=...           Baseline lap progression"
+	@echo "  make viz-sector-loss FILE=... OUTPUT=...               Sector loss analysis"
+	@echo "  make viz-pace-trend FILE=... OUTPUT=...                Pace trend with corridor"
+	@echo ""
+	@echo "Workflow:"
+	@echo "  1. Tell Cursor: 'Analyze my Week XX Event N'"
+	@echo "  2. Cursor runs analyze-event to get JSON metrics"
+	@echo "  3. Cursor interprets patterns and selects 2-3 relevant tools"
+	@echo "  4. Cursor generates focused coaching with actionable goals"
+	@echo ""
+	@echo "See docs/ADAPTIVE_COACHING.md for complete documentation"
+	@echo ""
+
+# ═══════════════════════════════════════════════════════════════════════════
+# ANALYSIS UTILITIES
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Analyze single event and return JSON
+# Usage: make analyze-event FILE=weeks/week02/data/processed/event.csv
+# Usage: make analyze-event FILE=... FASTEST=weeks/week02/data/processed/fastest.csv
+analyze-event:
+	@if [ -z "$(FILE)" ]; then \
+		echo "❌ Usage: make analyze-event FILE=path/to/event.csv"; \
+		echo "   Optional: FASTEST=path/to/fastest-lap.csv"; \
+		exit 1; \
+	fi
+	@echo "🔍 Analyzing event: $(FILE)"
+	@if [ -n "$(FASTEST)" ]; then \
+		uv run python tools/analyze_event.py "$(FILE)" --fastest-lap "$(FASTEST)" --json; \
+	else \
+		uv run python tools/analyze_event.py "$(FILE)" --json; \
+	fi
+
+# Analyze week context
+# Usage: make analyze-week WEEK=02
+analyze-week:
+	@if [ -z "$(WEEK)" ]; then \
+		echo "❌ Usage: make analyze-week WEEK=02"; \
+		exit 1; \
+	fi
+	@echo "📊 Analyzing week $(WEEK) context..."
+	uv run python tools/analyze_week.py "weeks/week$(WEEK)" --json
+
+# ═══════════════════════════════════════════════════════════════════════════
+# MODULAR VISUALIZATION TOOLS
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Lap progression (baseline - always useful)
+# Usage: make viz-lap-progression FILE=event.csv OUTPUT=output.png TITLE="Event #1"
+viz-lap-progression:
+	@if [ -z "$(FILE)" ] || [ -z "$(OUTPUT)" ]; then \
+		echo "❌ Usage: make viz-lap-progression FILE=event.csv OUTPUT=output.png [TITLE='Event #1']"; \
+		exit 1; \
+	fi
+	@echo "📊 Creating lap progression visualization..."
+	@mkdir -p "$$(dirname "$(OUTPUT)")"
+	uv run python tools/viz_lap_progression.py "$(FILE)" "$(OUTPUT)" $(if $(TITLE),--title "$(TITLE)",)
+
+# Sector loss analysis (for sector-specific issues)
+# Usage: make viz-sector-loss FILE=event.csv OUTPUT=output.png TITLE="Event #1"
+viz-sector-loss:
+	@if [ -z "$(FILE)" ] || [ -z "$(OUTPUT)" ]; then \
+		echo "❌ Usage: make viz-sector-loss FILE=event.csv OUTPUT=output.png [TITLE='Event #1']"; \
+		exit 1; \
+	fi
+	@echo "📊 Creating sector loss visualization..."
+	@mkdir -p "$$(dirname "$(OUTPUT)")"
+	uv run python tools/viz_sector_loss.py "$(FILE)" "$(OUTPUT)" $(if $(TITLE),--title "$(TITLE)",)
+
+# Pace trend analysis (for consistency issues)
+# Usage: make viz-pace-trend FILE=event.csv OUTPUT=output.png TITLE="Event #1"
+viz-pace-trend:
+	@if [ -z "$(FILE)" ] || [ -z "$(OUTPUT)" ]; then \
+		echo "❌ Usage: make viz-pace-trend FILE=event.csv OUTPUT=output.png [TITLE='Event #1']"; \
+		exit 1; \
+	fi
+	@echo "📊 Creating pace trend visualization..."
+	@mkdir -p "$$(dirname "$(OUTPUT)")"
+	uv run python tools/viz_pace_trend.py "$(FILE)" "$(OUTPUT)" $(if $(TITLE),--title "$(TITLE)",)
+
+# ═══════════════════════════════════════════════════════════════════════════
+# EXAMPLE WORKFLOW
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Example: Analyze Week 02 Event 1 with all steps
+# This is for demonstration - normally Cursor does this automatically
+example-adaptive-workflow:
+	@echo "🤖 Example: Adaptive Coaching Workflow for Week 02 Event 1"
+	@echo "==========================================================="
+	@echo ""
+	@echo "Step 1: Analyze event data"
+	@echo "---------------------------"
+	@make analyze-event FILE="weeks/week02/data/processed/Garage 61 - Offline Testing - Export - 2025-12-18-13-05-06.csv"
+	@echo ""
+	@echo "Step 2: Cursor interprets patterns"
+	@echo "-----------------------------------"
+	@echo "  - σ = 1.11 (moderate variance)"
+	@echo "  - Sector 2: 16.25s loss (3x more than others!)"
+	@echo "  - Pace trend: improving"
+	@echo "  - Decision: Focus on Sector 2 consistency"
+	@echo ""
+	@echo "Step 3: Cursor selects tools"
+	@echo "----------------------------"
+	@echo "  - viz_lap_progression (baseline)"
+	@echo "  - viz_sector_loss (highlight S2 problem)"
+	@echo "  - viz_pace_trend (show improvement)"
+	@echo ""
+	@echo "Step 4: Generate visualizations"
+	@echo "--------------------------------"
+	@make viz-lap-progression \
+		FILE="weeks/week02/data/processed/Garage 61 - Offline Testing - Export - 2025-12-18-13-05-06.csv" \
+		OUTPUT="/tmp/example-laptimes.png" \
+		TITLE="Event #1"
+	@make viz-sector-loss \
+		FILE="weeks/week02/data/processed/Garage 61 - Offline Testing - Export - 2025-12-18-13-05-06.csv" \
+		OUTPUT="/tmp/example-sectors.png" \
+		TITLE="Event #1 Sector Loss"
+	@make viz-pace-trend \
+		FILE="weeks/week02/data/processed/Garage 61 - Offline Testing - Export - 2025-12-18-13-05-06.csv" \
+		OUTPUT="/tmp/example-pace.png" \
+		TITLE="Event #1 Pace Trend"
+	@echo ""
+	@echo "Step 5: Cursor creates event markdown with focused coaching"
+	@echo "-----------------------------------------------------------"
+	@echo "  Focus: Sector 2 consistency (16.25s total loss)"
+	@echo "  Goal: S2 average under 36.0s (currently 36.8s)"
+	@echo "  Next session: 10 laps focused on S2 only"
+	@echo ""
+	@echo "✅ Complete! Visualizations saved to /tmp/example-*.png"
+	@echo ""
+	@echo "Normal usage: Just tell Cursor 'Analyze my Week 02 Event 1'"
+	@echo ""
