@@ -34,7 +34,7 @@ License: MIT
 import sys
 import json
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Optional
 from dataclasses import dataclass, asdict
 
@@ -79,7 +79,11 @@ def load_cards() -> Dict:
         # Convert dict cards back to KnowledgeCard objects
         cards = []
         for card_dict in data.get("cards", []):
-            cards.append(KnowledgeCard(**card_dict))
+            try:
+                cards.append(KnowledgeCard(**card_dict))
+            except (TypeError, ValueError) as e:
+                card_id = card_dict.get('id', '?')
+                print(f"⚠️  Warning: Skipping invalid card #{card_id}: {e}")
         data["cards"] = cards
         return data
 
@@ -150,9 +154,9 @@ def calculate_next_review(quality: int, card: KnowledgeCard) -> KnowledgeCard:
         card.correct_reviews += 1
     
     # Set next review date
-    next_date = datetime.now() + timedelta(days=interval_days)
+    next_date = datetime.now(timezone.utc) + timedelta(days=interval_days)
     card.next_review = next_date.isoformat()
-    card.last_reviewed = datetime.now().isoformat()
+    card.last_reviewed = datetime.now(timezone.utc).isoformat()
     card.total_reviews += 1
     
     return card
@@ -237,8 +241,8 @@ def add_card() -> None:
         category=category,
         question=question,
         answer=answer,
-        created_at=datetime.now().isoformat(),
-        next_review=datetime.now().isoformat()
+        created_at=datetime.now(timezone.utc).isoformat(),
+        next_review=datetime.now(timezone.utc).isoformat()
     )
     
     db["cards"].append(card)
@@ -259,7 +263,7 @@ def review_cards() -> None:
     db = load_cards()
     
     # Find due cards
-    now = datetime.now()
+    now = datetime.now(timezone.utc)
     due_cards = [
         card for card in db["cards"]
         if datetime.fromisoformat(card.next_review) <= now
@@ -334,6 +338,9 @@ def review_cards() -> None:
                 db["cards"][j] = updated_card
                 break
         
+        # Save after each card to prevent data loss
+        save_cards(db)
+        
         # Show feedback
         if quality < 3:
             print(f"  📅 You'll see this card again today")
@@ -370,7 +377,7 @@ def list_cards(track_filter: Optional[str] = None, due_only: bool = False) -> No
         cards = [c for c in cards if track_filter.lower() in c.track.lower()]
     
     if due_only:
-        now = datetime.now()
+        now = datetime.now(timezone.utc)
         cards = [c for c in cards if datetime.fromisoformat(c.next_review) <= now]
     
     if not cards:
@@ -393,7 +400,7 @@ def list_cards(track_filter: Optional[str] = None, due_only: bool = False) -> No
             tracks[card.track] = []
         tracks[card.track].append(card)
     
-    now = datetime.now()
+    now = datetime.now(timezone.utc)
     
     for track, track_cards in sorted(tracks.items()):
         due_count = sum(1 for c in track_cards 
@@ -458,7 +465,7 @@ def view_card(card_id: int) -> None:
     print(f"   Interval: {card.interval} days")
     print(f"   Repetitions: {card.repetitions}")
     
-    now = datetime.now()
+    now = datetime.now(timezone.utc)
     next_date = datetime.fromisoformat(card.next_review)
     is_due = next_date <= now
     
@@ -499,7 +506,7 @@ def show_statistics() -> None:
     
     # Overall stats
     total_cards = len(cards)
-    now = datetime.now()
+    now = datetime.now(timezone.utc)
     due_cards = sum(1 for c in cards if datetime.fromisoformat(c.next_review) <= now)
     
     print(f"\n📊 Overall:")
