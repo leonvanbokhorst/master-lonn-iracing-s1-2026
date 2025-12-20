@@ -2,7 +2,7 @@
 # =================================
 # Workflow shortcuts for the AI dojo 🥋
 
-.PHONY: help update-week add-event viz-event viz-week viz-telemetry compare-laps official-report clean
+.PHONY: help update-week add-event viz-event viz-week viz-telemetry compare-laps official-report rehearsal-pre rehearsal-post rehearsal-view rehearsal-viz hypothesis-create hypothesis-test hypothesis-conclude hypothesis-list hypothesis-view hypothesis-viz srs-add srs-review srs-list srs-stats srs-viz clean
 
 # Default target
 help:
@@ -13,6 +13,23 @@ help:
 	@echo "  make update-week WEEK=01                          Regenerate week visualizations + summary"
 	@echo "  make compare-laps WEEK=01                         Compare best laps (needs telemetry CSVs)"
 	@echo "  make official-report WEEK=01 EVENT=12 JSON=...    Write official race report + summary"
+	@echo ""
+	@echo "  make rehearsal-pre EVENT=...                      Record pre-session mental rehearsal"
+	@echo "  make rehearsal-post EVENT=...                     Record post-session mental replay"
+	@echo "  make rehearsal-view EVENT=...                     View mental rehearsal data"
+	@echo "  make rehearsal-viz WEEK=01                        Visualize rehearsal impact"
+	@echo ""
+	@echo "  make srs-add                                      Add knowledge card"
+	@echo "  make srs-review                                   Review due cards"
+	@echo "  make srs-list [TRACK=...] [DUE=yes]              List knowledge cards"
+	@echo "  make srs-stats                                    Show SRS statistics"
+	@echo "  make srs-viz                                      Visualize SRS data"
+	@echo "  make hypothesis-create                            Create new hypothesis"
+	@echo "  make hypothesis-test ID=1 EVENT=...               Test hypothesis in event"
+	@echo "  make hypothesis-conclude ID=1                     Conclude hypothesis"
+	@echo "  make hypothesis-list [STATUS=active]              List hypotheses"
+	@echo "  make hypothesis-view ID=1                         View hypothesis details"
+	@echo "  make hypothesis-viz                               Visualize hypothesis data"
 	@echo ""
 	@echo "  make viz-event FILE=...           Visualize a single event CSV (lap times)"
 	@echo "  make viz-week WEEK=01             Generate week progress visualization only"
@@ -87,6 +104,75 @@ track-map:
 	@echo "🗺️  Generating track map from $(FILE)..."
 	uv run python tools/generate_track_map.py "$(FILE)" $(if $(SECTORS),--sectors $(SECTORS),)
 
+# Hypothesis Testing Framework
+# Usage: make hypothesis-create
+hypothesis-create:
+	@echo "🔬 Creating new hypothesis..."
+	uv run python tools/hypothesis_testing.py create
+
+# Test hypothesis in an event
+# Usage: make hypothesis-test ID=1 EVENT=weeks/week02/events/01-2025-12-20-solo.md
+hypothesis-test:
+	@if [ -z "$(ID)" ]; then echo "❌ Usage: make hypothesis-test ID=1 EVENT=weeks/weekXX/events/XX-date-type.md"; exit 1; fi
+	@if [ -z "$(EVENT)" ]; then echo "❌ Usage: make hypothesis-test ID=1 EVENT=weeks/weekXX/events/XX-date-type.md"; exit 1; fi
+	@echo "🔬 Testing hypothesis #$(ID)..."
+	uv run python tools/hypothesis_testing.py test $(ID) "$(EVENT)"
+
+# Conclude a hypothesis
+# Usage: make hypothesis-conclude ID=1
+hypothesis-conclude:
+	@if [ -z "$(ID)" ]; then echo "❌ Usage: make hypothesis-conclude ID=1"; exit 1; fi
+	@echo "🔬 Concluding hypothesis #$(ID)..."
+	uv run python tools/hypothesis_testing.py conclude $(ID)
+
+# List hypotheses
+# Usage: make hypothesis-list [STATUS=active]
+hypothesis-list:
+	@if [ -n "$(STATUS)" ]; then \
+		uv run python tools/hypothesis_testing.py list --status $(STATUS); \
+	else \
+		uv run python tools/hypothesis_testing.py list; \
+	fi
+
+# View hypothesis details
+# Usage: make hypothesis-view ID=1
+hypothesis-view:
+	@if [ -z "$(ID)" ]; then echo "❌ Usage: make hypothesis-view ID=1"; exit 1; fi
+	uv run python tools/hypothesis_testing.py view $(ID)
+
+# Visualize hypothesis data
+# Usage: make hypothesis-viz
+hypothesis-viz:
+	@echo "📊 Visualizing hypothesis data..."
+	uv run python tools/visualize_hypotheses.py
+
+# Mental Rehearsal Protocol
+# Usage: make rehearsal-pre EVENT=weeks/week02/events/01-2025-12-20-solo.md
+rehearsal-pre:
+	@if [ -z "$(EVENT)" ]; then echo "❌ Usage: make rehearsal-pre EVENT=weeks/weekXX/events/XX-date-type.md"; exit 1; fi
+	@echo "🧠 Recording pre-session mental rehearsal..."
+	uv run python tools/mental_rehearsal.py pre "$(EVENT)"
+
+# Record post-session mental replay
+# Usage: make rehearsal-post EVENT=weeks/week02/events/01-2025-12-20-solo.md
+rehearsal-post:
+	@if [ -z "$(EVENT)" ]; then echo "❌ Usage: make rehearsal-post EVENT=weeks/weekXX/events/XX-date-type.md"; exit 1; fi
+	@echo "🧠 Recording post-session mental replay..."
+	uv run python tools/mental_rehearsal.py post "$(EVENT)"
+
+# View mental rehearsal data for an event
+# Usage: make rehearsal-view EVENT=weeks/week02/events/01-2025-12-20-solo.md
+rehearsal-view:
+	@if [ -z "$(EVENT)" ]; then echo "❌ Usage: make rehearsal-view EVENT=weeks/weekXX/events/XX-date-type.md"; exit 1; fi
+	uv run python tools/mental_rehearsal.py view "$(EVENT)"
+
+# Visualize mental rehearsal impact for a week
+# Usage: make rehearsal-viz WEEK=02
+rehearsal-viz:
+	@if [ -z "$(WEEK)" ]; then echo "❌ Usage: make rehearsal-viz WEEK=02"; exit 1; fi
+	@echo "📊 Visualizing mental rehearsal impact for week$(WEEK)..."
+	uv run python tools/visualize_rehearsal_impact.py weeks/week$(WEEK)
+
 # Clean generated images (careful!)
 clean:
 	@echo "🧹 This would remove generated images. Are you sure? (Ctrl+C to cancel)"
@@ -94,3 +180,39 @@ clean:
 	find images/ -name "*.png" -type f -delete
 	@echo "✅ Cleaned"
 
+
+# Spaced Repetition System (SRS)
+# Usage: make srs-add
+srs-add:
+	@echo "📇 Adding new knowledge card..."
+	uv run python tools/spaced_repetition.py add
+
+# Review due cards
+# Usage: make srs-review
+srs-review:
+	@echo "🧠 Starting review session..."
+	uv run python tools/spaced_repetition.py review
+
+# List knowledge cards
+# Usage: make srs-list [TRACK="Summit Point"] [DUE=yes]
+srs-list:
+	@if [ -n "$(TRACK)" ] && [ -n "$(DUE)" ]; then \
+		uv run python tools/spaced_repetition.py list --track "$(TRACK)" --due; \
+	elif [ -n "$(TRACK)" ]; then \
+		uv run python tools/spaced_repetition.py list --track "$(TRACK)"; \
+	elif [ -n "$(DUE)" ]; then \
+		uv run python tools/spaced_repetition.py list --due; \
+	else \
+		uv run python tools/spaced_repetition.py list; \
+	fi
+
+# Show SRS statistics
+# Usage: make srs-stats
+srs-stats:
+	uv run python tools/spaced_repetition.py stats
+
+# Visualize SRS data
+# Usage: make srs-viz
+srs-viz:
+	@echo "📊 Visualizing spaced repetition data..."
+	uv run python tools/visualize_srs.py

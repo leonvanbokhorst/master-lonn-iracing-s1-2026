@@ -1,0 +1,62 @@
+name: Test Coverage
+
+permissions:
+  contents: write
+  issues: write
+
+on:
+  push:
+    branches: [ main, feature/** ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: "latest"
+    
+    - name: Set up Python
+      run: uv python install 3.13
+    
+    - name: Install dependencies
+      run: |
+        uv sync --all-extras --dev
+        uv add --dev pytest-cov
+    
+    - name: Run tests with coverage
+      run: |
+        uv run pytest tests/test_spaced_repetition.py \
+          --cov=. \
+          --cov-report=term-missing:skip-covered \
+          --cov-report=html \
+          --cov-report=json \
+          -v
+    
+    - name: Generate coverage badge
+      run: |
+        COVERAGE=$(uv run python -c "import json; print(json.load(open('coverage.json'))['totals']['percent_covered_display'])")
+        echo "Coverage: ${COVERAGE}%"
+        echo "COVERAGE=${COVERAGE}" >> $GITHUB_ENV
+    
+    - name: Create coverage summary
+      if: always()
+      run: |
+        echo "## Test Coverage Report" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Coverage: ${COVERAGE}%**" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Detailed Coverage" >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        uv run pytest tests/test_spaced_repetition.py \
+          --cov=. \
+          --cov-report=term-missing:skip-covered \
+          --quiet | tail -n +3 >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
