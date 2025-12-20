@@ -19,6 +19,8 @@ schedule:
 2.  **Brake Bias Check:** Test if the "pointy" 56% BB (which was too much for Jefferson) works here to help rotate the car on the hills, or if stability (57%) is king.
 3.  **Details & Precision:** Since the track is known, skip the "learning" phase and go straight to refining lines and exit speeds.
 
+Main goal: Finish every race feeling slightly bored, because I kept **reading the room**, waited one beat longer than instinct wanted, and **let consistency do the killing**.
+
 ## Events
 
 | #   | Date       | Type | Laps | Best     | σ     | Notes                                                       | Details                           |

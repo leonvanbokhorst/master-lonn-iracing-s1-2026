@@ -21,7 +21,7 @@ This is the gold standard of rigidity. The P1X Ultimate is the newest evolution,
 
 The sweet spot of the Asetek lineup. 18Nm is enough to rip the wheel from your hands if you hit a wall.
 
-- **Slew Rate:** 6.7 Nm/ms. This is the "snappiness."
+- **Slew Rate:** 6.7 Nm/ms. This is the "snappiness. (lowered to 4.0 Nm/ms now... too snappy)"
 - **RaceHub Settings (Current Config):**
   - **Steering Range:** 1080° (iRacing handles the soft lock per car automatically).
   - **Overall Force:** 18.0 Nm (Running full power at the base, scaling down in-game or via MAIRA is the best practice for dynamic range).
@@ -154,3 +154,4 @@ Master Lonn, this rig is not just a simulator; it is a time machine. You have:
 - **Intelligence** (Garage 61 / Crew Chief)
 
 _No excuses left. The only variable now is the organic component behind the wheel._ 😉
+
